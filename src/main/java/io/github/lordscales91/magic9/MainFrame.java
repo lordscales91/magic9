@@ -1,6 +1,7 @@
 package io.github.lordscales91.magic9;
 
 import io.github.lordscales91.magic9.core.CallbackReceiver;
+import io.github.lordscales91.magic9.core.MagicConstants;
 import io.github.lordscales91.magic9.core.MagicUtils;
 
 import java.awt.EventQueue;
@@ -23,6 +24,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.turn.ttorrent.client.Client;
+
 import java.awt.Insets;
 
 @SuppressWarnings("serial")
@@ -31,6 +33,8 @@ public class MainFrame extends JFrame implements CallbackReceiver {
 	private JPanel contentPane;
 	private File basedir;
 	private TorrentDownloadWorker worker;
+	private GithubDownloadWorker ghworker;
+	private DownloadWorker dlworker;
 
 	/**
 	 * Launch the application.
@@ -59,23 +63,38 @@ public class MainFrame extends JFrame implements CallbackReceiver {
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{0, 0, 0};
-		gbl_contentPane.rowHeights = new int[]{0, 0};
+		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0};
 		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
 		JButton btnTestTorrent = new JButton("Test Torrent");
 		GridBagConstraints gbc_btnTestTorrent = new GridBagConstraints();
-		gbc_btnTestTorrent.insets = new Insets(0, 0, 0, 5);
+		gbc_btnTestTorrent.insets = new Insets(0, 0, 5, 5);
 		gbc_btnTestTorrent.gridx = 0;
 		gbc_btnTestTorrent.gridy = 0;
 		contentPane.add(btnTestTorrent, gbc_btnTestTorrent);
 		
-		JButton btnRestart = new JButton("Stop");
+		JButton btnRestart = new JButton("Stop Torrent");
 		GridBagConstraints gbc_btnRestart = new GridBagConstraints();
+		gbc_btnRestart.insets = new Insets(0, 0, 5, 0);
 		gbc_btnRestart.gridx = 1;
 		gbc_btnRestart.gridy = 0;
 		contentPane.add(btnRestart, gbc_btnRestart);
+		
+		JButton btnTestGithub = new JButton("Test Github");
+		GridBagConstraints gbc_btnTestGithub = new GridBagConstraints();
+		gbc_btnTestGithub.insets = new Insets(0, 0, 5, 5);
+		gbc_btnTestGithub.gridx = 0;
+		gbc_btnTestGithub.gridy = 1;
+		contentPane.add(btnTestGithub, gbc_btnTestGithub);
+		
+		JButton btnTestDownload = new JButton("Test Download");		
+		GridBagConstraints gbc_btnTestDownload = new GridBagConstraints();
+		gbc_btnTestDownload.insets = new Insets(0, 0, 0, 5);
+		gbc_btnTestDownload.gridx = 0;
+		gbc_btnTestDownload.gridy = 2;
+		contentPane.add(btnTestDownload, gbc_btnTestDownload);
 		// This is placed here just for test purposes.
 		// The final GUI will be different
 		btnTestTorrent.addActionListener(new ActionListener() {
@@ -92,6 +111,56 @@ public class MainFrame extends JFrame implements CallbackReceiver {
 			}
 			
 		});
+		btnTestGithub.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				btnGithub_actiionPerformed();
+			}
+		});
+		btnTestDownload.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnTestDownload_actionPerformed();
+			}
+		});
+	}
+
+	protected void btnTestDownload_actionPerformed() {
+		String url = "http://smealum.github.io/ninjhax2/starter.zip";
+		File outdir = new File("target/directdl");
+		if(!outdir.exists()) {
+			outdir.mkdirs();
+		}
+		dlworker = new DownloadWorker(url, new File(outdir, MagicConstants.STARTER_KIT_ZIP), "directdl", this);
+		dlworker.addPropertyChangeListener(new PropertyChangeListener() {
+			
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if(DownloadWorker.REAL_PROGRESS.equals(evt.getPropertyName())) {
+					progress_update((float) evt.getNewValue(), "directdl");
+				}
+			}
+		});
+		dlworker.execute();
+	}
+
+	protected void btnGithub_actiionPerformed() {
+		String releaseUrl = "https://github.com/AuroraWright/Luma3DS/releases/latest";
+		File outdir = new File("target/ghdownloads");
+		if(!outdir.exists()) {
+			outdir.mkdirs();
+		}
+		ghworker = new GithubDownloadWorker(releaseUrl, "7z", new File(outdir, MagicConstants.LUMA3DS_7Z), 
+				"gh_download", this);
+		ghworker.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if(GithubDownloadWorker.REAL_PROGRESS.equals(evt.getPropertyName())) {
+					progress_update((float) evt.getNewValue(), "gh_download");
+				}
+			}
+		});
+		ghworker.execute();
 	}
 
 	protected void btnRestart_actioonPerformed() {
@@ -126,7 +195,7 @@ public class MainFrame extends JFrame implements CallbackReceiver {
 	}
 	
 	protected void progress_update(float f, String tag) {
-		System.out.printf(Locale.ROOT, "%.02f%% Completed\n", f);
+		System.out.printf(Locale.ROOT, "%s: %.02f%% Completed\n", tag, f);
 	}
 
 	@Override
@@ -146,6 +215,8 @@ public class MainFrame extends JFrame implements CallbackReceiver {
 //					// TODO Auto-generated catch block
 //					e.printStackTrace();
 //				}
+			} else if(tag.equals("gh_download")) {
+				System.out.println("Github download completed");
 			}
 		}
 	}
