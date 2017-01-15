@@ -8,6 +8,8 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -398,5 +400,9 @@ public class MagicUtils {
 			checksums.put(f.getName(), FileUtils.checksumCRC32(f));
 		}
 		return checksums;
+	}
+
+	public static void moveFile(File src, File dst) throws IOException {
+		Files.move(src.toPath(), dst.toPath(), StandardCopyOption.REPLACE_EXISTING);
 	}
 }

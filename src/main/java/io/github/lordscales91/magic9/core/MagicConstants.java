@@ -16,7 +16,6 @@ public class MagicConstants {
 	public static final String STARTER_KIT_ZIP = "starter.zip";
 	public static final String ARM9_BIN = "arm9.bin";
 	public static final String ARM11_BIN = "arm11.bin";
-	public static final String SAFEHAX_FASTHAX_ZIP = "safehax_fasthax.zip";
 	public static final String SAFEHAX_FASTHAX_FOLDER = "safehax_fasthax";
 	public static final String CTRIMAGES_FOLDER = "ctrimages";
 	public static final String CIAS_FOLDER = "cias";
@@ -47,6 +46,8 @@ public class MagicConstants {
 	public static final String DSPDUMP = "DspDump.3dsx";
 	public static final String FBI_INJECTABLE_ZIP = "fbi_injectable.zip";
 	public static final String FBI_INJECTABLE_FOLDER = "fbi_injectable";
+	public static final String SAFEHAX_PAYLOAD = "safehaxpayload.bin";
+	public static final String TRACKERS_FILE = "data/trackers.txt";
 	
 	private MagicConstants() {}
 }
