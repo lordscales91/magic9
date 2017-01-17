@@ -219,19 +219,34 @@ public class MagicUtils {
 	}
 	
 	/**
-	 * This is actually just a wrapper for {@link FileUtils#copyDirectory(File, File)}.
-	 * The wrapper is here to allow an easy transition to another library if necessary.
+	 * Copies the directory contents to the target directory ensuring the files
+	 * were copied successfully by comparing their checksums.
+	 * It delegates the actual copy of files to {@link MagicUtils#copyFile(File, File)} 
+	 * which will actually compare the checksums
 	 */
 	public static void copyDirectory(File srcdir, File dstdir) throws IOException {
-		FileUtils.copyDirectory(srcdir, dstdir);
+		if(!dstdir.exists()) {
+			dstdir.mkdirs();
+		}
+		for(File f: srcdir.listFiles()) {
+			File out = new File(dstdir, f.getName());
+			if(f.isDirectory()) {
+				copyDirectory(f, out);
+			} else {
+				copyFile(f, out);
+			}
+		}
 	}
 	
 	/**
-	 * This is actually just a wrapper for {@link FileUtils#copyFile(File, File)}.
-	 * The wrapper is here to allow an easy transition to another library if necessary.
+	 * This is a wrapper for {@link FileUtils#copyFile(File, File)} which computes the 
+	 * checksums to ensure the copy was successful.
 	 */
 	public static void copyFile(File srcFile, File destFile) throws IOException {
 		FileUtils.copyFile(srcFile, destFile);
+		if(FileUtils.checksumCRC32(srcFile) != FileUtils.checksumCRC32(destFile)) {
+			throw new IOException("Copy possibly failed. Checksums do not match");
+		}
 	}
 	
 	/**
@@ -259,6 +274,10 @@ public class MagicUtils {
 			}
 			InputStream is = zip.getInputStream(entry);
 			FileUtils.copyInputStreamToFile(is, destination);
+			//  Check correct extraction
+			if(FileUtils.checksumCRC32(destination) != entry.getCrc()) {
+				throw new IOException("Extraction possibly failed. Checksums do not match");
+			}
 		} finally {
 			IOUtils.closeQuietly(zip);
 		}
@@ -276,6 +295,7 @@ public class MagicUtils {
 		try {
 			zip = new ZipFile(zipfile);
 			Enumeration<ZipArchiveEntry> entries = zip.getEntries();
+			Map<File, Long> origChecksums = new HashMap<File, Long>();
 			while(entries.hasMoreElements()) {
 				ZipArchiveEntry entry = entries.nextElement();
 				File out = new File(outputdir, entry.getName());
@@ -288,6 +308,12 @@ public class MagicUtils {
 					}
 					InputStream is = zip.getInputStream(entry);
 					FileUtils.copyInputStreamToFile(is, out);
+					origChecksums.put(out, entry.getCrc());
+				}
+			}
+			for(Map.Entry<File, Long> entry:origChecksums.entrySet()) {
+				if(FileUtils.checksumCRC32(entry.getKey()) != entry.getValue().longValue()) {
+					throw new IOException("Extraction possibliy failed. Checksums do not match");
 				}
 			}
 			
@@ -307,7 +333,8 @@ public class MagicUtils {
 		SevenZFile zip = null;
 		try {
 			zip = new SevenZFile(zipfile);
-			Iterator<SevenZArchiveEntry> entries = zip.getEntries().iterator();			
+			Iterator<SevenZArchiveEntry> entries = zip.getEntries().iterator();	
+			Map<File, Long> origChecksums = new HashMap<File, Long>();
 			while(entries.hasNext()) {
 				SevenZArchiveEntry entry = entries.next();
 				zip.getNextEntry(); // This will switch the internal inputstream
@@ -328,6 +355,12 @@ public class MagicUtils {
 						}
 					};
 					FileUtils.copyInputStreamToFile(is, out);
+					origChecksums.put(out, entry.getCrcValue());
+				}
+			}
+			for(Map.Entry<File, Long> entry:origChecksums.entrySet()) {
+				if(FileUtils.checksumCRC32(entry.getKey()) != entry.getValue().longValue()) {
+					throw new IOException("Extraction possibliy failed. Checksums do not match");
 				}
 			}
 		} finally {
@@ -353,6 +386,7 @@ public class MagicUtils {
 				zip.getNextEntry(); // This will switch the internal inputstream
 				if(currEntry.getName().equalsIgnoreCase(filename)) {
 					entry = currEntry;
+					break; // Letting the loop to continue would cause to extract a different entry
 				}
 			}
 			if(entry == null) {
@@ -367,6 +401,9 @@ public class MagicUtils {
 				}
 			};
 			FileUtils.copyInputStreamToFile(is, destination);
+			if(FileUtils.checksumCRC32(destination) != entry.getCrcValue()) {
+				throw new IOException("Extraction possibliy failed. Checksums do not match");
+			}
 		} finally {
 			IOUtils.closeQuietly(zip);
 		}
@@ -376,8 +413,7 @@ public class MagicUtils {
 	 * Computes the checksum of the given files and returns them in map
 	 * using filenames as key.<br/>
 	 * If the first argument is a directory the checksums of the files 
-	 * inside it will be computed. Passing a directory in other positions
-	 * will cause an {@link IllegalArgumentException}
+	 * inside it will be computed. Nested directories will be ignored.
 	 * @param files to be processed
 	 * @return the computed checksums
 	 * @throws IOException 
@@ -394,10 +430,9 @@ public class MagicUtils {
 			return computeChecksums(dirfiles);
 		}
 		for(File f:files) {
-			if(f == null || f.isDirectory()) {
-				throw new IllegalArgumentException("Directory or null was passed");
+			if(f.isFile()) {
+				checksums.put(f.getName(), FileUtils.checksumCRC32(f));
 			}
-			checksums.put(f.getName(), FileUtils.checksumCRC32(f));
 		}
 		return checksums;
 	}

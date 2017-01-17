@@ -70,15 +70,6 @@ public class HackingProcessTest {
 		assertTrue("Wrong class", d9proc instanceof Decrypt9BrowserProcess);
 		try {
 			d9proc.process();
-			File d9dir = new File(hackingDir, MagicConstants.DECRYPT9_FOLDER);
-			// Apparently everything is fine. Let's compare the checksums to ensure
-			Map<String, Long> origChecksums = MagicUtils.computeChecksums(
-					new File(d9dir, MagicConstants.DECRYPT9_LAUNCHER_DAT),
-					new File(d9dir, MagicConstants.DECRYPT9_DAT));			
-			Map<String, Long> sdChecksums = MagicUtils.computeChecksums(
-					new File(sdcarddir, MagicConstants.DECRYPT9_LAUNCHER_DAT),
-					new File(sdcarddir, MagicConstants.DECRYPT9_DAT));
-			assertThat("Checksum verification failed", origChecksums, is(sdChecksums));
 		} catch (IOException e) {
 			fail(e.getMessage());
 		} catch (IllegalArgumentException e) {
