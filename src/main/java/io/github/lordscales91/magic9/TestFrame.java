@@ -28,7 +28,7 @@ import com.turn.ttorrent.client.Client;
 import java.awt.Insets;
 
 @SuppressWarnings("serial")
-public class MainFrame extends JFrame implements CallbackReceiver {
+public class TestFrame extends JFrame implements CallbackReceiver {
 
 	private JPanel contentPane;
 	private File basedir;
@@ -43,7 +43,7 @@ public class MainFrame extends JFrame implements CallbackReceiver {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainFrame frame = new MainFrame();
+					TestFrame frame = new TestFrame();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -55,7 +55,7 @@ public class MainFrame extends JFrame implements CallbackReceiver {
 	/**
 	 * Create the frame.
 	 */
-	public MainFrame() {
+	public TestFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
