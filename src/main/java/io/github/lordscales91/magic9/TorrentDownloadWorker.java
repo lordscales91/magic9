@@ -15,43 +15,36 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.swing.SwingWorker;
-
 import org.apache.commons.io.IOUtils;
 
 import com.turn.ttorrent.client.Client;
 import com.turn.ttorrent.client.SharedTorrent;
 
-public class TorrentDownloadWorker extends SwingWorker<Client, String> implements Observer {
+public class TorrentDownloadWorker extends MagicWorker implements Observer {
 
 	public static final String REAL_PROGRESS = "real_progress";
 	
 	private File torrent;
 	private File output;
-	private CallbackReceiver receiver;
-	private String tag;
 	private float progress;
 
 	private Client client;
 
-	private boolean wasStopped;
-
 	public TorrentDownloadWorker(File torrent, File output, String tag, CallbackReceiver receiver) {
+		super(tag, receiver);
 		this.torrent = torrent;
 		this.output = output;
-		this.tag=tag;
-		this.receiver = receiver;
 	}
 
 	@Override
-	protected Client doInBackground() throws Exception {
+	protected String doInBackground() throws Exception {
 		SharedTorrent torr = SharedTorrent.fromFile(torrent, output);
 		prepareTrackers(torr);
 		client = new Client(InetAddress.getLocalHost(), torr);		
 		client.addObserver(this);
 		client.download();
 		client.waitForCompletion();
-		return client;
+		return "success";
 	}
 	
 	private void prepareTrackers(SharedTorrent torr) throws IOException {
@@ -83,8 +76,9 @@ public class TorrentDownloadWorker extends SwingWorker<Client, String> implement
 	/**
 	 * Stops the torrent client
 	 */
+	@Override	
 	public void stop() {
-		wasStopped = true;
+		setStopFlag();
 		if(client != null) {
 			// If the client can't be stopped, at least it will not cause
 			client.deleteObservers(); // an unexpected behavior
@@ -97,18 +91,7 @@ public class TorrentDownloadWorker extends SwingWorker<Client, String> implement
 		Client client = (Client)o;
 		float oldProgress = progress;
 		progress = client.getTorrent().getCompletion();
+		setProgress((int) progress);
 		firePropertyChange(REAL_PROGRESS, oldProgress, progress);
-	}
-
-	@Override
-	protected void done() {
-		try {
-			if(!wasStopped) {
-				receiver.receiveData(get(), tag);
-			}			
-		} catch (Exception e) {
-			// Pass exception to notify an error happened
-			receiver.receiveData(e, tag);
-		}
 	}
 }

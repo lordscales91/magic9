@@ -10,8 +10,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import javax.swing.SwingWorker;
-
+import okhttp3.Call;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -24,7 +23,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
-public class GithubDownloadWorker extends SwingWorker<String, String> implements ProgressListener {
+public class GithubDownloadWorker extends MagicWorker implements ProgressListener {
 	
 	public static final String GITHUB_API_BASE_URL = "https://api.github.com";
 	public static final String GITHUB_API_VERSION_HEADER = "application/vnd.github.v3+json";
@@ -34,18 +33,17 @@ public class GithubDownloadWorker extends SwingWorker<String, String> implements
 	private String assetExtension;
 	private float progress;
 	private File out;
-	private String tag;
-	private CallbackReceiver receiver;
+	private Call assetCall;
+	private Call dlproc;
 	
 	
 
 	public GithubDownloadWorker(String releaseUrl, String assetExtension,
 			File out, String tag, CallbackReceiver receiver) {
+		super(tag, receiver);
 		this.releaseUrl = releaseUrl;
 		this.assetExtension = assetExtension;
 		this.out = out;
-		this.tag = tag;
-		this.receiver = receiver;
 	}
 
 	@Override
@@ -56,8 +54,9 @@ public class GithubDownloadWorker extends SwingWorker<String, String> implements
 			.url(getApiUrl()).build();
 		Response resp = null;
 		URL assetUrl = null;
+		assetCall = client.newCall(req);
 		try {
-			resp = client.newCall(req).execute();
+			resp = assetCall.execute();
 			if(!resp.isSuccessful()) {
 				throw new IOException("Error Happened: "+resp.message());
 			}
@@ -84,7 +83,8 @@ public class GithubDownloadWorker extends SwingWorker<String, String> implements
 			}
 		}).build();
 		try {
-			resp = client.newCall(req).execute();
+			dlproc = client.newCall(req);
+			resp = dlproc.execute();
 			FileUtils.copyInputStreamToFile(resp.body().byteStream(), out);
 		} finally {
 			IOUtils.closeQuietly(resp);
@@ -133,15 +133,18 @@ public class GithubDownloadWorker extends SwingWorker<String, String> implements
 	public void update(long bytesRead, long contentLength) {
 		float oldProgress = progress;
 		progress = (bytesRead * 100.0f) / contentLength;
+		setProgress((int) progress);
 		firePropertyChange(REAL_PROGRESS, oldProgress, progress);
 	}
 	
 	@Override
-	protected void done() {
-		try {
-			receiver.receiveData(get(), tag);
-		} catch (Exception e) {
-			receiver.receiveData(e, tag);
+	public void stop() {
+		setStopFlag();
+		if(assetCall != null) {
+			assetCall.cancel();
+		}
+		if(dlproc != null) {
+			dlproc.cancel();
 		}
 	}
 }

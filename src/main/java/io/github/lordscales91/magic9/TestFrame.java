@@ -2,18 +2,21 @@ package io.github.lordscales91.magic9;
 
 import io.github.lordscales91.magic9.core.CallbackReceiver;
 import io.github.lordscales91.magic9.core.MagicConstants;
-import io.github.lordscales91.magic9.core.MagicUtils;
 
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -23,18 +26,18 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import com.turn.ttorrent.client.Client;
-
-import java.awt.Insets;
-
 @SuppressWarnings("serial")
 public class TestFrame extends JFrame implements CallbackReceiver {
 
+	private static final String TEST_TORRENT = "test_torrent";
+	private static final String GH_DOWNLOAD = "gh_download";
+	private static final String DIRECTDL = "directdl";
 	private JPanel contentPane;
 	private File basedir;
-	private TorrentDownloadWorker worker;
-	private GithubDownloadWorker ghworker;
-	private DownloadWorker dlworker;
+	private List<MagicWorkerHandler> handlers = Collections.synchronizedList(new ArrayList<MagicWorkerHandler>());
+	private File torrent;
+	private boolean stop;
+	private Thread monitor;
 
 	/**
 	 * Launch the application.
@@ -107,7 +110,7 @@ public class TestFrame extends JFrame implements CallbackReceiver {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				btnRestart_actioonPerformed();
+				btnRestartTorrent_actionPerformed();
 			}
 			
 		});
@@ -131,17 +134,24 @@ public class TestFrame extends JFrame implements CallbackReceiver {
 		if(!outdir.exists()) {
 			outdir.mkdirs();
 		}
-		dlworker = new DownloadWorker(url, new File(outdir, MagicConstants.STARTER_KIT_ZIP), "directdl", this);
+		DownloadWorker dlworker = new DownloadWorker(url, new File(outdir, MagicConstants.STARTER_KIT_ZIP), DIRECTDL, this);
 		dlworker.addPropertyChangeListener(new PropertyChangeListener() {
 			
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				if(DownloadWorker.REAL_PROGRESS.equals(evt.getPropertyName())) {
-					progress_update((float) evt.getNewValue(), "directdl");
+					progress_update((float) evt.getNewValue(), DIRECTDL);
 				}
 			}
 		});
-		dlworker.execute();
+		// Remove previous handler if needed
+		MagicWorkerHandler handler = findHandler(DIRECTDL);
+		if(handler != null) {
+			handlers.remove(handler);
+		}
+		handler = new MagicWorkerHandler(dlworker);
+		handler.startWorker();
+		handlers.add(handler);
 	}
 
 	protected void btnGithub_actiionPerformed() {
@@ -150,22 +160,36 @@ public class TestFrame extends JFrame implements CallbackReceiver {
 		if(!outdir.exists()) {
 			outdir.mkdirs();
 		}
-		ghworker = new GithubDownloadWorker(releaseUrl, "7z", new File(outdir, MagicConstants.LUMA3DS_7Z), 
-				"gh_download", this);
+		GithubDownloadWorker ghworker = new GithubDownloadWorker(releaseUrl, "7z", new File(outdir, MagicConstants.LUMA3DS_7Z), 
+				GH_DOWNLOAD, this);
 		ghworker.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				if(GithubDownloadWorker.REAL_PROGRESS.equals(evt.getPropertyName())) {
-					progress_update((float) evt.getNewValue(), "gh_download");
+					progress_update((float) evt.getNewValue(), GH_DOWNLOAD);
 				}
 			}
 		});
 		ghworker.execute();
+		// Remove previous handler if needed
+		MagicWorkerHandler handler = findHandler(DIRECTDL);
+		if(handler != null) {
+			handlers.remove(handler);
+		}
+		handler = new MagicWorkerHandler(ghworker);
+		handler.startWorker();
+		handlers.add(handler);
 	}
 
-	protected void btnRestart_actioonPerformed() {
-		if(worker != null && !worker.isCancelled() && !worker.isDone()) {
-			worker.stop();
+	protected void btnRestartTorrent_actionPerformed() {
+		MagicWorkerHandler handler = findHandler(TEST_TORRENT);
+		if(handler == null) {
+			JOptionPane.showMessageDialog(contentPane, "Torrent has not been started yet", "Error", JOptionPane.ERROR_MESSAGE);
+		} else {
+			TorrentDownloadWorker worker = getTorrentWorker(torrent);
+			if(!handler.restart(worker)) {
+				JOptionPane.showMessageDialog(contentPane, "Max retries exceeded. Try again later", "Error", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 	}
 
@@ -179,19 +203,79 @@ public class TestFrame extends JFrame implements CallbackReceiver {
 		chooser.setFileFilter(new FileNameExtensionFilter("Torrent file (*.torrent)", "torrent"));
 		int op = chooser.showOpenDialog(contentPane);
 		if(op == JFileChooser.APPROVE_OPTION) {
-			worker = new TorrentDownloadWorker(chooser.getSelectedFile(),
-					basedir, "test_torrent", this);
-			worker.addPropertyChangeListener(new PropertyChangeListener() {
-				
-				@Override
-				public void propertyChange(PropertyChangeEvent evt) {
-					if(TorrentDownloadWorker.REAL_PROGRESS.equals(evt.getPropertyName())) {
-						progress_update((float) evt.getNewValue(),"track_torrent");
+			torrent = chooser.getSelectedFile();
+			TorrentDownloadWorker worker = getTorrentWorker(torrent);
+			// Remove previous handler if needed
+			MagicWorkerHandler handler = findHandler(DIRECTDL);
+			if(handler != null) {
+				handlers.remove(handler);
+			}
+			handler = new MagicWorkerHandler(worker);
+			handler.startWorker();
+			handlers.add(handler);
+			startMonitoring();
+		}
+	}
+
+	private MagicWorkerHandler findHandler(String tag) {
+		for(MagicWorkerHandler handler:handlers) {
+			if(handler.getTag().equals(tag)) {
+				return handler;
+			}
+		}
+		return null;
+	}
+
+	private void startMonitoring() {
+		monitor = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				checkHandlers();
+			}
+		});
+		monitor.start();
+	}
+
+	protected void checkHandlers() {
+		while(!stop) {
+			synchronized (handlers) {
+				for(MagicWorkerHandler handler:handlers) {
+					if(handler.isStuck()) {
+						System.out.println("Handler "+handler.getTag()+" is stuck");
+						System.out.println("Restarting... ");
+						restartHandler(handler);
 					}
 				}
-			});
-			worker.execute();
+			}
+			try {
+				Thread.sleep(500); // Check every 0.5s
+			} catch (InterruptedException ignore) {}
 		}
+	}
+
+	private void restartHandler(MagicWorkerHandler handler) {
+		if(TEST_TORRENT.equals(handler.getTag())) {
+			if(!handler.restart(getTorrentWorker(torrent), true)) {
+				JOptionPane.showMessageDialog(contentPane, "Couldn't restart the torrent download", "Error", JOptionPane.ERROR_MESSAGE);
+				// Remove this handler from the list to avoid future attempts to restart it.
+				handlers.remove(handler);
+			}
+		}
+	}
+
+	private TorrentDownloadWorker getTorrentWorker(File torrent) {
+		TorrentDownloadWorker worker = new TorrentDownloadWorker(torrent,
+				basedir, TEST_TORRENT, this);
+		worker.addPropertyChangeListener(new PropertyChangeListener() {
+			
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if(TorrentDownloadWorker.REAL_PROGRESS.equals(evt.getPropertyName())) {
+					progress_update((float) evt.getNewValue(), TEST_TORRENT);
+				}
+			}
+		});
+		return worker;
 	}
 	
 	protected void progress_update(float f, String tag) {
@@ -204,7 +288,7 @@ public class TestFrame extends JFrame implements CallbackReceiver {
 			((Exception)data).printStackTrace();
 			JOptionPane.showMessageDialog(this, ((Exception)data).getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		} else {
-			if(tag.equals("test_torrent")) {
+			if(tag.equals(TEST_TORRENT)) {
 				System.out.println("Torrent download completed");
 //				try {
 //					File src = new File(basedir, ((Client)data).getTorrent().getName());
@@ -215,8 +299,10 @@ public class TestFrame extends JFrame implements CallbackReceiver {
 //					// TODO Auto-generated catch block
 //					e.printStackTrace();
 //				}
-			} else if(tag.equals("gh_download")) {
+			} else if(tag.equals(GH_DOWNLOAD)) {
 				System.out.println("Github download completed");
+			} else if(tag.equals(DIRECTDL)) {
+				System.out.println("Direct download completed");
 			}
 		}
 	}
