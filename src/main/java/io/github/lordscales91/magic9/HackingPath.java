@@ -1,9 +1,15 @@
 package io.github.lordscales91.magic9;
 
+import io.github.lordscales91.magic9.core.HackingProcess;
+import io.github.lordscales91.magic9.core.HackingResource;
 import io.github.lordscales91.magic9.core.MagicConstants;
 
+import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Properties;
+import java.util.Set;
 
 public class HackingPath {
 	
@@ -55,6 +61,19 @@ public class HackingPath {
 		}
 	};
 	
+	public static final Properties URLS = loadURLs();
+	
+	private static Properties loadURLs() {
+		Properties props = new Properties();
+		try {
+			FileReader fr = new FileReader("data/urls.properties");
+			props.load(fr);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return props;
+	}
+	
 	private List<HackingStep> steps = new ArrayList<HackingStep>();
 	private int currentStep;
 	private FirmwareVersion fwver;
@@ -73,7 +92,26 @@ public class HackingPath {
 		return INSTANCE;
 	}
 	
+	public List<HackingResource> resolveResources(String hackingDir, String sdCardDir) {
+		// Use set to avoid duplicates
+		Set<HackingResource> resourceSet = new HashSet<HackingResource>();
+		for(HackingStep step:steps) {
+			HackingProcess proc = HackingProcess.getInstance(step, hackingDir, sdCardDir);
+			if(proc == null) {
+				continue;
+			}
+			List<HackingResource> res = proc.getRequiredResources();
+			if(res != null) {
+				resourceSet.addAll(res);
+			}
+		}	
+		return new ArrayList<HackingResource>(resourceSet);
+	}
+	
 	public static HackingPath getInstance() {
+		if(INSTANCE == null) {
+			throw new IllegalStateException("HackingPath has not been initialized");
+		}
 		return INSTANCE;
 	}
 	
@@ -162,6 +200,7 @@ public class HackingPath {
 			}
 			if(ConsoleRegion.JPN.equals(this.getFwver().getRegion()) && range == 0) {
 				// TODO: Should we consider the Cubic Ninja option?
+				steps.add(HackingStep.REQUIRES_UPDATE);
 			} else if(range == 1) {
 				steps.add(HackingStep.HOMEBREW_SOUNDHAX);
 				steps.add(HackingStep.DECRYPT9_HOMEBREW);
@@ -202,5 +241,5 @@ public class HackingPath {
 	public void setCartUpdated(boolean cartUpdate) {
 		this.cartUpdated = cartUpdate;
 	}
-	
+
 }

@@ -64,7 +64,8 @@ public class DownloadWorker extends MagicWorker implements ProgressListener {
 	public void update(long bytesRead, long contentLength) {
 		float oldProgress = progress;
 		progress = (bytesRead * 100.0f) / contentLength;
-		setProgress((int) progress);
+		int iProgress = (int) progress;
+		setProgress((iProgress > 100)?100:iProgress); // deal with precision loss
 		firePropertyChange(REAL_PROGRESS, oldProgress, progress);
 	}
 
@@ -74,5 +75,15 @@ public class DownloadWorker extends MagicWorker implements ProgressListener {
 		if(dlproc != null) {
 			dlproc.cancel();
 		}				
+	}
+	
+	@Override
+	public float getRealProgress() {
+		return progress;
+	}
+	
+	@Override
+	public boolean hasRealProgressSupport() {
+		return true;
 	}
 }

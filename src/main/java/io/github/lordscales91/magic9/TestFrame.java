@@ -1,6 +1,8 @@
 package io.github.lordscales91.magic9;
 
 import io.github.lordscales91.magic9.core.CallbackReceiver;
+import io.github.lordscales91.magic9.core.HackingProcess;
+import io.github.lordscales91.magic9.core.HackingResource;
 import io.github.lordscales91.magic9.core.MagicConstants;
 
 import java.awt.EventQueue;
@@ -16,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -92,12 +93,35 @@ public class TestFrame extends JFrame implements CallbackReceiver {
 		gbc_btnTestGithub.gridy = 1;
 		contentPane.add(btnTestGithub, gbc_btnTestGithub);
 		
+		JButton btnTestHomebrewDl = new JButton("Test Homebrew DL");
+		btnTestHomebrewDl.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnTestHomebrewDL_actionPerformed();
+			}
+		});
+		GridBagConstraints gbc_btnTestHomebrewDl = new GridBagConstraints();
+		gbc_btnTestHomebrewDl.insets = new Insets(0, 0, 5, 0);
+		gbc_btnTestHomebrewDl.gridx = 1;
+		gbc_btnTestHomebrewDl.gridy = 1;
+		contentPane.add(btnTestHomebrewDl, gbc_btnTestHomebrewDl);
+		
 		JButton btnTestDownload = new JButton("Test Download");		
 		GridBagConstraints gbc_btnTestDownload = new GridBagConstraints();
 		gbc_btnTestDownload.insets = new Insets(0, 0, 0, 5);
 		gbc_btnTestDownload.gridx = 0;
 		gbc_btnTestDownload.gridy = 2;
 		contentPane.add(btnTestDownload, gbc_btnTestDownload);
+		
+		JButton btnTestDecryptBrowser = new JButton("Test Decrypt9 Browser");
+		btnTestDecryptBrowser.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				testDecrypt9Browser();
+			}
+		});
+		GridBagConstraints gbc_btnTestDecryptBrowser = new GridBagConstraints();
+		gbc_btnTestDecryptBrowser.gridx = 1;
+		gbc_btnTestDecryptBrowser.gridy = 2;
+		contentPane.add(btnTestDecryptBrowser, gbc_btnTestDecryptBrowser);
 		// This is placed here just for test purposes.
 		// The final GUI will be different
 		btnTestTorrent.addActionListener(new ActionListener() {
@@ -126,6 +150,82 @@ public class TestFrame extends JFrame implements CallbackReceiver {
 				btnTestDownload_actionPerformed();
 			}
 		});
+	}
+
+	protected void testDecrypt9Browser() {
+		JFileChooser chooser = new JFileChooser();
+		chooser.setDialogTitle("Choose a Fake SD path to test");
+		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		int op = chooser.showOpenDialog(contentPane);
+		File sdCardDir = null;
+		File hackingDir = null;
+		if(op == JFileChooser.APPROVE_OPTION) {
+			sdCardDir = chooser.getSelectedFile();
+		}
+		chooser.setDialogTitle("Choose a Fake staging directory (hacking dir) to test");
+		op = chooser.showOpenDialog(contentPane);
+		if(op == JFileChooser.APPROVE_OPTION) {
+			hackingDir = chooser.getSelectedFile();
+		}
+		HackingPath.resolve(new FirmwareVersion("11.1.0-35E"), false);
+		if(hackingDir!=null && sdCardDir != null) {
+			HackingProcess proc = HackingProcess.getInstance(HackingStep.DECRYPT9_HOMEBREW, hackingDir, sdCardDir);
+			List<HackingResource> resources = proc.getRequiredResources();
+			int i =0;
+			for(HackingResource res:resources) {
+				final String tag = "worker-"+i;
+				MagicWorker worker = res.getWorker(tag, this);
+				worker.addPropertyChangeListener(new PropertyChangeListener() {
+					@Override
+					public void propertyChange(PropertyChangeEvent evt) {
+						if(evt.getPropertyName().equals("real_progress")) {
+							progress_update((float) evt.getNewValue(), tag);
+						}
+					}
+				});								
+				worker.execute();
+				i++;
+			}
+		}
+	}
+
+	protected void btnTestHomebrewDL_actionPerformed() {
+		JFileChooser chooser = new JFileChooser();
+		chooser.setDialogTitle("Choose a Fake SD path to test");
+		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		int op = chooser.showOpenDialog(contentPane);
+		File sdCardDir = null;
+		File hackingDir = null;
+		if(op == JFileChooser.APPROVE_OPTION) {
+			sdCardDir = chooser.getSelectedFile();
+		}
+		chooser.setDialogTitle("Choose a Fake staging directory (hacking dir) to test");
+		op = chooser.showOpenDialog(contentPane);
+		if(op == JFileChooser.APPROVE_OPTION) {
+			hackingDir = chooser.getSelectedFile();
+		}
+		HackingPath.resolve(new FirmwareVersion("11.1.0-35E"), false);
+		if(hackingDir!=null && sdCardDir != null) {
+			HackingProcess proc = HackingProcess.getInstance(HackingStep.HOMEBREW_SOUNDHAX, hackingDir, sdCardDir);
+			List<HackingResource> resources = proc.getRequiredResources();
+			int i =0;
+			for(HackingResource res:resources) {
+				final String tag = "worker-"+i;
+				MagicWorker worker = res.getWorker(tag, this);
+				worker.addPropertyChangeListener(new PropertyChangeListener() {
+					@Override
+					public void propertyChange(PropertyChangeEvent evt) {
+						if(evt.getPropertyName().equals("real_progress")) {
+							progress_update((float) evt.getNewValue(), tag);
+						}
+					}
+				});								
+				worker.execute();
+				i++;
+			}
+		}
+		
+		
 	}
 
 	protected void btnTestDownload_actionPerformed() {

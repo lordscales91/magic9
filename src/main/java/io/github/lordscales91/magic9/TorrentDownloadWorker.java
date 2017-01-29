@@ -30,6 +30,8 @@ public class TorrentDownloadWorker extends MagicWorker implements Observer {
 
 	private Client client;
 
+	private String name;
+
 	public TorrentDownloadWorker(File torrent, File output, String tag, CallbackReceiver receiver) {
 		super(tag, receiver);
 		this.torrent = torrent;
@@ -39,12 +41,15 @@ public class TorrentDownloadWorker extends MagicWorker implements Observer {
 	@Override
 	protected String doInBackground() throws Exception {
 		SharedTorrent torr = SharedTorrent.fromFile(torrent, output);
+		if(!torr.isMultifile()) {
+			name = torr.getName();
+		}
 		prepareTrackers(torr);
 		client = new Client(InetAddress.getLocalHost(), torr);		
 		client.addObserver(this);
 		client.download();
 		client.waitForCompletion();
-		return "success";
+		return (name != null)?MagicConstants.NAME_PREFIX+name:"success";
 	}
 	
 	private void prepareTrackers(SharedTorrent torr) throws IOException {
@@ -72,7 +77,7 @@ public class TorrentDownloadWorker extends MagicWorker implements Observer {
 		}
 		torr.getAnnounceList().add(trackers);
 	}
-	
+
 	/**
 	 * Stops the torrent client
 	 */
@@ -91,7 +96,18 @@ public class TorrentDownloadWorker extends MagicWorker implements Observer {
 		Client client = (Client)o;
 		float oldProgress = progress;
 		progress = client.getTorrent().getCompletion();
-		setProgress((int) progress);
+		int iProgress = (int) progress;
+		setProgress((iProgress > 100)?100:iProgress); // deal with precision loss
 		firePropertyChange(REAL_PROGRESS, oldProgress, progress);
+	}
+	
+	@Override
+	public float getRealProgress() {
+		return progress;
+	}
+	
+	@Override
+	public boolean hasRealProgressSupport() {
+		return true;
 	}
 }

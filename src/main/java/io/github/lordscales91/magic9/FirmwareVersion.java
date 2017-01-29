@@ -22,6 +22,10 @@ public class FirmwareVersion {
 	private String model = MagicConstants.O3DS;
 	
 	public FirmwareVersion(String version) {
+		this(version, MagicConstants.O3DS);
+	}
+	
+	public FirmwareVersion(String version, String model) {
 		Matcher m = Pattern.compile(VERSION_PATT).matcher(version);
 		if(m.matches()) {
 			major = Integer.parseInt(m.group(1));
@@ -35,8 +39,11 @@ public class FirmwareVersion {
 				major = Integer.parseInt(m.group(1));
 				minor = Integer.parseInt(m.group(2));
 				patch = Integer.parseInt(m.group(3));
+			} else {
+				throw new IllegalArgumentException("invalid version: "+version);
 			}
 		}
+		this.model = model;
 	}
 
 	public FirmwareVersion(int major, int minor, int patch, int browser,

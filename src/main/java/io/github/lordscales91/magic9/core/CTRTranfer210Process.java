@@ -1,9 +1,12 @@
 package io.github.lordscales91.magic9.core;
 
+import io.github.lordscales91.magic9.ConsoleRegion;
 import io.github.lordscales91.magic9.HackingPath;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CTRTranfer210Process extends HackingProcess {
 
@@ -39,6 +42,19 @@ public class CTRTranfer210Process extends HackingProcess {
 		// At this point we started already to modify the system.
 		// So, we should continue until the end
 		return false;
+	}
+
+	@Override
+	public List<HackingResource> getRequiredResources() {
+		List<HackingResource> resources = new ArrayList<HackingResource>();
+		HackingPath hp = HackingPath.getInstance();
+		File torrentsDir = new File(hackingDir, MagicConstants.TORRENTS_DIR);
+		File out = new File(torrentsDir, MagicUtils.getCTR210ImageName(hp.getFwver())+".torrent");
+		// Default to USA region for Korean consoles
+		char letter = (ConsoleRegion.KOR.equals(hp.getFwver().getRegion()))?'U':hp.getFwver().getRegion().toLetter();
+		String url = HackingPath.URLS.getProperty(String.format("CTRImage_210%c", letter));
+		resources.add(new HackingResourceTorrent(url, out, new File(hackingDir)));
+		return resources;
 	}
 
 }

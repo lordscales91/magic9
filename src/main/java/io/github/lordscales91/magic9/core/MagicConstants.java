@@ -48,6 +48,9 @@ public class MagicConstants {
 	public static final String FBI_INJECTABLE_FOLDER = "fbi_injectable";
 	public static final String SAFEHAX_PAYLOAD = "safehaxpayload.bin";
 	public static final String TRACKERS_FILE = "data/trackers.txt";
-	
+	public static final String TORRENTS_DIR = "torrents";
+	public static final String NAME_PREFIX = "name_";
+	public static final String FBI_CIA = "FBI.cia";
+
 	private MagicConstants() {}
 }

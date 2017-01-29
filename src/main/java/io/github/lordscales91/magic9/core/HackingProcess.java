@@ -4,6 +4,7 @@ import io.github.lordscales91.magic9.HackingStep;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public abstract class HackingProcess {
 	protected String hackingDir;
@@ -47,4 +48,6 @@ public abstract class HackingProcess {
 	 * Indicates whether is safe to stop the process here or not.
 	 */
 	public abstract boolean isSafeToPause();
+	
+	public abstract List<HackingResource> getRequiredResources();
 }

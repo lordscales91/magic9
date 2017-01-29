@@ -1,6 +1,5 @@
 package io.github.lordscales91.magic9.core;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import io.github.lordscales91.magic9.FirmwareVersion;
 import io.github.lordscales91.magic9.HackingPath;
@@ -9,7 +8,6 @@ import io.github.lordscales91.magic9.HackingStep;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.io.IOUtils;
@@ -109,6 +107,18 @@ public class HackingProcessTest {
 		} catch (IOException e) {
 			fail(e.getMessage());
 		}
+	}
+	
+	@Test
+	public void testRequiredResourcesDecrypt9() {
+		// First we need to initialize the hacking path
+		FirmwareVersion ver = new FirmwareVersion("11.1.0-26E");
+		HackingPath.resolve(ver, false);
+		String hackingDir = config.getProperty("hackingdir");	
+		HackingProcess proc = HackingProcess.getInstance(HackingStep.DECRYPT9_BROWSER, hackingDir, sdcarddir);
+		assertEquals(1, proc.getRequiredResources().size());
+		HackingResource res = proc.getRequiredResources().get(0);
+		assertTrue(res instanceof HackingResourceGithub);
 	}
 
 }

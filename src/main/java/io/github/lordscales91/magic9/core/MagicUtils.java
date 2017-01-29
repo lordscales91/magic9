@@ -187,6 +187,9 @@ public class MagicUtils {
 		String model = (MagicConstants.N3DS.equals(ver.getModel()))?"n3ds":"o3ds";
 		return String.format("soundhax-%s-%s.m4a", ver.getRegion().toString().toLowerCase(), model);
 	}
+	public static String getSoundhaxURL(FirmwareVersion ver) {
+		return MagicConstants.SOUNDHAX_BASE_URL + getSoundhaxFilename(ver)+"?raw=true";
+	}
 	
 	/**
 	 * Returns the name of the CTR Image

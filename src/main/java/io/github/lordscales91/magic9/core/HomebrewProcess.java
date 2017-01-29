@@ -4,6 +4,8 @@ import io.github.lordscales91.magic9.HackingPath;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomebrewProcess extends HackingProcess {
 
@@ -17,9 +19,6 @@ public class HomebrewProcess extends HackingProcess {
 		File starterkit = new File(hackingDir, MagicConstants.STARTER_KIT_FOLDER);
 		MagicUtils.extractZipFile(new File(hackingDir, MagicConstants.STARTER_KIT_ZIP), starterkit);
 		HackingPath hp = HackingPath.getInstance();
-		if(hp==null) {
-			throw new IOException("Hacking path is not initialized");
-		}
 		// Prepare the SD
 		// Copy the contents of the starter kit to the SD root
 		MagicUtils.copyDirectory(starterkit, new File(sdCardDir));
@@ -34,6 +33,19 @@ public class HomebrewProcess extends HackingProcess {
 	@Override
 	public boolean isSafeToPause() {
 		return true;
+	}
+
+	@Override
+	public List<HackingResource> getRequiredResources() {
+		List<HackingResource> resources = new ArrayList<HackingResource>();
+		File out = new File(hackingDir, MagicConstants.STARTER_KIT_ZIP);
+		resources.add(new HackingResource(HackingPath.URLS.getProperty(MagicPropKeys.STARTER_KIT_KEY), out));
+		HackingPath hp = HackingPath.getInstance();
+		out = new File(hackingDir, MagicUtils.getSoundhaxFilename(hp.getFwver()));
+		resources.add(new HackingResource(MagicUtils.getSoundhaxURL(hp.getFwver()), out));
+		out = new File(hackingDir, MagicUtils.getOtherAppFilename(hp.getFwver()));
+		resources.add(new HackingResource(MagicUtils.getOtherAppURL(hp.getFwver()), out));
+		return resources;
 	}
 
 }

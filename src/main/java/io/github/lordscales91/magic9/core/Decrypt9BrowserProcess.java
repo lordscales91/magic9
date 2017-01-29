@@ -1,7 +1,11 @@
 package io.github.lordscales91.magic9.core;
 
+import io.github.lordscales91.magic9.HackingPath;
+
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Decrypt9BrowserProcess extends HackingProcess {
 
@@ -38,4 +42,11 @@ public class Decrypt9BrowserProcess extends HackingProcess {
 		return true;
 	}
 
+	@Override
+	public List<HackingResource> getRequiredResources() {
+		List<HackingResource> resources = new ArrayList<HackingResource>();
+		File out = new File(hackingDir, MagicConstants.DECRYPT9_ZIP);
+		resources.add(new HackingResourceGithub(HackingPath.URLS.getProperty(MagicPropKeys.DECRYPT9_KEY), out, ".zip"));
+		return resources;
+	}
 }

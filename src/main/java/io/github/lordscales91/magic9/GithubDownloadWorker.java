@@ -85,6 +85,9 @@ public class GithubDownloadWorker extends MagicWorker implements ProgressListene
 		try {
 			dlproc = client.newCall(req);
 			resp = dlproc.execute();
+			if(!resp.isSuccessful()) {
+				throw new IOException("Error Happened: "+resp.message());
+			}
 			FileUtils.copyInputStreamToFile(resp.body().byteStream(), out);
 		} finally {
 			IOUtils.closeQuietly(resp);
@@ -133,7 +136,8 @@ public class GithubDownloadWorker extends MagicWorker implements ProgressListene
 	public void update(long bytesRead, long contentLength) {
 		float oldProgress = progress;
 		progress = (bytesRead * 100.0f) / contentLength;
-		setProgress((int) progress);
+		int iProgress = (int) progress;
+		setProgress((iProgress > 100)?100:iProgress); // deal with precision loss
 		firePropertyChange(REAL_PROGRESS, oldProgress, progress);
 	}
 	
@@ -146,5 +150,15 @@ public class GithubDownloadWorker extends MagicWorker implements ProgressListene
 		if(dlproc != null) {
 			dlproc.cancel();
 		}
+	}
+	
+	@Override
+	public float getRealProgress() {
+		return progress;
+	}
+	
+	@Override
+	public boolean hasRealProgressSupport() {
+		return true;
 	}
 }
