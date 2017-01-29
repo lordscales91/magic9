@@ -67,9 +67,9 @@ public class TestFrame extends JFrame implements CallbackReceiver {
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{0, 0, 0};
-		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0};
+		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0};
 		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
 		JButton btnTestTorrent = new JButton("Test Torrent");
@@ -107,7 +107,7 @@ public class TestFrame extends JFrame implements CallbackReceiver {
 		
 		JButton btnTestDownload = new JButton("Test Download");		
 		GridBagConstraints gbc_btnTestDownload = new GridBagConstraints();
-		gbc_btnTestDownload.insets = new Insets(0, 0, 0, 5);
+		gbc_btnTestDownload.insets = new Insets(0, 0, 5, 5);
 		gbc_btnTestDownload.gridx = 0;
 		gbc_btnTestDownload.gridy = 2;
 		contentPane.add(btnTestDownload, gbc_btnTestDownload);
@@ -119,9 +119,21 @@ public class TestFrame extends JFrame implements CallbackReceiver {
 			}
 		});
 		GridBagConstraints gbc_btnTestDecryptBrowser = new GridBagConstraints();
+		gbc_btnTestDecryptBrowser.insets = new Insets(0, 0, 5, 0);
 		gbc_btnTestDecryptBrowser.gridx = 1;
 		gbc_btnTestDecryptBrowser.gridy = 2;
 		contentPane.add(btnTestDecryptBrowser, gbc_btnTestDecryptBrowser);
+		
+		JButton btnTestTorrentResource = new JButton("Test Torrent Resource");
+		btnTestTorrentResource.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				testTorrentResource();
+			}
+		});
+		GridBagConstraints gbc_btnTestTorrentResource = new GridBagConstraints();
+		gbc_btnTestTorrentResource.gridx = 1;
+		gbc_btnTestTorrentResource.gridy = 3;
+		contentPane.add(btnTestTorrentResource, gbc_btnTestTorrentResource);
 		// This is placed here just for test purposes.
 		// The final GUI will be different
 		btnTestTorrent.addActionListener(new ActionListener() {
@@ -150,6 +162,42 @@ public class TestFrame extends JFrame implements CallbackReceiver {
 				btnTestDownload_actionPerformed();
 			}
 		});
+	}
+
+	protected void testTorrentResource() {
+		JFileChooser chooser = new JFileChooser();
+		chooser.setDialogTitle("Choose a Fake SD path to test");
+		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		int op = chooser.showOpenDialog(contentPane);
+		File sdCardDir = null;
+		File hackingDir = null;
+		if(op == JFileChooser.APPROVE_OPTION) {
+			sdCardDir = chooser.getSelectedFile();
+		}
+		chooser.setDialogTitle("Choose a Fake staging directory (hacking dir) to test");
+		op = chooser.showOpenDialog(contentPane);
+		if(op == JFileChooser.APPROVE_OPTION) {
+			hackingDir = chooser.getSelectedFile();
+		}
+		HackingPath.resolve(new FirmwareVersion("11.1.0-26J"), false);
+		if(hackingDir!=null && sdCardDir != null) {
+			HackingProcess proc = HackingProcess.getInstance(HackingStep.CTRTRANSFER_210, hackingDir, sdCardDir);
+			List<HackingResource> res = proc.getRequiredResources();
+			for (HackingResource r : res) {
+				MagicWorker worker = r.getWorker(this);
+				final String tag = worker.getTag();
+				worker.addPropertyChangeListener(new PropertyChangeListener() {
+					
+					@Override
+					public void propertyChange(PropertyChangeEvent evt) {
+						if(evt.getPropertyName().equals("real_progress")) {
+							progress_update((float) evt.getNewValue(), tag);
+						}
+					}
+				});
+				worker.execute();
+			}
+		}
 	}
 
 	protected void testDecrypt9Browser() {

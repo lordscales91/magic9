@@ -39,12 +39,15 @@ public class HomebrewProcess extends HackingProcess {
 	public List<HackingResource> getRequiredResources() {
 		List<HackingResource> resources = new ArrayList<HackingResource>();
 		File out = new File(hackingDir, MagicConstants.STARTER_KIT_ZIP);
-		resources.add(new HackingResource(HackingPath.URLS.getProperty(MagicPropKeys.STARTER_KIT_KEY), out));
+		resources.add(new HackingResource(HackingPath.URLS.getProperty(MagicPropKeys.STARTER_KIT_KEY), out,
+				MagicTags.STARTER_KIT_TAG));
 		HackingPath hp = HackingPath.getInstance();
 		out = new File(hackingDir, MagicUtils.getSoundhaxFilename(hp.getFwver()));
-		resources.add(new HackingResource(MagicUtils.getSoundhaxURL(hp.getFwver()), out));
+		resources.add(new HackingResource(MagicUtils.getSoundhaxURL(hp.getFwver()), out,
+				MagicTags.SOUNDHAX_TAG));
 		out = new File(hackingDir, MagicUtils.getOtherAppFilename(hp.getFwver()));
-		resources.add(new HackingResource(MagicUtils.getOtherAppURL(hp.getFwver()), out));
+		resources.add(new HackingResource(MagicUtils.getOtherAppURL(hp.getFwver()), out,
+				MagicTags.OTHERAPP_TAG));
 		return resources;
 	}
 

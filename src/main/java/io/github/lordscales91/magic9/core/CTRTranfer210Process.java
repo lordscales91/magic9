@@ -53,7 +53,7 @@ public class CTRTranfer210Process extends HackingProcess {
 		// Default to USA region for Korean consoles
 		char letter = (ConsoleRegion.KOR.equals(hp.getFwver().getRegion()))?'U':hp.getFwver().getRegion().toLetter();
 		String url = HackingPath.URLS.getProperty(String.format("CTRImage_210%c", letter));
-		resources.add(new HackingResourceTorrent(url, out, new File(hackingDir)));
+		resources.add(new HackingResourceTorrent(url, out, MagicTags.CTRIMAGE_TAG, new File(hackingDir)));
 		return resources;
 	}
 

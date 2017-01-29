@@ -46,7 +46,8 @@ public class Decrypt9BrowserProcess extends HackingProcess {
 	public List<HackingResource> getRequiredResources() {
 		List<HackingResource> resources = new ArrayList<HackingResource>();
 		File out = new File(hackingDir, MagicConstants.DECRYPT9_ZIP);
-		resources.add(new HackingResourceGithub(HackingPath.URLS.getProperty(MagicPropKeys.DECRYPT9_KEY), out, ".zip"));
+		resources.add(new HackingResourceGithub(HackingPath.URLS.getProperty(MagicPropKeys.DECRYPT9_KEY), 
+				out, MagicTags.DECRYPT9_TAG, ".zip"));
 		return resources;
 	}
 }

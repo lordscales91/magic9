@@ -43,15 +43,19 @@ public class Decrypt9HomebrewProcess extends HackingProcess {
 	public List<HackingResource> getRequiredResources() {
 		List<HackingResource> resources = new ArrayList<HackingResource>();
 		File out = new File(hackingDir, MagicConstants.DECRYPT9_ZIP);
-		resources.add(new HackingResourceGithub(HackingPath.URLS.getProperty(MagicPropKeys.DECRYPT9_KEY), out, ".zip"));
+		resources.add(new HackingResourceGithub(HackingPath.URLS.getProperty(MagicPropKeys.DECRYPT9_KEY),
+				out, MagicTags.DECRYPT9_TAG, ".zip"));
 		File safehaxDir = new File(hackingDir, MagicConstants.SAFEHAX_FASTHAX_FOLDER);
 		out = new File(safehaxDir, "safehax.3dsx");
-		resources.add(new HackingResourceGithub(HackingPath.URLS.getProperty(MagicPropKeys.SAFEHAX_KEY), out, ".3dsx"));
+		resources.add(new HackingResourceGithub(HackingPath.URLS.getProperty(MagicPropKeys.SAFEHAX_KEY), out,
+				MagicTags.SAFEHAX_TAG, ".3dsx"));
 		out = new File(safehaxDir, "fasthax.3dsx");
-		resources.add(new HackingResourceGithub(HackingPath.URLS.getProperty(MagicPropKeys.FASTHAX_KEY), out, ".3dsx"));
+		resources.add(new HackingResourceGithub(HackingPath.URLS.getProperty(MagicPropKeys.FASTHAX_KEY), out,
+				MagicTags.FASTHAX_TAG, ".3dsx"));
 		// Iconpacks (SMDH) are not necessary, but they are very small in size and would help to find the app in the homebrew list
 		out = new File(safehaxDir, "safehax.smdh");
-		resources.add(new HackingResourceGithub(HackingPath.URLS.getProperty(MagicPropKeys.SAFEHAX_KEY), out, ".smdh"));
+		resources.add(new HackingResourceGithub(HackingPath.URLS.getProperty(MagicPropKeys.SAFEHAX_KEY), out,
+				MagicTags.SAFEHAX_ICON_TAG, ".smdh"));
 		return resources;
 	}
 

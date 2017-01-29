@@ -114,36 +114,49 @@ public class InstallARM9Process extends HackingProcess {
 	public List<HackingResource> getRequiredResources() {
 		List<HackingResource> resources = new ArrayList<HackingResource>();
 		File out = new File(hackingDir, MagicConstants.STARTER_KIT_ZIP);
-		resources.add(new HackingResource(HackingPath.URLS.getProperty(MagicPropKeys.STARTER_KIT_KEY), out));
+		resources.add(new HackingResource(HackingPath.URLS.getProperty(MagicPropKeys.STARTER_KIT_KEY), out,
+				MagicTags.STARTER_KIT_TAG));
 		out = new File(hackingDir, MagicConstants.SAFE9HLINSTALLER_7Z);
-		resources.add(new HackingResourceGithub(HackingPath.URLS.getProperty(MagicPropKeys.SAFEA9HL_KEY), out, ".7z"));
+		resources.add(new HackingResourceGithub(HackingPath.URLS.getProperty(MagicPropKeys.SAFEA9HL_KEY), out, 
+				MagicTags.SAFEA9HL_TAG, ".7z"));
 		File torrentsDir = new File(hackingDir, MagicConstants.TORRENTS_DIR);
 		out = new File(torrentsDir, MagicConstants.DATA_INPUT_ZIP+".torrent");
 		File basedir = new File(hackingDir);
-		resources.add(new HackingResourceTorrent(HackingPath.URLS.getProperty(MagicPropKeys.DATA_INPUT_KEY), out, basedir));
+		resources.add(new HackingResourceTorrent(HackingPath.URLS.getProperty(MagicPropKeys.DATA_INPUT_KEY), out, 
+				MagicTags.DATA_INPUT_TAG, basedir));
 		out = new File(hackingDir, MagicConstants.ARM9_HAX_7Z);
-		resources.add(new HackingResourceGithub(HackingPath.URLS.getProperty(MagicPropKeys.ARM9HAX_KEY), out, ".7z"));
+		resources.add(new HackingResourceGithub(HackingPath.URLS.getProperty(MagicPropKeys.ARM9HAX_KEY), out, 
+				MagicTags.ARM9HAX_TAG, ".7z"));
 		out = new File(hackingDir, MagicConstants.HBLAUNCHER_ZIP);
-		resources.add(new HackingResourceGithub(HackingPath.URLS.getProperty(MagicPropKeys.HBLAUNCHER_KEY), out, ".zip"));
+		resources.add(new HackingResourceGithub(HackingPath.URLS.getProperty(MagicPropKeys.HBLAUNCHER_KEY), out, 
+				MagicTags.HBLAUNCHER_TAG, ".zip"));
 		// Add the CIAs
 		File ciasorig = new File(hackingDir, MagicConstants.CIAS_FOLDER);
 		out = new File(ciasorig, MagicConstants.LUMA_UPDATER_CIA);
-		resources.add(new HackingResourceGithub(HackingPath.URLS.getProperty(MagicPropKeys.LUMA_UPDATER_KEY), out, ".cia"));
+		resources.add(new HackingResourceGithub(HackingPath.URLS.getProperty(MagicPropKeys.LUMA_UPDATER_KEY), out,
+				MagicTags.LUMA_UPDATER_TAG, ".cia"));
 		out = new File(ciasorig, MagicConstants.FBI_CIA);		
-		resources.add(new HackingResourceGithub(HackingPath.URLS.getProperty(MagicPropKeys.FBI_KEY), out, ".cia"));
+		resources.add(new HackingResourceGithub(HackingPath.URLS.getProperty(MagicPropKeys.FBI_KEY), out, 
+				MagicTags.FBI_TAG, ".cia"));
 		// Now the utilities
 		out = new File(hackingDir, MagicConstants.LUMA3DS_7Z);
-		resources.add(new HackingResourceGithub(HackingPath.URLS.getProperty(MagicPropKeys.LUMA3DS_KEY), out, ".7z"));
+		resources.add(new HackingResourceGithub(HackingPath.URLS.getProperty(MagicPropKeys.LUMA3DS_KEY), out, 
+				MagicTags.LUMA3DS_TAG, ".7z"));
 		out = new File(hackingDir, MagicConstants.HOURGLASS9_ZIP);
-		resources.add(new HackingResourceGithub(HackingPath.URLS.getProperty(MagicPropKeys.HOURGLASS_KEY), out, ".zip"));
+		resources.add(new HackingResourceGithub(HackingPath.URLS.getProperty(MagicPropKeys.HOURGLASS_KEY), out,
+				MagicTags.HOURGLASS9_TAG, ".zip"));
 		out = new File(hackingDir, MagicConstants.GODMODE9_ZIP);
-		resources.add(new HackingResourceGithub(HackingPath.URLS.getProperty(MagicPropKeys.GODMODE_KEY), out, ".zip"));
+		resources.add(new HackingResourceGithub(HackingPath.URLS.getProperty(MagicPropKeys.GODMODE_KEY), out,
+				MagicTags.GODMODE9_TAG, ".zip"));
 		out = new File(torrentsDir, MagicConstants.AESKEYDB_BIN+".torrent");
-		resources.add(new HackingResourceTorrent(HackingPath.URLS.getProperty(MagicPropKeys.AESKEYDB_KEY), out, basedir));
+		resources.add(new HackingResourceTorrent(HackingPath.URLS.getProperty(MagicPropKeys.AESKEYDB_KEY), out,
+				MagicTags.AESKEY_TAG, basedir));
 		out = new File(hackingDir, MagicConstants.DSPDUMP);
-		resources.add(new HackingResourceGithub(HackingPath.URLS.getProperty(MagicPropKeys.DSPDUMP_KEY), out, ".3dsx"));
+		resources.add(new HackingResourceGithub(HackingPath.URLS.getProperty(MagicPropKeys.DSPDUMP_KEY), out,
+				MagicTags.DSPDUMP_TAG, ".3dsx"));
 		out = new File(torrentsDir, MagicConstants.FBI_INJECTABLE_ZIP+".torrent");
-		resources.add(new HackingResourceTorrent(HackingPath.URLS.getProperty(MagicPropKeys.FBI_INJECTABLE_KEY), out, basedir));
+		resources.add(new HackingResourceTorrent(HackingPath.URLS.getProperty(MagicPropKeys.FBI_INJECTABLE_KEY), out,
+				MagicTags.FBI_INJECTABLE_TAG, basedir));
 		return resources;
 	}
 

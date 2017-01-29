@@ -9,12 +9,12 @@ public class HackingResourceGithub extends HackingResource {
 
 	private String assetExtension;
 
-	public HackingResourceGithub(String url, File out, String assetExtension) {
-		super(url, out);
+	public HackingResourceGithub(String url, File out, String tag, String assetExtension) {
+		super(url, out, tag);
 		this.assetExtension = assetExtension;
 	}
 	@Override
-	public MagicWorker getWorker(String tag, CallbackReceiver receiver) {
-		return new GithubDownloadWorker(getUrl(), assetExtension, getOut(), tag, receiver);
+	public MagicWorker getWorker(CallbackReceiver receiver) {
+		return new GithubDownloadWorker(getUrl(), assetExtension, getOut(), getTag(), receiver);
 	}
 }
