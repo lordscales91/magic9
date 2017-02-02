@@ -121,9 +121,10 @@ public class InstallARM9Process extends HackingProcess {
 				MagicTags.SAFEA9HL_TAG, ".7z"));
 		File torrentsDir = new File(hackingDir, MagicConstants.TORRENTS_DIR);
 		out = new File(torrentsDir, MagicConstants.DATA_INPUT_ZIP+".torrent");
+		File rename = new File(hackingDir, MagicConstants.DATA_INPUT_ZIP);
 		File basedir = new File(hackingDir);
 		resources.add(new HackingResourceTorrent(HackingPath.URLS.getProperty(MagicPropKeys.DATA_INPUT_KEY), out, 
-				MagicTags.DATA_INPUT_TAG, basedir));
+				rename, MagicTags.DATA_INPUT_TAG, basedir));
 		out = new File(hackingDir, MagicConstants.ARM9_HAX_7Z);
 		resources.add(new HackingResourceGithub(HackingPath.URLS.getProperty(MagicPropKeys.ARM9HAX_KEY), out, 
 				MagicTags.ARM9HAX_TAG, ".7z"));
@@ -149,14 +150,16 @@ public class InstallARM9Process extends HackingProcess {
 		resources.add(new HackingResourceGithub(HackingPath.URLS.getProperty(MagicPropKeys.GODMODE_KEY), out,
 				MagicTags.GODMODE9_TAG, ".zip"));
 		out = new File(torrentsDir, MagicConstants.AESKEYDB_BIN+".torrent");
+		rename = new File(hackingDir, MagicConstants.AESKEYDB_BIN);
 		resources.add(new HackingResourceTorrent(HackingPath.URLS.getProperty(MagicPropKeys.AESKEYDB_KEY), out,
-				MagicTags.AESKEY_TAG, basedir));
+				rename, MagicTags.AESKEY_TAG, basedir));
 		out = new File(hackingDir, MagicConstants.DSPDUMP);
 		resources.add(new HackingResourceGithub(HackingPath.URLS.getProperty(MagicPropKeys.DSPDUMP_KEY), out,
 				MagicTags.DSPDUMP_TAG, ".3dsx"));
 		out = new File(torrentsDir, MagicConstants.FBI_INJECTABLE_ZIP+".torrent");
+		rename = new File(hackingDir, MagicConstants.FBI_INJECTABLE_ZIP);
 		resources.add(new HackingResourceTorrent(HackingPath.URLS.getProperty(MagicPropKeys.FBI_INJECTABLE_KEY), out,
-				MagicTags.FBI_INJECTABLE_TAG, basedir));
+				rename, MagicTags.FBI_INJECTABLE_TAG, basedir));
 		return resources;
 	}
 

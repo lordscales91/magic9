@@ -18,7 +18,7 @@ public class FirmwareVersion {
 	private int minor;
 	private int patch;
 	private int browser;
-	private ConsoleRegion region;
+	private ConsoleRegion region = ConsoleRegion.OTHER;
 	private String model = MagicConstants.O3DS;
 	
 	public FirmwareVersion(String version) {
@@ -84,7 +84,7 @@ public class FirmwareVersion {
 	
 	public boolean systemVersionEqual(FirmwareVersion other, boolean considerpatch) {
 		return this.major == other.major && this.minor == other.minor &&
-				(considerpatch)?this.patch == other.patch:true;
+				((considerpatch)?this.patch == other.patch:true);
 	}
 	public boolean lte(FirmwareVersion other) {
 		return this.lte(other, false);
@@ -166,5 +166,11 @@ public class FirmwareVersion {
 
 	public void setModel(String model) {
 		this.model = model;
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("%d.%d.%d-%d%c %s", major, minor, patch,
+				browser, region.toLetter(), model);
 	}
 }

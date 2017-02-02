@@ -45,6 +45,10 @@ public class MagicWorkerHandler {
 		return restarted;
 	}
 	
+	public MagicWorker getWorker() {
+		return worker;
+	}
+
 	public String getTag() {
 		return this.worker.getTag();
 	}

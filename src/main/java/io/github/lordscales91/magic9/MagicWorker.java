@@ -4,6 +4,11 @@ import io.github.lordscales91.magic9.core.CallbackReceiver;
 
 import javax.swing.SwingWorker;
 
+/**
+ * This class extends {@link SwingWorker} to provide some extra functionality
+ * and make easier the usage as a separate class by using the {@link CallbackReceiver}
+ * @author Lordscales91
+ */
 public abstract class MagicWorker extends SwingWorker<String, String> {
 	
 	protected String tag;
@@ -22,7 +27,7 @@ public abstract class MagicWorker extends SwingWorker<String, String> {
 	public abstract void stop();
 	
 	/**
-	 * This should be used by subclasses to inform the worker has been stopped
+	 * This should be used by subclasses to inform the worker has been stopped (or at least it had tried it)
 	 */
 	protected void setStopFlag() {
 		wasStopped = true;

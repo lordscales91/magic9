@@ -92,29 +92,13 @@ public class HackingPath {
 		return INSTANCE;
 	}
 	
-	public List<HackingResource> resolveResources(String hackingDir, String sdCardDir) {
-		// Use set to avoid duplicates
-		Set<HackingResource> resourceSet = new HashSet<HackingResource>();
-		for(HackingStep step:steps) {
-			HackingProcess proc = HackingProcess.getInstance(step, hackingDir, sdCardDir);
-			if(proc == null) {
-				continue;
-			}
-			List<HackingResource> res = proc.getRequiredResources();
-			if(res != null) {
-				resourceSet.addAll(res);
-			}
-		}	
-		return new ArrayList<HackingResource>(resourceSet);
-	}
-	
 	public static HackingPath getInstance() {
 		if(INSTANCE == null) {
 			throw new IllegalStateException("HackingPath has not been initialized");
 		}
 		return INSTANCE;
 	}
-	
+
 	private HackingPath(){}
 	
 	private void init() {
@@ -214,6 +198,23 @@ public class HackingPath {
 		}
 	}
 	
+	public List<HackingResource> resolveResources(String hackingDir) {
+		// Use set to avoid duplicates
+		Set<HackingResource> resourceSet = new HashSet<HackingResource>();
+		String sdCardDir = null; // We do not need the SD to retrieve the resources
+		for(HackingStep step:steps) {
+			HackingProcess proc = HackingProcess.getInstance(step, hackingDir, sdCardDir);
+			if(proc == null) {
+				continue;
+			}
+			List<HackingResource> res = proc.getRequiredResources();
+			if(res != null) {
+				resourceSet.addAll(res);
+			}
+		}	
+		return new ArrayList<HackingResource>(resourceSet);
+	}
+
 	public boolean requiresUpdate() {
 		return steps.size() == 1 && HackingStep.REQUIRES_UPDATE.equals(steps.get(0));
 	}

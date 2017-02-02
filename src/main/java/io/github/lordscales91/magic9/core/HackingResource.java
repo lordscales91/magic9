@@ -34,6 +34,11 @@ public class HackingResource {
 	public void setTag(String tag) {
 		this.tag = tag;
 	}
+	
+	public String getSource() {
+		return "Direct DL";
+	}
+	
 	/**
 	 * Deprecated, but maybe useful for testing.
 	 * Use {@link #getWorker(CallbackReceiver)} instead

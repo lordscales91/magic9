@@ -1,6 +1,7 @@
 package io.github.lordscales91.magic9;
 
 import io.github.lordscales91.magic9.core.CallbackReceiver;
+import io.github.lordscales91.magic9.core.MagicUtils;
 import io.github.lordscales91.magic9.http.ProgressListener;
 import io.github.lordscales91.magic9.http.ProgressResponseBody;
 
@@ -13,7 +14,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 public class DownloadWorker extends MagicWorker implements ProgressListener {
@@ -53,7 +53,8 @@ public class DownloadWorker extends MagicWorker implements ProgressListener {
 			if(!resp.isSuccessful()) {
 				throw new IOException("Error Happened: "+resp.message());
 			}
-			FileUtils.copyInputStreamToFile(resp.body().byteStream(), out);
+			// FileUtils.copyInputStreamToFile(resp.body().byteStream(), out);
+			MagicUtils.saveStreamToFile(resp.body().byteStream(), out);
 		} finally {
 			IOUtils.closeQuietly(resp);
 		}		

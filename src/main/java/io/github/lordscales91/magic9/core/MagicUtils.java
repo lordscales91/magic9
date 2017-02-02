@@ -441,6 +441,12 @@ public class MagicUtils {
 	}
 
 	public static void moveFile(File src, File dst) throws IOException {
-		Files.move(src.toPath(), dst.toPath(), StandardCopyOption.REPLACE_EXISTING);
+		if(!src.getAbsolutePath().equals(dst.getAbsolutePath())) {
+			Files.move(src.toPath(), dst.toPath(), StandardCopyOption.REPLACE_EXISTING);
+		}		
+	}
+	
+	public static void saveStreamToFile(InputStream in, File out) throws IOException {
+		FileUtils.copyInputStreamToFile(in, out);
 	}
 }

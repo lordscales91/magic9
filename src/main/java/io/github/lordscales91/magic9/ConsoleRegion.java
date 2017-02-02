@@ -22,10 +22,26 @@ public enum ConsoleRegion {
 	}
 	
 	public char toLetter() {
-		if(this.name().equals(OTHER.name())) {
+		if(OTHER.equals(this)) {
 			return 'X';
 		} else {
 			return this.name().charAt(0);
 		}
+	}
+	/**
+	 * Returns a human-readable name for this region.
+	 */
+	public String displayName() {
+		String name = "Unknown";
+		if(EUR.equals(this)) {
+			name = "Europe";
+		} else if(JPN.equals(this)) {
+			name = "Japan";
+		} else if(USA.equals(this)) {
+			name = "USA";
+		} else if(KOR.equals(this)) {
+			name = "Korea";
+		}
+		return name;
 	}
 }

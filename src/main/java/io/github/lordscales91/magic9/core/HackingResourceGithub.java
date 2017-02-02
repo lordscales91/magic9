@@ -13,6 +13,12 @@ public class HackingResourceGithub extends HackingResource {
 		super(url, out, tag);
 		this.assetExtension = assetExtension;
 	}
+
+	@Override
+	public String getSource() {
+		return "Github";
+	}
+	
 	@Override
 	public MagicWorker getWorker(CallbackReceiver receiver) {
 		return new GithubDownloadWorker(getUrl(), assetExtension, getOut(), getTag(), receiver);

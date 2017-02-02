@@ -8,6 +8,7 @@ import java.io.File;
 public class HackingResourceTorrent extends HackingResource {
 
 	private File outdir;
+	private File rename;
 
 	/**
 	 * Constructs a resource to download a torrent file to the specified destination.
@@ -16,12 +17,19 @@ public class HackingResourceTorrent extends HackingResource {
 	 * @param tag The tag to associate to the worker
 	 * @param outdir Where to download the torrent's content (associated files)
 	 */
-	public HackingResourceTorrent(String url, File out, String tag, File outdir) {
+	public HackingResourceTorrent(String url, File out, File rename, String tag, File outdir) {
 		super(url, out, tag);
 		if(!outdir.exists()) {
 			outdir.mkdirs();
 		}
+		this.rename = rename;
 		this.outdir = outdir;
+	}
+	
+	
+	@Override
+	public String getSource() {
+		return "Torrent";
 	}
 	
 	/**
@@ -33,7 +41,7 @@ public class HackingResourceTorrent extends HackingResource {
 	 */
 	@Override
 	public MagicWorker getWorker(CallbackReceiver receiver) {
-		return new TorrentDownloadWorker(getUrl(), getOut(), outdir, getTag(), receiver);
+		return new TorrentDownloadWorker(getUrl(), getOut(), outdir, rename, getTag(), receiver);
 	}
 
 }

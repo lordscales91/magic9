@@ -22,6 +22,7 @@ public class MagicPropKeys {
 	public static final String AESKEYDB_KEY = "aeskeydb";
 	public static final String DSPDUMP_KEY = "dspdump";
 	public static final String DECRYPT9_KEY = "Decrypt9";
+	public static final String $3DS_GUIDE = "TDS_GUIDE";
 
 	private MagicPropKeys(){}
 	

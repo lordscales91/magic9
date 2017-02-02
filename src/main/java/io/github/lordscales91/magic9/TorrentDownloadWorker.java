@@ -2,6 +2,7 @@ package io.github.lordscales91.magic9;
 
 import io.github.lordscales91.magic9.core.CallbackReceiver;
 import io.github.lordscales91.magic9.core.MagicConstants;
+import io.github.lordscales91.magic9.core.MagicUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -20,7 +21,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 import com.turn.ttorrent.client.Client;
@@ -31,26 +31,40 @@ public class TorrentDownloadWorker extends MagicWorker implements Observer {
 	public static final String REAL_PROGRESS = "real_progress";
 
 	private File torrent;
-	private File output;
+	private File basedir;
 	private float progress;
 	private Client client;
-	private String name;
+	private File out;
 	private String url;
-
 	private Call getTorrent;
 
 	@Deprecated
 	public TorrentDownloadWorker(File torrent, File output, String tag,
 			CallbackReceiver receiver) {
-		this(null, torrent, output, tag, receiver);
+		this(null, torrent, output, null, tag, receiver);
 	}
-
-	public TorrentDownloadWorker(String url, File torrent, File output,
-			String tag, CallbackReceiver receiver) {
+	/**
+	 * Standard constructor
+	 * @param url The url to retrieve the torrent file
+	 * @param torrent where to save the downloaded torrent
+	 * @param basedir base directory to download the torrent resource 
+	 * @param out final name of the resource
+	 */
+	public TorrentDownloadWorker(String url, File torrent, File basedir,
+			File out, String tag, CallbackReceiver receiver) {
 		super(tag, receiver);
 		this.torrent = torrent;
-		this.output = output;
+		this.basedir = basedir;
+		this.out = out;
 		this.url = url;
+	}
+	
+	/**
+	 * Constructor copy
+	 * @param other The other worker to
+	 */
+	public TorrentDownloadWorker(TorrentDownloadWorker other) {
+		this(other.url, other.torrent, other.basedir, other.out, other.tag, other.receiver);		
 	}
 
 	@Override
@@ -59,7 +73,8 @@ public class TorrentDownloadWorker extends MagicWorker implements Observer {
 			// Retrieve the torrent from the URL
 			retrieveTorrent();
 		}
-		SharedTorrent torr = SharedTorrent.fromFile(torrent, output);
+		SharedTorrent torr = SharedTorrent.fromFile(torrent, basedir);
+		String name = null;
 		if (!torr.isMultifile()) {
 			name = torr.getName();
 		}
@@ -68,7 +83,11 @@ public class TorrentDownloadWorker extends MagicWorker implements Observer {
 		client.addObserver(this);
 		client.download();
 		client.waitForCompletion();
-		return (name != null) ? MagicConstants.NAME_PREFIX + name : "success";
+		if(name != null) {
+			File src = new File(basedir, name);
+			MagicUtils.moveFile(src, out);
+		}		
+		return "success";
 	}
 
 	private void retrieveTorrent() throws IOException {
@@ -80,7 +99,8 @@ public class TorrentDownloadWorker extends MagicWorker implements Observer {
 			throw new IOException("Couldn't retrieve the torrent file at: "
 					+ url);
 		}
-		FileUtils.copyInputStreamToFile(resp.body().byteStream(), torrent);
+		// FileUtils.copyInputStreamToFile(resp.body().byteStream(), torrent);
+		MagicUtils.saveStreamToFile(resp.body().byteStream(), torrent);
 	}
 
 	private void prepareTrackers(SharedTorrent torr) throws IOException {
