@@ -1,6 +1,7 @@
 package io.github.lordscales91.magic9;
 
 import io.github.lordscales91.magic9.core.MagicPropKeys;
+import io.github.lordscales91.magic9.widget.LinkLabel;
 
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -15,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.FlowLayout;

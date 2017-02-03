@@ -1,7 +1,7 @@
 package io.github.lordscales91.magic9.core;
 
-import io.github.lordscales91.magic9.ConsoleRegion;
-import io.github.lordscales91.magic9.FirmwareVersion;
+import io.github.lordscales91.magic9.domain.ConsoleRegion;
+import io.github.lordscales91.magic9.domain.FirmwareVersion;
 
 import java.io.File;
 import java.io.FileFilter;

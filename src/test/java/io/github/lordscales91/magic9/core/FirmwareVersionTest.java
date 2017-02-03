@@ -1,7 +1,7 @@
 package io.github.lordscales91.magic9.core;
 
 import static org.junit.Assert.*;
-import io.github.lordscales91.magic9.FirmwareVersion;
+import io.github.lordscales91.magic9.domain.FirmwareVersion;
 
 import org.junit.Before;
 import org.junit.Test;

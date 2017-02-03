@@ -7,7 +7,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-import io.github.lordscales91.magic9.FirmwareVersion;
+import io.github.lordscales91.magic9.domain.FirmwareVersion;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.BeforeClass;

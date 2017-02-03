@@ -1,7 +1,7 @@
 package io.github.lordscales91.magic9.core;
 
-import io.github.lordscales91.magic9.ConsoleRegion;
 import io.github.lordscales91.magic9.HackingPath;
+import io.github.lordscales91.magic9.domain.ConsoleRegion;
 
 import java.io.File;
 import java.io.IOException;

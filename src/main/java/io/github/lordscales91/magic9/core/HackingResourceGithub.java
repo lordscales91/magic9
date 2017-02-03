@@ -1,7 +1,7 @@
 package io.github.lordscales91.magic9.core;
 
-import io.github.lordscales91.magic9.GithubDownloadWorker;
-import io.github.lordscales91.magic9.MagicWorker;
+import io.github.lordscales91.magic9.workers.GithubDownloadWorker;
+import io.github.lordscales91.magic9.workers.MagicWorker;
 
 import java.io.File;
 

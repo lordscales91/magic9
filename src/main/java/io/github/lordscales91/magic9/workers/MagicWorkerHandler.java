@@ -1,4 +1,5 @@
-package io.github.lordscales91.magic9;
+package io.github.lordscales91.magic9.workers;
+
 
 public class MagicWorkerHandler {
 	public static final long DEFAULT_WAIT_TIME = 30000; 

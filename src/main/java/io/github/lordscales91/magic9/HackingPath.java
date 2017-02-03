@@ -3,6 +3,9 @@ package io.github.lordscales91.magic9;
 import io.github.lordscales91.magic9.core.HackingProcess;
 import io.github.lordscales91.magic9.core.HackingResource;
 import io.github.lordscales91.magic9.core.MagicConstants;
+import io.github.lordscales91.magic9.domain.ConsoleRegion;
+import io.github.lordscales91.magic9.domain.FirmwareVersion;
+import io.github.lordscales91.magic9.domain.HackingStep;
 
 import java.io.FileReader;
 import java.util.ArrayList;

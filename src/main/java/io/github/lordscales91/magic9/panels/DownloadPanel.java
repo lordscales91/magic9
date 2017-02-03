@@ -1,8 +1,16 @@
-package io.github.lordscales91.magic9;
+package io.github.lordscales91.magic9.panels;
 
+import io.github.lordscales91.magic9.HackingPath;
+import io.github.lordscales91.magic9.MagicActions;
 import io.github.lordscales91.magic9.core.CallbackReceiver;
 import io.github.lordscales91.magic9.core.HackingResource;
 import io.github.lordscales91.magic9.core.MagicPropKeys;
+import io.github.lordscales91.magic9.widget.LinkLabel;
+import io.github.lordscales91.magic9.widget.ProgressCellRender;
+import io.github.lordscales91.magic9.widget.UpdatableModel;
+import io.github.lordscales91.magic9.workers.MagicWorker;
+import io.github.lordscales91.magic9.workers.MagicWorkerHandler;
+import io.github.lordscales91.magic9.workers.TorrentDownloadWorker;
 
 import java.awt.FlowLayout;
 import java.awt.Font;

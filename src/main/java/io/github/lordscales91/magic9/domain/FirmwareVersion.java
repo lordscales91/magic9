@@ -1,4 +1,4 @@
-package io.github.lordscales91.magic9;
+package io.github.lordscales91.magic9.domain;
 
 import io.github.lordscales91.magic9.core.MagicConstants;
 

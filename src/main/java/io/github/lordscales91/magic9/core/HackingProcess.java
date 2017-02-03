@@ -1,6 +1,6 @@
 package io.github.lordscales91.magic9.core;
 
-import io.github.lordscales91.magic9.HackingStep;
+import io.github.lordscales91.magic9.domain.HackingStep;
 
 import java.io.File;
 import java.io.IOException;

@@ -4,6 +4,13 @@ import io.github.lordscales91.magic9.core.CallbackReceiver;
 import io.github.lordscales91.magic9.core.HackingProcess;
 import io.github.lordscales91.magic9.core.HackingResource;
 import io.github.lordscales91.magic9.core.MagicConstants;
+import io.github.lordscales91.magic9.domain.FirmwareVersion;
+import io.github.lordscales91.magic9.domain.HackingStep;
+import io.github.lordscales91.magic9.workers.DownloadWorker;
+import io.github.lordscales91.magic9.workers.GithubDownloadWorker;
+import io.github.lordscales91.magic9.workers.MagicWorker;
+import io.github.lordscales91.magic9.workers.MagicWorkerHandler;
+import io.github.lordscales91.magic9.workers.TorrentDownloadWorker;
 
 import java.awt.Color;
 import java.awt.EventQueue;

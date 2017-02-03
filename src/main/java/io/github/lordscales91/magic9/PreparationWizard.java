@@ -1,6 +1,12 @@
 package io.github.lordscales91.magic9;
 
 import io.github.lordscales91.magic9.core.CallbackReceiver;
+import io.github.lordscales91.magic9.domain.ConsoleRegion;
+import io.github.lordscales91.magic9.domain.FirmwareVersion;
+import io.github.lordscales91.magic9.panels.DownloadPanel;
+import io.github.lordscales91.magic9.panels.SelectFirmwarePanel;
+import io.github.lordscales91.magic9.panels.SelectModelPanel;
+import io.github.lordscales91.magic9.panels.SelectRegionPanel;
 
 import java.awt.EventQueue;
 import java.awt.GridBagLayout;

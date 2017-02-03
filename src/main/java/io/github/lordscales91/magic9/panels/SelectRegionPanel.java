@@ -1,6 +1,8 @@
-package io.github.lordscales91.magic9;
+package io.github.lordscales91.magic9.panels;
 
+import io.github.lordscales91.magic9.MagicActions;
 import io.github.lordscales91.magic9.core.CallbackReceiver;
+import io.github.lordscales91.magic9.domain.ConsoleRegion;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;

@@ -1,4 +1,4 @@
-package io.github.lordscales91.magic9;
+package io.github.lordscales91.magic9.domain;
 
 public enum HackingStep {
 	DECRYPT9_BROWSER, DECRYPT9_MSET, DECRYPT9_HOMEBREW, HOMEBREW_SOUNDHAX,
