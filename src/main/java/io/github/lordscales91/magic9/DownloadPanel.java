@@ -2,6 +2,7 @@ package io.github.lordscales91.magic9;
 
 import io.github.lordscales91.magic9.core.CallbackReceiver;
 import io.github.lordscales91.magic9.core.HackingResource;
+import io.github.lordscales91.magic9.core.MagicPropKeys;
 
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -26,13 +27,16 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+
 @SuppressWarnings("serial")
 public class DownloadPanel extends JPanel implements CallbackReceiver {
 	
 	private CallbackReceiver caller;
 	private JLabel lblDownloadRequiredResources;
 	private JLabel lblThisToolsNeeds;
-	private JLabel lblPleaseSelectA;
+	private JLabel lblMessage;
 	private JPanel panel;
 	private JLabel lblStagingDirectory;
 	private JTextField txtHackingDir;
@@ -48,6 +52,9 @@ public class DownloadPanel extends JPanel implements CallbackReceiver {
 	private int downloadsCompleted;
 	private Thread statusTracker;
 	private boolean stopTracking;
+	private LinkLabel lblUpdateLink;
+	private JPanel panel_2;
+	private JLabel lblLatestHackableFirmware;
 
 	public DownloadPanel(CallbackReceiver caller) {
 		this();
@@ -58,11 +65,17 @@ public class DownloadPanel extends JPanel implements CallbackReceiver {
 	 * Create the panel.
 	 */
 	public DownloadPanel() {
+		addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentShown(ComponentEvent e) {
+				this_componentShown(e);
+			}
+		});
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0};
+		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
 		gridBagLayout.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
 		lblDownloadRequiredResources = new JLabel("Download Required Resources");
@@ -81,20 +94,37 @@ public class DownloadPanel extends JPanel implements CallbackReceiver {
 		gbc_lblThisToolsNeeds.gridy = 1;
 		add(lblThisToolsNeeds, gbc_lblThisToolsNeeds);
 		
-		lblPleaseSelectA = new JLabel("Please select a download directory below:");
-		lblPleaseSelectA.setFont(new Font("Arial", Font.PLAIN, 12));
-		GridBagConstraints gbc_lblPleaseSelectA = new GridBagConstraints();
-		gbc_lblPleaseSelectA.insets = new Insets(0, 0, 5, 0);
-		gbc_lblPleaseSelectA.gridx = 0;
-		gbc_lblPleaseSelectA.gridy = 2;
-		add(lblPleaseSelectA, gbc_lblPleaseSelectA);
+		lblMessage = new JLabel("Please select a download directory below:");
+		lblMessage.setFont(new Font("Arial", Font.PLAIN, 12));
+		GridBagConstraints gbc_lblMessage = new GridBagConstraints();
+		gbc_lblMessage.insets = new Insets(0, 0, 5, 0);
+		gbc_lblMessage.gridx = 0;
+		gbc_lblMessage.gridy = 2;
+		add(lblMessage, gbc_lblMessage);
+		
+		panel_2 = new JPanel();
+		GridBagConstraints gbc_panel_2 = new GridBagConstraints();
+		gbc_panel_2.insets = new Insets(0, 0, 5, 0);
+		gbc_panel_2.fill = GridBagConstraints.BOTH;
+		gbc_panel_2.gridx = 0;
+		gbc_panel_2.gridy = 3;
+		add(panel_2, gbc_panel_2);
+		
+		lblLatestHackableFirmware = new JLabel("Latest hackable firmware is 11.2.0. You can check the updates ");
+		lblLatestHackableFirmware.setFont(new Font("Arial", Font.BOLD, 12));
+		lblLatestHackableFirmware.setVisible(false);
+		panel_2.add(lblLatestHackableFirmware);
+		lblUpdateLink = new LinkLabel(HackingPath.URLS.getProperty(MagicPropKeys.TDS_UPDATES_USA), "here");
+		lblUpdateLink.setFont(new Font("Arial", Font.BOLD, 12));
+		lblUpdateLink.setVisible(false);
+		panel_2.add(lblUpdateLink);
 		
 		panel = new JPanel();
 		GridBagConstraints gbc_panel = new GridBagConstraints();
 		gbc_panel.insets = new Insets(0, 0, 5, 0);
 		gbc_panel.fill = GridBagConstraints.BOTH;
 		gbc_panel.gridx = 0;
-		gbc_panel.gridy = 3;
+		gbc_panel.gridy = 4;
 		add(panel, gbc_panel);
 		
 		lblStagingDirectory = new JLabel("Staging directory:");
@@ -120,7 +150,7 @@ public class DownloadPanel extends JPanel implements CallbackReceiver {
 		gbc_panel_1.fill = GridBagConstraints.BOTH;
 		gbc_panel_1.insets = new Insets(0, 0, 5, 0);
 		gbc_panel_1.gridx = 0;
-		gbc_panel_1.gridy = 4;
+		gbc_panel_1.gridy = 5;
 		add(panel_1, gbc_panel_1);
 		panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
@@ -146,7 +176,7 @@ public class DownloadPanel extends JPanel implements CallbackReceiver {
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 0;
-		gbc_scrollPane.gridy = 5;
+		gbc_scrollPane.gridy = 6;
 		add(scrollPane, gbc_scrollPane);
 		
 		tblDownloads = new JTable();
@@ -267,8 +297,22 @@ public class DownloadPanel extends JPanel implements CallbackReceiver {
 	}
 
 	protected void btnPrepare_actionPerformed(ActionEvent e) {
-		fillTable();
-		btnStartDownloads.setEnabled(true);
+		if(!HackingPath.getInstance().requiresUpdate()) {
+			fillTable();
+			btnStartDownloads.setEnabled(true);
+		}
+		
+	}
+
+	protected void this_componentShown(ComponentEvent e) {
+		if(HackingPath.getInstance().requiresUpdate()) {
+			lblMessage.setText("Oops! It seems that you need update your system");
+			lblMessage.setFont(new Font("Arial", Font.BOLD, 12));
+			lblLatestHackableFirmware.setVisible(true);
+			lblUpdateLink.init();
+			lblUpdateLink.setVisible(true);
+			btnSelectStagingDir.setEnabled(false);
+		}
 	}
 
 	@Override

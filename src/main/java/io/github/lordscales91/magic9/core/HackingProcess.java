@@ -22,6 +22,8 @@ public abstract class HackingProcess {
 			return new HomebrewProcess(hackingDir, sdCardDir);
 		} else if(HackingStep.DECRYPT9_HOMEBREW.equals(step)) {
 			return new Decrypt9HomebrewProcess(hackingDir, sdCardDir);
+		} else if(HackingStep.DECRYPT9_MSET.equals(step)) {
+			return new Decrypt9MSETProcess(hackingDir, sdCardDir);
 		} else if(HackingStep.CTRTRANSFER_210.equals(step)) {
 			return new CTRTranfer210Process(hackingDir, sdCardDir);
 		} else if(HackingStep.INSTALL_ARM9LOADERHAX.equals(step)) {

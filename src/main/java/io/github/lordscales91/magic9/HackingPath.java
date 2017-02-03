@@ -102,6 +102,7 @@ public class HackingPath {
 	private HackingPath(){}
 	
 	private void init() {
+		steps = new ArrayList<HackingStep>();
 		if(MagicConstants.O3DS.equals(this.fwver.getModel())) {
 			int range = -1;
 			for(int i=0;i<O3DS_RANGES.length;i++) {

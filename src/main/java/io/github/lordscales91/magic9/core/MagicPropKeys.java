@@ -23,6 +23,7 @@ public class MagicPropKeys {
 	public static final String DSPDUMP_KEY = "dspdump";
 	public static final String DECRYPT9_KEY = "Decrypt9";
 	public static final String $3DS_GUIDE = "TDS_GUIDE";
+	public static final String TDS_UPDATES_USA = "TDS_VERSION_HISTORY_USA";
 
 	private MagicPropKeys(){}
 	

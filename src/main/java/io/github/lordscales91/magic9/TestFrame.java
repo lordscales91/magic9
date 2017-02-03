@@ -5,6 +5,7 @@ import io.github.lordscales91.magic9.core.HackingProcess;
 import io.github.lordscales91.magic9.core.HackingResource;
 import io.github.lordscales91.magic9.core.MagicConstants;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -25,7 +26,13 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.MatteBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+import java.awt.SystemColor;
+import java.awt.Font;
 
 @SuppressWarnings("serial")
 public class TestFrame extends JFrame implements CallbackReceiver {
@@ -39,6 +46,7 @@ public class TestFrame extends JFrame implements CallbackReceiver {
 	private File torrent;
 	private boolean stop;
 	private Thread monitor;
+	private JTextField txtInvisibleTextField;
 
 	/**
 	 * Launch the application.
@@ -67,9 +75,9 @@ public class TestFrame extends JFrame implements CallbackReceiver {
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{0, 0, 0};
-		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0};
-		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
+		gbl_contentPane.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
 		JButton btnTestTorrent = new JButton("Test Torrent");
@@ -131,9 +139,33 @@ public class TestFrame extends JFrame implements CallbackReceiver {
 			}
 		});
 		GridBagConstraints gbc_btnTestTorrentResource = new GridBagConstraints();
+		gbc_btnTestTorrentResource.insets = new Insets(0, 0, 5, 0);
 		gbc_btnTestTorrentResource.gridx = 1;
 		gbc_btnTestTorrentResource.gridy = 3;
 		contentPane.add(btnTestTorrentResource, gbc_btnTestTorrentResource);
+		
+		txtInvisibleTextField = new JTextField();
+		txtInvisibleTextField.setText("Invisible text field");
+		txtInvisibleTextField.setEditable(false);
+		txtInvisibleTextField.setBorder(new MatteBorder(0, 0, 0, 0, new Color(240, 240, 240)));
+		GridBagConstraints gbc_txtInvisibleTextField = new GridBagConstraints();
+		gbc_txtInvisibleTextField.insets = new Insets(0, 0, 0, 5);
+		gbc_txtInvisibleTextField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtInvisibleTextField.gridx = 0;
+		gbc_txtInvisibleTextField.gridy = 4;
+		contentPane.add(txtInvisibleTextField, gbc_txtInvisibleTextField);
+		txtInvisibleTextField.setColumns(10);
+		
+		JTextArea txtrAsasasasaAsasasasas = new JTextArea();
+		txtrAsasasasaAsasasasas.setFont(new Font("Arial", Font.PLAIN, 12));
+		txtrAsasasasaAsasasasas.setText("asasasasa\r\nasasasasas\r\nInvisible Textarea. Yeah! (^_^)");
+		txtrAsasasasaAsasasasas.setBackground(SystemColor.control);
+		txtrAsasasasaAsasasasas.setEditable(false);
+		GridBagConstraints gbc_txtrAsasasasaAsasasasas = new GridBagConstraints();
+		gbc_txtrAsasasasaAsasasasas.fill = GridBagConstraints.BOTH;
+		gbc_txtrAsasasasaAsasasasas.gridx = 1;
+		gbc_txtrAsasasasaAsasasasas.gridy = 4;
+		contentPane.add(txtrAsasasasaAsasasasas, gbc_txtrAsasasasaAsasasasas);
 		// This is placed here just for test purposes.
 		// The final GUI will be different
 		btnTestTorrent.addActionListener(new ActionListener() {

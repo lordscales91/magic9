@@ -51,6 +51,7 @@ public class MagicConstants {
 	public static final String TORRENTS_DIR = "torrents";
 	public static final String NAME_PREFIX = "name_";
 	public static final String FBI_CIA = "FBI.cia";
+	public static final String DECRYPT9_NDS = "Decrypt9.nds";
 
 	private MagicConstants() {}
 }

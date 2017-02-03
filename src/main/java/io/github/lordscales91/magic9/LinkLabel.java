@@ -90,6 +90,10 @@ public class LinkLabel
 		}		
 	}
 
+	public LinkLabel(String url) {
+		this(url, url);
+	}
+
 	/* Set the active color for this link (default is purple). */
     public void setActiveColor(Color active) {
         activeColor = active;

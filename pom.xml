@@ -3,8 +3,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.lordscales91</groupId>
 	<artifactId>magic9</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>Magic9</name>
+	<version>0.1-pre-alpha</version>
+	<name>Magic9 Tool</name>
 	<description>A GUI Tool for preparing an SD card for the installation of arm9loaderhax (3DS Exploit) on each step.</description>
 
 	<properties>
@@ -56,6 +56,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>${project.name}-${project.version}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -68,7 +69,34 @@
 							<goal>copy-dependencies</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${project.build.directory}/lib</outputDirectory>
+							<outputDirectory>${project.build.directory}/${project.name}/lib</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.0.1</version>
+				<executions>
+					<execution>
+						<id>copy-data</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/${project.name}/data</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/data</directory>
+									<includes>
+										<include>trackers.txt</include>
+										<include>urls.properties</include>
+										<include>images/**</include>
+									</includes>
+								</resource>
+							</resources>
 						</configuration>
 					</execution>
 				</executions>
@@ -78,6 +106,7 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>3.0.2</version>
 				<configuration>
+					<outputDirectory>${project.build.directory}/${project.name}</outputDirectory>
 					<archive>
 						<manifest>
 							<classpathPrefix>lib</classpathPrefix>
@@ -85,6 +114,26 @@
 							<mainClass>io.github.lordscales91.magic9.MainFrame</mainClass>
 						</manifest>
 					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<id>make-assembly</id> <!-- this is used for inheritance merges -->
+						<phase>package</phase> <!-- bind to the packaging phase -->
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<appendAssemblyId>false</appendAssemblyId>
+					<descriptors>
+						<descriptor>${basedir}/src/assembly/release.xml</descriptor>
+					</descriptors>
 				</configuration>
 			</plugin>
 			<plugin>

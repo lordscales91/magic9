@@ -3,7 +3,7 @@ Magic9 GUI Tool
 Pre-Alpha
 ---
 
-This is still a WIP on an very early stage, not even an alpha, but close enough. At this point the software is already runnable (but Maven's POM still needs to be updated to copy the required resources) and is capable of determine the required resources and download them. A Table has been used to show the download progress of each file.
+This is still a WIP on an very early stage, not even an alpha, but close enough. At this point the software is already runnable and is capable of determine the required resources and download them. A Table has been used to show the download progress of each file.
 
 What can this software do right now?
 ---
@@ -11,7 +11,7 @@ Determine the required resources to hack the device and download them to the spe
 
 Which features have been already implemented (regardless of GUI visibility)?
 ---
-* SD card preparation for each step (except for Decrypt9's MSET hax version).
+* SD card preparation for each step.
 * CRC Checksum to ensure the files have been correctly extracted/copied to the SD.
 * Automatic download of required resources.
 
