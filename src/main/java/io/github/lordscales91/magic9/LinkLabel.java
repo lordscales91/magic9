@@ -93,6 +93,14 @@ public class LinkLabel
 	public LinkLabel(String url) {
 		this(url, url);
 	}
+	
+	/**
+	 * A No-Args constructor is required to let Eclipse render this
+	 * component properly.
+	 */
+	public LinkLabel() {
+		super("Placeholder");
+	}
 
 	/* Set the active color for this link (default is purple). */
     public void setActiveColor(Color active) {

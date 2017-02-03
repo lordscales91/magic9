@@ -103,6 +103,8 @@ public class DownloadPanel extends JPanel implements CallbackReceiver {
 		add(lblMessage, gbc_lblMessage);
 		
 		panel_2 = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) panel_2.getLayout();
+		flowLayout.setHgap(0);
 		GridBagConstraints gbc_panel_2 = new GridBagConstraints();
 		gbc_panel_2.insets = new Insets(0, 0, 5, 0);
 		gbc_panel_2.fill = GridBagConstraints.BOTH;
