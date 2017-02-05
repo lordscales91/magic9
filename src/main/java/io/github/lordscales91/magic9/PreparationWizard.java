@@ -1,12 +1,14 @@
 package io.github.lordscales91.magic9;
 
 import io.github.lordscales91.magic9.core.CallbackReceiver;
+import io.github.lordscales91.magic9.domain.ConsoleModel;
 import io.github.lordscales91.magic9.domain.ConsoleRegion;
 import io.github.lordscales91.magic9.domain.FirmwareVersion;
 import io.github.lordscales91.magic9.panels.DownloadPanel;
 import io.github.lordscales91.magic9.panels.SelectFirmwarePanel;
 import io.github.lordscales91.magic9.panels.SelectModelPanel;
 import io.github.lordscales91.magic9.panels.SelectRegionPanel;
+import io.github.lordscales91.magic9.panels.SelectSDPanel;
 
 import java.awt.EventQueue;
 import java.awt.GridBagLayout;
@@ -32,8 +34,9 @@ public class PreparationWizard extends JFrame implements CallbackReceiver {
 	private static final String SELECT_REGION = "SelectRegionPane";	
 	private static final String SELECT_FIRMWARE = "SelectFirmwarePane";
 	private static final String DOWNLOAD_PANEL = "DownloadPane";
+	private static final String SELECT_SD = "SelectSDPane";
 	private static final String[] PANELS = new String[]{SELECT_MODEL, SELECT_REGION,
-								SELECT_FIRMWARE, DOWNLOAD_PANEL};
+								SELECT_FIRMWARE, SELECT_SD, DOWNLOAD_PANEL};
 	
 	private JPanel contentPane;
 	private JPanel cards;
@@ -95,6 +98,7 @@ public class PreparationWizard extends JFrame implements CallbackReceiver {
 		cards.add(selectFw, SELECT_FIRMWARE);
 		DownloadPanel dlpanel = new DownloadPanel(this);
 		cards.add(dlpanel, DOWNLOAD_PANEL);
+		cards.add(new SelectSDPanel(this), SELECT_SD);
 		
 		navigation = new JPanel();
 		GridBagConstraints gbc_navigation = new GridBagConstraints();
@@ -186,21 +190,28 @@ public class PreparationWizard extends JFrame implements CallbackReceiver {
 			} else if(MagicActions.REGION_SELECTED.equals(tag)) {
 				this.region = (char) data;
 			} else if(MagicActions.FIRMWARE_SELECTED.equals(tag)) {
-				// Receive the firmware
-				FirmwareVersion fw = (FirmwareVersion) data;
-				// Fill the missing data
-				fw.setModel(model);
-				fw.setRegion(ConsoleRegion.fromFirmware(region));
-				// Init the hacking path already
-				boolean cartUpdated = wasUpdated();
-				HackingPath.resolve(fw, cartUpdated);
+				if(MagicActions.FIRMWARE_CHANGED.equals(data)) {
+					// User touched the combo boxes
+					btnNext.setEnabled(false);
+				} else {
+					// Receive the firmware
+					FirmwareVersion fw = (FirmwareVersion) data;
+					// Fill the missing data
+					fw.setModel(ConsoleModel.fromModelType(model));
+					fw.setRegion(ConsoleRegion.fromFirmware(region));
+					// Init the hacking path already
+					boolean cartUpdated = wasUpdated();
+					HackingPath.resolve(fw, cartUpdated);
+				}
 			} else if(MagicActions.DOWNLOADS_STATUS_CHANGED.equals(tag)) {
 				if(MagicActions.DOWNLOADS_STARTED.equals(data)) {
 					btnNext.setEnabled(false);
 					btnPrevious.setEnabled(false);
-				} else if(MagicActions.DOWNLOADS_FINISHED.equals(data)) {					
+				} else if(MagicActions.DOWNLOADS_FINISHED.equals(data)) {
 					btnNext.setEnabled(true);
 				}
+			} else if(MagicActions.SD_CARD_SELECTED.equals(tag)) {
+				btnNext.setEnabled(true);
 			}
 		}
 	}

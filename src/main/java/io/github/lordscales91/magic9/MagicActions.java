@@ -14,5 +14,8 @@ public class MagicActions {
 	public static final String DOWNLOADS_STATUS_CHANGED = "Download Status";
 	public static final String DOWNLOADS_STARTED = "Download Started";
 	public static final String DOWNLOADS_FINISHED = "Download Finished";
+	public static final String FILE_SELECTED = "File Selected";
+	public static final String SD_CARD_SELECTED = "SD Selected";
+	public static final String FIRMWARE_CHANGED = "Firmware Changed";
 
 }

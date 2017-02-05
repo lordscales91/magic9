@@ -2,7 +2,6 @@ package io.github.lordscales91.magic9;
 
 import io.github.lordscales91.magic9.core.HackingProcess;
 import io.github.lordscales91.magic9.core.HackingResource;
-import io.github.lordscales91.magic9.core.MagicConstants;
 import io.github.lordscales91.magic9.domain.ConsoleRegion;
 import io.github.lordscales91.magic9.domain.FirmwareVersion;
 import io.github.lordscales91.magic9.domain.HackingStep;
@@ -77,10 +76,12 @@ public class HackingPath {
 		return props;
 	}
 	
-	private List<HackingStep> steps = new ArrayList<HackingStep>();
-	private int currentStep;
+	private List<HackingStep> steps;
+	private int currentStepIndex;
 	private FirmwareVersion fwver;
 	private boolean cartUpdated;
+	private String hackingDir;
+	private String sdCardDir;
 	
 	public static HackingPath resolve(FirmwareVersion fwver, boolean cartUpdated) {
 		if(fwver == null) {
@@ -106,7 +107,7 @@ public class HackingPath {
 	
 	private void init() {
 		steps = new ArrayList<HackingStep>();
-		if(MagicConstants.O3DS.equals(this.fwver.getModel())) {
+		if(this.fwver.getModel().startsWith("O")) {
 			int range = -1;
 			for(int i=0;i<O3DS_RANGES.length;i++) {
 				FirmwareVersion from = O3DS_RANGES[i][0];
@@ -116,18 +117,7 @@ public class HackingPath {
 					i = O3DS_RANGES.length;
 				}
 			}
-			boolean usablebrowser = false;
-			if(this.fwver.getBrowser() > 25) {
-				usablebrowser = true;
-			} else if(this.fwver.getBrowser() > 0) {
-				if(this.wasCartUpdated()) {
-					if(this.fwver.lt("9.9.0")) {
-						usablebrowser = true;
-					}
-				} else {
-					usablebrowser = true;
-				}
-			}
+			boolean usablebrowser = isBrowserUsable();
 			
 			switch(range) {
 				case 0:
@@ -176,7 +166,7 @@ public class HackingPath {
 					// TODO: handle versions out of any range. Are they possible in first place?
 					break;
 			}
-		} else if(MagicConstants.N3DS.equals(this.fwver.getModel())) {
+		} else if(this.fwver.getModel().startsWith("N")) {
 			int range = -1;
 			for(int i=0;i<N3DS_RANGES.length;i++) {
 				FirmwareVersion from = N3DS_RANGES[i][0];
@@ -201,11 +191,11 @@ public class HackingPath {
 			}
 		}
 	}
-	
+
 	public List<HackingResource> resolveResources(String hackingDir) {
 		// Use set to avoid duplicates
 		Set<HackingResource> resourceSet = new HashSet<HackingResource>();
-		String sdCardDir = null; // We do not need the SD to retrieve the resources
+		this.hackingDir = hackingDir;
 		for(HackingStep step:steps) {
 			HackingProcess proc = HackingProcess.getInstance(step, hackingDir, sdCardDir);
 			if(proc == null) {
@@ -222,13 +212,28 @@ public class HackingPath {
 	public boolean requiresUpdate() {
 		return steps.size() == 1 && HackingStep.REQUIRES_UPDATE.equals(steps.get(0));
 	}
-
-	public int getCurrentStep() {
-		return currentStep;
+	
+	public HackingStep getCurrentStep() {
+		if(currentStepIndex < steps.size()) {
+			return steps.get(currentStepIndex);
+		}
+		return null;
 	}
 
-	public void setCurrentStep(int currentStep) {
-		this.currentStep = currentStep;
+	public boolean isBrowserUsable() {
+		boolean usablebrowser = false;
+		if(this.fwver.getBrowser() > 25) {
+			usablebrowser = true;
+		} else if(this.fwver.getBrowser() > 0) {
+			if(this.wasCartUpdated()) {
+				if(this.fwver.lt("9.9.0")) {
+					usablebrowser = true;
+				}
+			} else {
+				usablebrowser = true;
+			}
+		}
+		return usablebrowser;
 	}
 
 	public FirmwareVersion getFwver() {
@@ -245,6 +250,22 @@ public class HackingPath {
 
 	public void setCartUpdated(boolean cartUpdate) {
 		this.cartUpdated = cartUpdate;
+	}
+
+	public String getHackingDir() {
+		return hackingDir;
+	}
+
+	public void setHackingDir(String hackingDir) {
+		this.hackingDir = hackingDir;
+	}
+
+	public String getSdCardDir() {
+		return sdCardDir;
+	}
+
+	public void setSdCardDir(String sdCardDir) {
+		this.sdCardDir = sdCardDir;
 	}
 
 }

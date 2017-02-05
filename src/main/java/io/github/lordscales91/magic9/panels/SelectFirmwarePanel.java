@@ -15,6 +15,8 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 @SuppressWarnings("serial")
 public class SelectFirmwarePanel extends JPanel {
@@ -72,6 +74,11 @@ public class SelectFirmwarePanel extends JPanel {
 		add(panel, gbc_panel);
 		
 		cbMajor = new JComboBox<Integer>();
+		cbMajor.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				cbMajor_itemStateChanged(e);
+			}
+		});
 		panel.add(cbMajor);
 		
 		label = new JLabel(".");
@@ -79,6 +86,11 @@ public class SelectFirmwarePanel extends JPanel {
 		panel.add(label);
 		
 		cbMinor = new JComboBox<Integer>();
+		cbMinor.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				cbMinor_itemStateChanged(e);
+			}
+		});
 		panel.add(cbMinor);
 		
 		label_1 = new JLabel(".");
@@ -86,6 +98,11 @@ public class SelectFirmwarePanel extends JPanel {
 		panel.add(label_1);
 		
 		cbPatch = new JComboBox<Integer>();
+		cbPatch.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				cbPatch_itemStateChanged(e);
+			}
+		});
 		panel.add(cbPatch);
 		
 		label_3 = new JLabel("-");
@@ -93,6 +110,11 @@ public class SelectFirmwarePanel extends JPanel {
 		panel.add(label_3);
 		
 		cbBrowser = new JComboBox<Integer>();
+		cbBrowser.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				cbBrowser_itemStateChanged(e);
+			}
+		});
 		panel.add(cbBrowser);
 		
 		btnConfirm = new JButton("Confirm");
@@ -110,28 +132,6 @@ public class SelectFirmwarePanel extends JPanel {
 
 	}
 
-	private void fillCombos() {
-		// Add a hyphen by default
-//		cbMajor.addItem("--");
-//		cbMinor.addItem("--");
-//		cbPatch.addItem("--");
-//		cbBrowser.addItem("--");
-		// Major version
-		for(int i=1;i<=11;i++) {
-			cbMajor.addItem(i);
-		}
-		for(int i=0;i<=35;i++) {
-			cbMinor.addItem(i);
-			cbPatch.addItem(i);
-			cbBrowser.addItem(i);
-		}
-	}
-	
-	private <I> I extractItem(JComboBox<I> combo) {
-		int index = combo.getSelectedIndex();
-		return combo.getItemAt(index);
-	}
-
 	protected void btnConfirm_actionPerformed(ActionEvent e) {
 		if(caller != null) {
 			FirmwareVersion fw = new FirmwareVersion(extractItem(cbMajor), 
@@ -139,6 +139,46 @@ public class SelectFirmwarePanel extends JPanel {
 					extractItem(cbPatch));
 			fw.setBrowser(extractItem(cbBrowser));
 			caller.receiveData(fw, MagicActions.FIRMWARE_SELECTED);
+		}
+	}
+	protected void cbMajor_itemStateChanged(ItemEvent e) {
+		notifyVersionChanged();
+	}
+	protected void cbMinor_itemStateChanged(ItemEvent e) {
+		notifyVersionChanged();
+	}
+	protected void cbPatch_itemStateChanged(ItemEvent e) {
+		notifyVersionChanged();
+	}
+	protected void cbBrowser_itemStateChanged(ItemEvent e) {
+		notifyVersionChanged();
+	}
+
+	private void fillCombos() {
+			// Add a hyphen by default
+	//		cbMajor.addItem("--");
+	//		cbMinor.addItem("--");
+	//		cbPatch.addItem("--");
+	//		cbBrowser.addItem("--");
+			// Major version
+			for(int i=1;i<=11;i++) {
+				cbMajor.addItem(i);
+			}
+			for(int i=0;i<=35;i++) {
+				cbMinor.addItem(i);
+				cbPatch.addItem(i);
+				cbBrowser.addItem(i);
+			}
+		}
+
+	private <I> I extractItem(JComboBox<I> combo) {
+		int index = combo.getSelectedIndex();
+		return combo.getItemAt(index);
+	}
+
+	private void notifyVersionChanged() {
+		if(caller != null) {
+			caller.receiveData(MagicActions.FIRMWARE_CHANGED, MagicActions.FIRMWARE_SELECTED);
 		}
 	}
 }

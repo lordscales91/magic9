@@ -3,6 +3,7 @@ package io.github.lordscales91.magic9.panels;
 import io.github.lordscales91.magic9.MagicActions;
 import io.github.lordscales91.magic9.core.CallbackReceiver;
 import io.github.lordscales91.magic9.core.MagicConstants;
+import io.github.lordscales91.magic9.domain.ConsoleModel;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -193,19 +194,19 @@ public class SelectModelPanel extends JPanel {
 	}
 	
 	protected void btnNew3ds_actionPerformed(ActionEvent e) {
-		modelSelected(MagicConstants.N3DS, "New 3DS");
+		modelSelected(ConsoleModel.N3DS.modelType(), ConsoleModel.N3DS.displayName());
 	}
 	protected void btnNew3dsXl_actionPerformed(ActionEvent e) {
-		modelSelected(MagicConstants.N3DS, "New 3DS XL");
+		modelSelected(ConsoleModel.N3DSXL.modelType(), ConsoleModel.N3DSXL.displayName());
 	}
 	protected void btnOld3ds_actionPerformed(ActionEvent e) {
-		modelSelected(MagicConstants.O3DS, "3DS (Old)");
+		modelSelected(ConsoleModel.O3DS.modelType(), ConsoleModel.O3DS.displayName());
 	}
 	protected void btnOld3dsXl_actionPerformed(ActionEvent e) {
-		modelSelected(MagicConstants.O3DS, "3DS XL (Old)");
+		modelSelected(ConsoleModel.O3DSXL.modelType(), ConsoleModel.O3DSXL.displayName());
 	}
 	protected void btn2ds_actionPerformed(ActionEvent e) {
-		modelSelected(MagicConstants.O3DS, "2DS");
+		modelSelected(ConsoleModel.O2DS.modelType(), ConsoleModel.O2DS.displayName());
 	}
 
 	private void modelSelected(String model, String display) {

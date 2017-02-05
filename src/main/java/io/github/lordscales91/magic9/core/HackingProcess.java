@@ -15,6 +15,11 @@ public abstract class HackingProcess {
 		this.sdCardDir = sdCardDir;
 	}
 	
+	protected boolean isSDCardOk() {
+		return sdCardDir != null && new File(sdCardDir).isDirectory()
+				&& new File(sdCardDir).getTotalSpace() >= MagicConstants.SD_MIN_SIZE;
+	}
+	
 	public static HackingProcess getInstance(HackingStep step, String hackingDir, String sdCardDir) {
 		if(HackingStep.DECRYPT9_BROWSER.equals(step)) {
 			return new Decrypt9BrowserProcess(hackingDir, sdCardDir);
@@ -42,6 +47,12 @@ public abstract class HackingProcess {
 	
 	public static HackingProcess getInstance(HackingStep step, String hackingDir, File sdCardDir) {
 		return getInstance(step, hackingDir, sdCardDir.getAbsolutePath());
+	}
+	
+	public void preProcess() {
+		if(!isSDCardOk()) {
+			throw new IllegalStateException("SD Card is not initialized or is not valid");
+		}
 	}
 	
 	public abstract void process() throws IOException;

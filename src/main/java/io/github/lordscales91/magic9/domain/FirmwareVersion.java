@@ -1,7 +1,5 @@
 package io.github.lordscales91.magic9.domain;
 
-import io.github.lordscales91.magic9.core.MagicConstants;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,13 +17,18 @@ public class FirmwareVersion {
 	private int patch;
 	private int browser;
 	private ConsoleRegion region = ConsoleRegion.OTHER;
-	private String model = MagicConstants.O3DS;
+	private ConsoleModel model = ConsoleModel.O3DS_GENERIC;
 	
 	public FirmwareVersion(String version) {
-		this(version, MagicConstants.O3DS);
+		this(version, ConsoleModel.O3DS_GENERIC);
 	}
 	
+	@Deprecated
 	public FirmwareVersion(String version, String model) {
+		this(version, ConsoleModel.fromModelType(model));
+	}
+	
+	public FirmwareVersion(String version, ConsoleModel model) {
 		Matcher m = Pattern.compile(VERSION_PATT).matcher(version);
 		if(m.matches()) {
 			major = Integer.parseInt(m.group(1));
@@ -60,6 +63,13 @@ public class FirmwareVersion {
 		this.major = major;
 		this.minor = minor;
 		this.patch = patch;
+	}
+
+	public FirmwareVersion(int major, int minor, int patch, int browser) {
+		this.major = major;
+		this.minor = minor;
+		this.patch = patch;
+		this.browser = browser;
 	}
 
 	public boolean lt(FirmwareVersion other) {
@@ -161,13 +171,18 @@ public class FirmwareVersion {
 	}
 
 	public String getModel() {
-		return model;
+		return model.modelType();
 	}
 
+	@Deprecated
 	public void setModel(String model) {
-		this.model = model;
+		setModel(ConsoleModel.fromModelType(model));
 	}
 	
+	public void setModel(ConsoleModel model) {
+		this.model = model;
+	}
+
 	@Override
 	public String toString() {
 		return String.format("%d.%d.%d-%d%c %s", major, minor, patch,

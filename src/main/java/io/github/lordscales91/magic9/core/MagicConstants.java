@@ -1,5 +1,9 @@
 package io.github.lordscales91.magic9.core;
 
+import org.apache.commons.io.FileUtils;
+
+import io.github.lordscales91.magic9.domain.ConsoleModel;
+
 public class MagicConstants {
 	public static final String DECRYPT9_LAUNCHER_DAT = "Launcher.dat";
 	public static final String DECRYPT9_DAT = "Decrypt9WIP.dat";
@@ -7,8 +11,8 @@ public class MagicConstants {
 	public static final String DECRYPT9_BIN = "Decrypt9WIP.bin";
 	public static final String DECRYPT9_FOLDER = "Decrypt9";
 	public static final String FILES9_FOLDER = "files9";
-	public static final String O3DS = "OLD";
-	public static final String N3DS = "NEW";
+	public static final String O3DS = ConsoleModel.O3DS_GENERIC.modelType();
+	public static final String N3DS = ConsoleModel.N3DS_GENERIC.modelType();
 	public static final String OTHERAPP_BASE_URL = "http://smealum.github.io/ninjhax2/JL1Xf2KFVm/otherapp/";
 	public static final String SOUNDHAX_BASE_URL = "https://github.com/nedwill/soundhax/blob/master/";
 	public static final String OTHERAPP_BIN = "otherapp.bin";
@@ -49,9 +53,10 @@ public class MagicConstants {
 	public static final String SAFEHAX_PAYLOAD = "safehaxpayload.bin";
 	public static final String TRACKERS_FILE = "data/trackers.txt";
 	public static final String TORRENTS_DIR = "torrents";
-	public static final String NAME_PREFIX = "name_";
 	public static final String FBI_CIA = "FBI.cia";
 	public static final String DECRYPT9_NDS = "Decrypt9.nds";
+	// Storage devices always have a little less capacity than the specified
+	public static final long SD_MIN_SIZE = FileUtils.ONE_GB * 4 - FileUtils.ONE_MB * 200;
 
 	private MagicConstants() {}
 }

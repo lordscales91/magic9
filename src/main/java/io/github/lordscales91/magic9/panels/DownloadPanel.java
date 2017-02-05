@@ -5,6 +5,7 @@ import io.github.lordscales91.magic9.MagicActions;
 import io.github.lordscales91.magic9.core.CallbackReceiver;
 import io.github.lordscales91.magic9.core.HackingResource;
 import io.github.lordscales91.magic9.core.MagicPropKeys;
+import io.github.lordscales91.magic9.domain.HackingStep;
 import io.github.lordscales91.magic9.widget.LinkLabel;
 import io.github.lordscales91.magic9.widget.ProgressCellRender;
 import io.github.lordscales91.magic9.widget.UpdatableModel;
@@ -40,7 +41,9 @@ import java.awt.event.ComponentEvent;
 
 @SuppressWarnings("serial")
 public class DownloadPanel extends JPanel implements CallbackReceiver {
-	
+
+	private static final Font ORIG_FONT = new Font("Arial", Font.PLAIN, 12);
+	private static final String ORIG_MESSAGE = "Please select a download directory below:";
 	private CallbackReceiver caller;
 	private JLabel lblDownloadRequiredResources;
 	private JLabel lblThisToolsNeeds;
@@ -80,12 +83,13 @@ public class DownloadPanel extends JPanel implements CallbackReceiver {
 			}
 		});
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
-		gridBagLayout.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gridBagLayout.columnWidths = new int[] { 0, 0 };
+		gridBagLayout.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
+		gridBagLayout.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
+		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+				1.0, Double.MIN_VALUE };
 		setLayout(gridBagLayout);
-		
+
 		lblDownloadRequiredResources = new JLabel("Download Required Resources");
 		lblDownloadRequiredResources.setFont(new Font("Arial", Font.BOLD, 14));
 		GridBagConstraints gbc_lblDownloadRequiredResources = new GridBagConstraints();
@@ -93,23 +97,24 @@ public class DownloadPanel extends JPanel implements CallbackReceiver {
 		gbc_lblDownloadRequiredResources.gridx = 0;
 		gbc_lblDownloadRequiredResources.gridy = 0;
 		add(lblDownloadRequiredResources, gbc_lblDownloadRequiredResources);
-		
-		lblThisToolsNeeds = new JLabel("This tool needs to download some files.");
-		lblThisToolsNeeds.setFont(new Font("Arial", Font.PLAIN, 12));
+
+		lblThisToolsNeeds = new JLabel(
+				"This tool needs to download some files.");
+		lblThisToolsNeeds.setFont(ORIG_FONT);
 		GridBagConstraints gbc_lblThisToolsNeeds = new GridBagConstraints();
 		gbc_lblThisToolsNeeds.insets = new Insets(0, 0, 5, 0);
 		gbc_lblThisToolsNeeds.gridx = 0;
 		gbc_lblThisToolsNeeds.gridy = 1;
 		add(lblThisToolsNeeds, gbc_lblThisToolsNeeds);
-		
-		lblMessage = new JLabel("Please select a download directory below:");
-		lblMessage.setFont(new Font("Arial", Font.PLAIN, 12));
+
+		lblMessage = new JLabel(ORIG_MESSAGE);
+		lblMessage.setFont(ORIG_FONT);
 		GridBagConstraints gbc_lblMessage = new GridBagConstraints();
 		gbc_lblMessage.insets = new Insets(0, 0, 5, 0);
 		gbc_lblMessage.gridx = 0;
 		gbc_lblMessage.gridy = 2;
 		add(lblMessage, gbc_lblMessage);
-		
+
 		panel_2 = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) panel_2.getLayout();
 		flowLayout.setHgap(0);
@@ -119,16 +124,19 @@ public class DownloadPanel extends JPanel implements CallbackReceiver {
 		gbc_panel_2.gridx = 0;
 		gbc_panel_2.gridy = 3;
 		add(panel_2, gbc_panel_2);
-		
-		lblLatestHackableFirmware = new JLabel("Latest hackable firmware is 11.2.0. You can check the updates ");
+
+		lblLatestHackableFirmware = new JLabel(
+				"Latest hackable firmware is 11.2.0. You can check the updates ");
 		lblLatestHackableFirmware.setFont(new Font("Arial", Font.BOLD, 12));
 		lblLatestHackableFirmware.setVisible(false);
 		panel_2.add(lblLatestHackableFirmware);
-		lblUpdateLink = new LinkLabel(HackingPath.URLS.getProperty(MagicPropKeys.TDS_UPDATES_USA), "here");
+		lblUpdateLink = new LinkLabel(
+				HackingPath.URLS.getProperty(MagicPropKeys.TDS_UPDATES_USA),
+				"here");
 		lblUpdateLink.setFont(new Font("Arial", Font.BOLD, 12));
 		lblUpdateLink.setVisible(false);
 		panel_2.add(lblUpdateLink);
-		
+
 		panel = new JPanel();
 		GridBagConstraints gbc_panel = new GridBagConstraints();
 		gbc_panel.insets = new Insets(0, 0, 5, 0);
@@ -136,17 +144,17 @@ public class DownloadPanel extends JPanel implements CallbackReceiver {
 		gbc_panel.gridx = 0;
 		gbc_panel.gridy = 4;
 		add(panel, gbc_panel);
-		
+
 		lblStagingDirectory = new JLabel("Staging directory:");
 		lblStagingDirectory.setFont(new Font("Arial", Font.BOLD, 12));
 		panel.add(lblStagingDirectory);
-		
+
 		txtHackingDir = new JTextField();
 		txtHackingDir.setEditable(false);
-		txtHackingDir.setFont(new Font("Arial", Font.PLAIN, 12));
+		txtHackingDir.setFont(ORIG_FONT);
 		panel.add(txtHackingDir);
 		txtHackingDir.setColumns(15);
-		
+
 		btnSelectStagingDir = new JButton("...");
 		btnSelectStagingDir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -154,7 +162,7 @@ public class DownloadPanel extends JPanel implements CallbackReceiver {
 			}
 		});
 		panel.add(btnSelectStagingDir);
-		
+
 		panel_1 = new JPanel();
 		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
 		gbc_panel_1.fill = GridBagConstraints.BOTH;
@@ -163,7 +171,7 @@ public class DownloadPanel extends JPanel implements CallbackReceiver {
 		gbc_panel_1.gridy = 5;
 		add(panel_1, gbc_panel_1);
 		panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
+
 		btnPrepare = new JButton("Prepare");
 		btnPrepare.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -172,7 +180,7 @@ public class DownloadPanel extends JPanel implements CallbackReceiver {
 		});
 		btnPrepare.setEnabled(false);
 		panel_1.add(btnPrepare);
-		
+
 		btnStartDownloads = new JButton("Start Downloads");
 		panel_1.add(btnStartDownloads);
 		btnStartDownloads.addActionListener(new ActionListener() {
@@ -181,57 +189,58 @@ public class DownloadPanel extends JPanel implements CallbackReceiver {
 			}
 		});
 		btnStartDownloads.setEnabled(false);
-		
+
 		scrollPane = new JScrollPane();
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 0;
 		gbc_scrollPane.gridy = 6;
 		add(scrollPane, gbc_scrollPane);
-		
+
 		tblDownloads = new JTable();
-		tblDownloads.setModel(new UpdatableModel(new Object[][] {
-		}, new String[] {
-			"File", "Source", "Status", "Progress"
-		}));
-		tblDownloads.getColumn("Progress").setCellRenderer(new ProgressCellRender());
+		tblDownloads.setModel(new UpdatableModel(new Object[][] {},
+				new String[] { "File", "Source", "Status", "Progress" }));
+		tblDownloads.getColumn("Progress").setCellRenderer(
+				new ProgressCellRender());
 		scrollPane.setViewportView(tblDownloads);
 
 	}
 
 	private void fillTable() {
 		UpdatableModel model = (UpdatableModel) tblDownloads.getModel();
-		List<HackingResource> res = HackingPath.getInstance().resolveResources(hackingDir);
+		List<HackingResource> res = HackingPath.getInstance().resolveResources(
+				hackingDir);
 		// System.out.println(res);
 		totalDownloadsCount = res.size();
 		handlers = new HashMap<>(totalDownloadsCount);
 		// for now just instantiate the handlers with the corresponding workers
-		for(HackingResource r:res) {
+		for(HackingResource r : res) {
 			MagicWorker worker = r.getWorker(this);
 			final String tag = worker.getTag();
-			worker.addPropertyChangeListener(new PropertyChangeListener() {				
+			worker.addPropertyChangeListener(new PropertyChangeListener() {
 				@Override
 				public void propertyChange(PropertyChangeEvent evt) {
 					if("real_progress".equals(evt.getPropertyName())) {
-						updateProgress(tag, (float)evt.getNewValue());
+						updateProgress(tag, (float) evt.getNewValue());
 					}
-					
+
 				}
 			});
-			model.addRow(new Object[]{tag, r.getSource(), "PREPARED", 0.0f});
+			model.addRow(new Object[] { tag, r.getSource(), "PREPARED", 0.0f });
 			handlers.put(tag, new MagicWorkerHandler(worker));
 		}
 		tblDownloads.repaint();
-		
+
 	}
-	
+
 	private void startDownloads() {
 		// Notify the caller before starting to download
 		if(caller != null) {
-			caller.receiveData(MagicActions.DOWNLOADS_STARTED, MagicActions.DOWNLOADS_STATUS_CHANGED);
+			caller.receiveData(MagicActions.DOWNLOADS_STARTED,
+					MagicActions.DOWNLOADS_STATUS_CHANGED);
 		}
 		UpdatableModel model = (UpdatableModel) tblDownloads.getModel();
-		for (MagicWorkerHandler handler : handlers.values()) {
+		for(MagicWorkerHandler handler : handlers.values()) {
 			handler.startWorker();
 			model.updateStatus(handler.getTag(), "STARTED");
 		}
@@ -247,18 +256,20 @@ public class DownloadPanel extends JPanel implements CallbackReceiver {
 
 	protected void trackStatus() {
 		while(!stopTracking) {
-			for(MagicWorkerHandler h:handlers.values()) {
+			for(MagicWorkerHandler h : handlers.values()) {
 				if(h.isStuck()) {
 					MagicWorker worker = h.getWorker();
 					if(worker instanceof TorrentDownloadWorker) {
-						MagicWorker copy = new TorrentDownloadWorker((TorrentDownloadWorker) worker);
+						MagicWorker copy = new TorrentDownloadWorker(
+								(TorrentDownloadWorker) worker);
 						final String tag = h.getTag();
 						copy.addPropertyChangeListener(new PropertyChangeListener() {
 							@Override
 							public void propertyChange(PropertyChangeEvent evt) {
 								if("real_progress".equals(evt.getPropertyName())) {
-									updateProgress(tag, (float) evt.getNewValue());
-								}								
+									updateProgress(tag,
+											(float) evt.getNewValue());
+								}
 							}
 						});
 						h.restart(copy, true);
@@ -267,7 +278,8 @@ public class DownloadPanel extends JPanel implements CallbackReceiver {
 			}
 			try {
 				Thread.sleep(500);
-			} catch (InterruptedException e) {}
+			} catch (InterruptedException e) {
+			}
 		}
 	}
 
@@ -281,8 +293,9 @@ public class DownloadPanel extends JPanel implements CallbackReceiver {
 		btnPrepare.setEnabled(false);
 		btnSelectStagingDir.setEnabled(false);
 		startDownloads();
-		
+
 	}
+
 	protected void btnSelectStagingDir_actionPerformed(ActionEvent e) {
 		JFileChooser chooser = new JFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -292,17 +305,21 @@ public class DownloadPanel extends JPanel implements CallbackReceiver {
 			File dir = chooser.getSelectedFile();
 			boolean doit = true;
 			if(dir.list().length > 0) {
-				op = JOptionPane.showConfirmDialog(getParent(),
-						"The directory is not empty!\n Do you want to continue anyway?", "Warning", 
-						JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+				op = JOptionPane
+						.showConfirmDialog(
+								getParent(),
+								"The directory is not empty!\n Do you want to continue anyway?",
+								"Warning", JOptionPane.YES_NO_OPTION,
+								JOptionPane.WARNING_MESSAGE);
 				doit = op == JOptionPane.YES_OPTION;
-			} 
+			}
 			if(doit) {
 				hackingDir = dir.getAbsolutePath();
+				HackingPath.getInstance().setHackingDir(hackingDir);
 				txtHackingDir.setText(hackingDir);
 				btnPrepare.setEnabled(true);
 			}
-			
+
 		}
 	}
 
@@ -311,17 +328,43 @@ public class DownloadPanel extends JPanel implements CallbackReceiver {
 			fillTable();
 			btnStartDownloads.setEnabled(true);
 		}
-		
+
 	}
 
 	protected void this_componentShown(ComponentEvent e) {
-		if(HackingPath.getInstance().requiresUpdate()) {
-			lblMessage.setText("Oops! It seems that you need update your system");
+		HackingPath hp = HackingPath.getInstance();
+		boolean showMessage = hp.requiresUpdate();
+		// If it requires an update don't bother to ask
+		if(!showMessage
+				&& HackingStep.DECRYPT9_MSET.equals(hp.getCurrentStep())) {
+			int op = JOptionPane
+					.showConfirmDialog(
+							getParent(),
+							"You will need an NDS flashcart to continue.\nDo you have one?",
+							"Warning", JOptionPane.YES_NO_OPTION,
+							JOptionPane.WARNING_MESSAGE);
+			if(op == JOptionPane.NO_OPTION) {
+				/*
+				 * No flashcard? Then update required (or flashcard purchase but
+				 * I prefer to do not consider that option).
+				 */
+				showMessage = true;
+			}
+		}
+		if(showMessage) {
+			lblMessage
+					.setText("Oops! It seems that you need to update your system");
 			lblMessage.setFont(new Font("Arial", Font.BOLD, 12));
 			lblLatestHackableFirmware.setVisible(true);
 			lblUpdateLink.init();
 			lblUpdateLink.setVisible(true);
 			btnSelectStagingDir.setEnabled(false);
+		} else {
+			lblMessage.setText(ORIG_MESSAGE);
+			lblMessage.setFont(ORIG_FONT);
+			lblLatestHackableFirmware.setVisible(false);
+			lblUpdateLink.setVisible(false);
+			btnSelectStagingDir.setEnabled(true);
 		}
 	}
 
@@ -330,18 +373,22 @@ public class DownloadPanel extends JPanel implements CallbackReceiver {
 		UpdatableModel model = (UpdatableModel) tblDownloads.getModel();
 		if(data instanceof Exception) {
 			model.updateStatus(tag, "ERROR");
-			JOptionPane.showMessageDialog(getParent(), ((Exception)data).getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(getParent(),
+					((Exception) data).getMessage(), "Error",
+					JOptionPane.ERROR_MESSAGE);
 		} else {
 			// currently we only use this to track downloads completion
 			model.updateStatus(tag, "FINISHED");
 			model.updateProgress(tag, 100.0f);
 			downloadsCompleted++;
-			if(totalDownloadsCount > 0 && downloadsCompleted == totalDownloadsCount) {
+			if(totalDownloadsCount > 0
+					&& downloadsCompleted == totalDownloadsCount) {
 				stopTracking = true;
 				btnSelectStagingDir.setEnabled(true);
 				btnPrepare.setEnabled(true);
 				if(caller != null) {
-					caller.receiveData(MagicActions.DOWNLOADS_FINISHED, MagicActions.DOWNLOADS_STATUS_CHANGED);
+					caller.receiveData(MagicActions.DOWNLOADS_FINISHED,
+							MagicActions.DOWNLOADS_STATUS_CHANGED);
 				}
 			}
 		}

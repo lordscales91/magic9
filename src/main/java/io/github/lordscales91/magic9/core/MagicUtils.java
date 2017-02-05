@@ -1,5 +1,6 @@
 package io.github.lordscales91.magic9.core;
 
+import io.github.lordscales91.magic9.HackingPath;
 import io.github.lordscales91.magic9.domain.ConsoleRegion;
 import io.github.lordscales91.magic9.domain.FirmwareVersion;
 
@@ -448,5 +449,27 @@ public class MagicUtils {
 	
 	public static void saveStreamToFile(InputStream in, File out) throws IOException {
 		FileUtils.copyInputStreamToFile(in, out);
+	}
+
+	public static String getSDCheckURL() {
+		String osname = System.getProperty("os.name", "").toLowerCase();
+		String path = "/h2testw-(windows)";		
+		if(osname.contains("os x") || osname.contains("osx")) {
+			path = "/f3x-(mac)";
+		} else if(osname.contains("linux")) {
+			path = "/f3-(linux)";
+		}
+		return HackingPath.URLS.getProperty(MagicPropKeys.$3DS_GUIDE) + path;
+	}
+
+	public static String getSDChecker() {
+		String osname = System.getProperty("os.name", "").toLowerCase();
+		String checker = "H2testw (Windows)";
+		if(osname.contains("os x") || osname.contains("osx")) {
+			checker = "F3X (Mac)";
+		} else if(osname.contains("linux")) {
+			checker = "F3 (Linux)";
+		}
+		return checker;
 	}
 }
