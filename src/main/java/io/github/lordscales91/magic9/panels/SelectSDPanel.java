@@ -1,9 +1,9 @@
 package io.github.lordscales91.magic9.panels;
 
 import io.github.lordscales91.magic9.HackingPath;
-import io.github.lordscales91.magic9.MagicActions;
+import io.github.lordscales91.magic9.constants.MagicActions;
+import io.github.lordscales91.magic9.constants.MagicConstants;
 import io.github.lordscales91.magic9.core.CallbackReceiver;
-import io.github.lordscales91.magic9.core.MagicConstants;
 import io.github.lordscales91.magic9.core.MagicUtils;
 import io.github.lordscales91.magic9.widget.LinkLabel;
 

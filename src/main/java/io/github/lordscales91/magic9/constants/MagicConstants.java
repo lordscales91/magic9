@@ -1,4 +1,4 @@
-package io.github.lordscales91.magic9.core;
+package io.github.lordscales91.magic9.constants;
 
 import org.apache.commons.io.FileUtils;
 

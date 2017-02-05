@@ -1,4 +1,4 @@
-package io.github.lordscales91.magic9;
+package io.github.lordscales91.magic9.constants;
 
 /**
  * Container for String constants that represent 

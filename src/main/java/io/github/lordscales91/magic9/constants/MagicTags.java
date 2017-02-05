@@ -1,4 +1,4 @@
-package io.github.lordscales91.magic9.core;
+package io.github.lordscales91.magic9.constants;
 
 /**
  * Class container for tag constants. Tags are used to identify background tasks

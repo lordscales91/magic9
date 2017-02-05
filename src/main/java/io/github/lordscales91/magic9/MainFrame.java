@@ -1,6 +1,6 @@
 package io.github.lordscales91.magic9;
 
-import io.github.lordscales91.magic9.core.MagicPropKeys;
+import io.github.lordscales91.magic9.constants.MagicPropKeys;
 import io.github.lordscales91.magic9.widget.LinkLabel;
 
 import java.awt.EventQueue;

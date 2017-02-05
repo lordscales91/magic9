@@ -1,5 +1,6 @@
 package io.github.lordscales91.magic9;
 
+import io.github.lordscales91.magic9.constants.MagicActions;
 import io.github.lordscales91.magic9.core.CallbackReceiver;
 import io.github.lordscales91.magic9.domain.ConsoleModel;
 import io.github.lordscales91.magic9.domain.ConsoleRegion;

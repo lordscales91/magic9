@@ -1,6 +1,8 @@
 package io.github.lordscales91.magic9.core;
 
 import io.github.lordscales91.magic9.HackingPath;
+import io.github.lordscales91.magic9.constants.MagicConstants;
+import io.github.lordscales91.magic9.constants.MagicPropKeys;
 import io.github.lordscales91.magic9.domain.ConsoleRegion;
 import io.github.lordscales91.magic9.domain.FirmwareVersion;
 

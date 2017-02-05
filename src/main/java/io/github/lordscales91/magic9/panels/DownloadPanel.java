@@ -1,10 +1,10 @@
 package io.github.lordscales91.magic9.panels;
 
 import io.github.lordscales91.magic9.HackingPath;
-import io.github.lordscales91.magic9.MagicActions;
+import io.github.lordscales91.magic9.constants.MagicActions;
+import io.github.lordscales91.magic9.constants.MagicPropKeys;
 import io.github.lordscales91.magic9.core.CallbackReceiver;
 import io.github.lordscales91.magic9.core.HackingResource;
-import io.github.lordscales91.magic9.core.MagicPropKeys;
 import io.github.lordscales91.magic9.domain.HackingStep;
 import io.github.lordscales91.magic9.widget.LinkLabel;
 import io.github.lordscales91.magic9.widget.ProgressCellRender;

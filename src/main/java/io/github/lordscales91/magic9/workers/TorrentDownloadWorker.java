@@ -1,7 +1,7 @@
 package io.github.lordscales91.magic9.workers;
 
+import io.github.lordscales91.magic9.constants.MagicConstants;
 import io.github.lordscales91.magic9.core.CallbackReceiver;
-import io.github.lordscales91.magic9.core.MagicConstants;
 import io.github.lordscales91.magic9.core.MagicUtils;
 
 import java.io.BufferedReader;

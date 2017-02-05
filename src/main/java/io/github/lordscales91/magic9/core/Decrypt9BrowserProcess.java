@@ -1,6 +1,9 @@
 package io.github.lordscales91.magic9.core;
 
 import io.github.lordscales91.magic9.HackingPath;
+import io.github.lordscales91.magic9.constants.MagicConstants;
+import io.github.lordscales91.magic9.constants.MagicPropKeys;
+import io.github.lordscales91.magic9.constants.MagicTags;
 
 import java.io.File;
 import java.io.IOException;

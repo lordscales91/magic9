@@ -1,9 +1,9 @@
 package io.github.lordscales91.magic9;
 
+import io.github.lordscales91.magic9.constants.MagicConstants;
 import io.github.lordscales91.magic9.core.CallbackReceiver;
 import io.github.lordscales91.magic9.core.HackingProcess;
 import io.github.lordscales91.magic9.core.HackingResource;
-import io.github.lordscales91.magic9.core.MagicConstants;
 import io.github.lordscales91.magic9.domain.FirmwareVersion;
 import io.github.lordscales91.magic9.domain.HackingStep;
 import io.github.lordscales91.magic9.workers.DownloadWorker;

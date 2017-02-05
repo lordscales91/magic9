@@ -1,4 +1,4 @@
-package io.github.lordscales91.magic9.core;
+package io.github.lordscales91.magic9.constants;
 
 /**
  * Constants container for Property keys used in the application
