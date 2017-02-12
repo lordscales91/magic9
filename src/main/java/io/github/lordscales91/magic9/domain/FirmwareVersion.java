@@ -9,6 +9,8 @@ import java.util.regex.Pattern;
  */
 public class FirmwareVersion {
 	
+	public static final FirmwareVersion LATEST_HACKABLE = new FirmwareVersion(11, 2, 0);
+	
 	private static final String VERSION_PATT = "([0-9]+)\\.([0-9]+)\\.([0-9]+)-([0-9]+)([a-zA-Z])";
 	private static final String SHORT_PATT = "([0-9]+)\\.([0-9]+)\\.([0-9]+)";
 	
@@ -169,9 +171,14 @@ public class FirmwareVersion {
 	public void setMajor(int major) {
 		this.major = major;
 	}
-
+	
+	@Deprecated
 	public String getModel() {
 		return model.modelType();
+	}
+	
+	public ConsoleModel getConsoleModel() {
+		return model;
 	}
 
 	@Deprecated
@@ -181,6 +188,14 @@ public class FirmwareVersion {
 	
 	public void setModel(ConsoleModel model) {
 		this.model = model;
+	}
+	
+	/**
+	 * Returns the short string representation of this version.
+	 * The format is: major.minor.patch
+	 */
+	public String toShortVersion() {
+		return String.format("%d.%d.%d", major, minor, patch);
 	}
 
 	@Override

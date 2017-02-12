@@ -19,7 +19,7 @@ public class InstallARM9Process extends HackingProcess {
 	@Override
 	public void process() throws IOException {
 		// Prepare the materials
-		// Extract the homebrew starter kit. At this point it should already there, 
+		// Extract the homebrew starter kit. At this point it should be already there, 
 		// but it doesn't hurt to ensure.
 		File starterkit = new File(hackingDir, MagicConstants.STARTER_KIT_FOLDER);
 		MagicUtils.extractZipFile(new File(hackingDir, MagicConstants.STARTER_KIT_ZIP), starterkit);
@@ -73,7 +73,7 @@ public class InstallARM9Process extends HackingProcess {
 			$3ds.delete();
 		}		
 		// Copy the Homebrew starter kit to the root of the SD card
-		MagicUtils.copyDirectory(starterkit, new File(sdCardDir));
+		MagicUtils.copyDirectory(new File(starterkit, MagicConstants.STARTER_KIT_SUB_FOLDER), new File(sdCardDir));
 		// Copy the contents of Safe9HLInstaller to the SD root
 		MagicUtils.copyDirectory(safe9HLFolder, new File(sdCardDir));
 		// Copy the a9hl folder from the data_input to the SD root

@@ -137,8 +137,8 @@ public class SelectFirmwarePanel extends JPanel {
 		if(caller != null) {
 			FirmwareVersion fw = new FirmwareVersion(extractItem(cbMajor), 
 					extractItem(cbMinor), 
-					extractItem(cbPatch));
-			fw.setBrowser(extractItem(cbBrowser));
+					extractItem(cbPatch),
+					extractItem(cbBrowser));
 			caller.receiveData(fw, MagicActions.FIRMWARE_SELECTED);
 		}
 	}
@@ -165,7 +165,7 @@ public class SelectFirmwarePanel extends JPanel {
 			for(int i=1;i<=11;i++) {
 				cbMajor.addItem(i);
 			}
-			for(int i=0;i<=35;i++) {
+			for(int i=0;i<=36;i++) {
 				cbMinor.addItem(i);
 				cbPatch.addItem(i);
 				cbBrowser.addItem(i);

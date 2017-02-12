@@ -1,28 +1,20 @@
 package io.github.lordscales91.magic9.panels;
 
 import io.github.lordscales91.magic9.constants.MagicActions;
-import io.github.lordscales91.magic9.constants.MagicConstants;
 import io.github.lordscales91.magic9.core.CallbackReceiver;
+import io.github.lordscales91.magic9.core.MagicUtils;
 import io.github.lordscales91.magic9.domain.ConsoleModel;
 
-import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import java.awt.Font;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class SelectModelPanel extends JPanel {
@@ -68,16 +60,7 @@ public class SelectModelPanel extends JPanel {
 				btnNew3ds_actionPerformed(e);
 			}
 		});
-		BufferedImage image = null;
-		try {
-			image = ImageIO.read(new File("data/images/new3ds.png"));
-		} catch (IOException e) {}
-		if(image != null) {
-			btnNew3ds.setText("");
-			btnNew3ds.setIcon(new ImageIcon(image));			
-			btnNew3ds.setBorder(BorderFactory.createEmptyBorder());
-			btnNew3ds.setContentAreaFilled(false);
-		}
+		MagicUtils.setImage(btnNew3ds, "data/images/new3ds.png");
 		GridBagConstraints gbc_btnNew3ds = new GridBagConstraints();
 		gbc_btnNew3ds.insets = new Insets(0, 0, 5, 5);
 		gbc_btnNew3ds.gridx = 0;
@@ -98,16 +81,7 @@ public class SelectModelPanel extends JPanel {
 				btnOld3ds_actionPerformed(e);
 			}
 		});
-		image = null;
-		try {
-			image = ImageIO.read(new File("data/images/old3ds.png"));
-		} catch (IOException e) {}
-		if(image != null) {
-			btnOld3ds.setText("");
-			btnOld3ds.setIcon(new ImageIcon(image));
-			btnOld3ds.setBorder(BorderFactory.createEmptyBorder());
-			btnOld3ds.setContentAreaFilled(false);
-		}
+		MagicUtils.setImage(btnOld3ds, "data/images/old3ds.png");
 		panel.add(btnOld3ds);
 		
 		btnOld3dsXl = new JButton("Old 3DS XL");
@@ -116,17 +90,7 @@ public class SelectModelPanel extends JPanel {
 				btnOld3dsXl_actionPerformed(e);
 			}
 		});
-		image = null;
-		try {
-			image = ImageIO.read(new File("data/images/old3dsxl.png"));
-		} catch (IOException e) {}
-		
-		if(image != null) {
-			btnOld3dsXl.setText("");
-			btnOld3dsXl.setIcon(new ImageIcon(image));
-			btnOld3dsXl.setBorder(BorderFactory.createEmptyBorder());
-			btnOld3dsXl.setContentAreaFilled(false);
-		}
+		MagicUtils.setImage(btnOld3dsXl, "data/images/old3dsxl.png");
 		panel.add(btnOld3dsXl);
 		
 		btnNew3dsXl = new JButton("New 3DS XL");
@@ -135,16 +99,7 @@ public class SelectModelPanel extends JPanel {
 				btnNew3dsXl_actionPerformed(e);
 			}
 		});
-		image = null;
-		try {
-			image = ImageIO.read(new File("data/images/new3dsxl.png"));
-		} catch (IOException e) {}
-		if(image != null) {
-			btnNew3dsXl.setText("");
-			btnNew3dsXl.setIcon(new ImageIcon(image));
-			btnNew3dsXl.setBorder(BorderFactory.createEmptyBorder());
-			btnNew3dsXl.setContentAreaFilled(false);
-		}
+		MagicUtils.setImage(btnNew3dsXl, "data/images/new3dsxl.png");
 		GridBagConstraints gbc_btnNew3dsXl = new GridBagConstraints();
 		gbc_btnNew3dsXl.insets = new Insets(0, 0, 5, 5);
 		gbc_btnNew3dsXl.gridx = 0;
@@ -157,16 +112,7 @@ public class SelectModelPanel extends JPanel {
 				btn2ds_actionPerformed(e);
 			}
 		});
-		image = null;
-		try {
-			image = ImageIO.read(new File("data/images/2ds.png"));
-		} catch (IOException e) {}
-		if(image != null) {
-			btn2ds.setText("");
-			btn2ds.setIcon(new ImageIcon(image));
-			btn2ds.setBorder(BorderFactory.createEmptyBorder());
-			btn2ds.setContentAreaFilled(false);
-		}
+		MagicUtils.setImage(btn2ds, "data/images/2ds.png");
 		GridBagConstraints gbc_btn2ds = new GridBagConstraints();
 		gbc_btn2ds.insets = new Insets(0, 0, 5, 0);
 		gbc_btn2ds.gridx = 1;
@@ -192,7 +138,7 @@ public class SelectModelPanel extends JPanel {
 		lblYouHaveSelected.setVisible(false);
 		
 	}
-	
+
 	protected void btnNew3ds_actionPerformed(ActionEvent e) {
 		modelSelected(ConsoleModel.N3DS.modelType(), ConsoleModel.N3DS.displayName());
 	}

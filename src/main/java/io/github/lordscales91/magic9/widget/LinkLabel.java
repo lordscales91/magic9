@@ -122,6 +122,12 @@ public class LinkLabel
     public void setUnderlineVisible(boolean underlineVisible) {
         this.underlineVisible = underlineVisible;
     }
+    
+    public void setTarget(String url) {
+    	try {
+			target = new URI(url);
+		} catch (URISyntaxException e) {}
+    }
 
     /* Add the listeners, configure the field to look and act
     like a link. */

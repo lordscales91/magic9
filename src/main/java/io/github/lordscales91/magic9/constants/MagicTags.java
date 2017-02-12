@@ -1,8 +1,10 @@
 package io.github.lordscales91.magic9.constants;
 
+import io.github.lordscales91.magic9.workers.MagicWorker;
+
 /**
  * Class container for tag constants. Tags are used to identify background tasks
- * and will be displayed in the interface.
+ * and will be displayed in the interface. They are used in {@link MagicWorker}
  * @author Lordscales91
  */
 public class MagicTags {

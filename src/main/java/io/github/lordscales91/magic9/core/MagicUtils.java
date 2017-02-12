@@ -5,7 +5,9 @@ import io.github.lordscales91.magic9.constants.MagicConstants;
 import io.github.lordscales91.magic9.constants.MagicPropKeys;
 import io.github.lordscales91.magic9.domain.ConsoleRegion;
 import io.github.lordscales91.magic9.domain.FirmwareVersion;
+import io.github.lordscales91.magic9.domain.HackingStep;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
@@ -17,6 +19,11 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 
 import org.apache.commons.compress.archivers.sevenz.SevenZArchiveEntry;
 import org.apache.commons.compress.archivers.sevenz.SevenZFile;
@@ -55,9 +62,9 @@ public class MagicUtils {
 	private static String getPayloadFilename(boolean isOtherApp, FirmwareVersion ver) {
 		// Actually, the ropbin filenames are the same, only changes the base URL
 		StringBuilder sb = new StringBuilder();
-		if (MagicConstants.N3DS.equals(ver.getModel())) {
+		if (ver.getConsoleModel().isNew()) {
 			sb.append("N3DS");
-		} else if (MagicConstants.O3DS.equals(ver.getModel())) {
+		} else {
 			if (ver.getMajor() < 5) {
 				sb.append("PRE5");
 			} else {
@@ -187,7 +194,7 @@ public class MagicUtils {
 	}
 	
 	public static String getSoundhaxFilename(FirmwareVersion ver) {
-		String model = (MagicConstants.N3DS.equals(ver.getModel()))?"n3ds":"o3ds";
+		String model = (ver.getConsoleModel().isNew())?"n3ds":"o3ds";
 		return String.format("soundhax-%s-%s.m4a", ver.getRegion().toString().toLowerCase(), model);
 	}
 	public static String getSoundhaxURL(FirmwareVersion ver) {
@@ -473,5 +480,39 @@ public class MagicUtils {
 			checker = "F3 (Linux)";
 		}
 		return checker;
+	}
+	/**
+	 * Loads the specified image resource and sets it as
+	 * {@link ImageIcon} for the specified button.
+	 */
+	public static void setImage(JButton button, String imageres) {
+		BufferedImage image = null;
+		try {
+			image = ImageIO.read(new File(imageres));
+		} catch (IOException e) {}
+		if(image != null) {
+			button.setText("");
+			button.setIcon(new ImageIcon(image));			
+			button.setBorder(BorderFactory.createEmptyBorder());
+			button.setContentAreaFilled(false);
+		}
+	}
+
+	public static String getMessageForStep(HackingStep step) {
+		String message = "Ooops! I don't know what you should do now";
+		if(HackingStep.HOMEBREW_SOUNDHAX.equals(step)) {
+			message = "Now continue on step 4 in the guide. Once finished press confirm";
+		} else if(HackingStep.DECRYPT9_HOMEBREW.equals(step)) {
+			message = "Now continue on step 6 in the guide. Once finished press confirm";
+		} else if(HackingStep.CTRTRANSFER_210.equals(step)) {
+			message = "Now continue on section I - step 3 in the guide. Once finished press confirm";
+		} else if(HackingStep.INSTALL_ARM9LOADERHAX.equals(step)) {
+			message = "Now continue on section II in the guide and good luck! You are on your own now.";
+		} else if(HackingStep.DECRYPT9_BROWSER.equals(step)) {
+			message = "Now continue on step 3 in the guide. Once finished press confirm";
+		} else if(HackingStep.DECRYPT9_MSET.equals(step)) {
+			message = "Now continue on step 3 in the guide. Once finished press confirm";
+		}
+		return message;
 	}
 }

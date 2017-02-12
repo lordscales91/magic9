@@ -17,5 +17,6 @@ public class MagicActions {
 	public static final String FILE_SELECTED = "File Selected";
 	public static final String SD_CARD_SELECTED = "SD Selected";
 	public static final String FIRMWARE_CHANGED = "Firmware Changed";
+	public static final String DOWNLOADS_SKIPPED = "Downloads Skipped";
 
 }

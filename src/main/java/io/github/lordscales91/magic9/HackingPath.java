@@ -82,6 +82,7 @@ public class HackingPath {
 	private boolean cartUpdated;
 	private String hackingDir;
 	private String sdCardDir;
+	private HackingProcess currentProcess;
 	
 	public static HackingPath resolve(FirmwareVersion fwver, boolean cartUpdated) {
 		if(fwver == null) {
@@ -107,7 +108,7 @@ public class HackingPath {
 	
 	private void init() {
 		steps = new ArrayList<HackingStep>();
-		if(this.fwver.getModel().startsWith("O")) {
+		if(!this.fwver.getConsoleModel().isNew()) {
 			int range = -1;
 			for(int i=0;i<O3DS_RANGES.length;i++) {
 				FirmwareVersion from = O3DS_RANGES[i][0];
@@ -166,7 +167,7 @@ public class HackingPath {
 					// TODO: handle versions out of any range. Are they possible in first place?
 					break;
 			}
-		} else if(this.fwver.getModel().startsWith("N")) {
+		} else {
 			int range = -1;
 			for(int i=0;i<N3DS_RANGES.length;i++) {
 				FirmwareVersion from = N3DS_RANGES[i][0];
@@ -219,6 +220,22 @@ public class HackingPath {
 		}
 		return null;
 	}
+	
+	public boolean hasNext() {
+		return currentStepIndex + 1 <= steps.size() - 1;
+	}
+	
+	public void proceedToNext() {
+		this.currentProcess = null;
+		this.currentStepIndex++;
+	}
+	
+	public HackingProcess getProcess()  {
+		if(currentProcess == null) {
+			currentProcess = HackingProcess.getInstance(getCurrentStep(), hackingDir, sdCardDir);
+		}		
+		return currentProcess;
+	}
 
 	public boolean isBrowserUsable() {
 		boolean usablebrowser = false;
@@ -234,6 +251,10 @@ public class HackingPath {
 			}
 		}
 		return usablebrowser;
+	}
+	
+	public boolean isHackable() {
+		return this.fwver.lte(FirmwareVersion.LATEST_HACKABLE);
 	}
 
 	public FirmwareVersion getFwver() {

@@ -13,6 +13,14 @@ public enum ConsoleModel {
 		return null;
 	}
 	
+	/**
+	 * Returns <code>true</code> if this value represents a New 3DS model
+	 * and <code>false</code> if it's an Old 3DS model
+	 */
+	public boolean isNew() {
+		return this.name().startsWith("N");
+	}
+	
 	public String modelType() {
 		if(O3DS.equals(this)) {
 			return "O3DS";

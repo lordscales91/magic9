@@ -18,6 +18,7 @@ public class MagicConstants {
 	public static final String OTHERAPP_BIN = "otherapp.bin";
 	public static final String STARTER_KIT_FOLDER = "starterkit";
 	public static final String STARTER_KIT_ZIP = "starter.zip";
+	public static final String STARTER_KIT_SUB_FOLDER = "starter";
 	public static final String ARM9_BIN = "arm9.bin";
 	public static final String ARM11_BIN = "arm11.bin";
 	public static final String SAFEHAX_FASTHAX_FOLDER = "safehax_fasthax";
@@ -56,7 +57,6 @@ public class MagicConstants {
 	public static final String FBI_CIA = "FBI.cia";
 	public static final String DECRYPT9_NDS = "Decrypt9.nds";
 	// Storage devices always have a little less capacity than the specified
-	public static final long SD_MIN_SIZE = FileUtils.ONE_GB * 4 - FileUtils.ONE_MB * 200;
-
+	public static final long SD_MIN_SIZE = FileUtils.ONE_GB * 4 - FileUtils.ONE_MB * 400;
 	private MagicConstants() {}
 }

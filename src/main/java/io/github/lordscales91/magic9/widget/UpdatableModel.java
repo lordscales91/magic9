@@ -26,14 +26,21 @@ public class UpdatableModel extends DefaultTableModel {
 	public void updateProgress(String tag, float progress) {
 		int index = findTag(tag);
 		if(index != -1)  {
-			setValueAt(progress, index, 3);
+			float oldProgress = (float) getValueAt(index, 3);
+			if(progress != oldProgress) {
+				// Only fire a change if the value has really changed
+				setValueAt(progress, index, 3);
+			}
 		}
 	}
 	
 	public void updateStatus(String tag, String status) {
 		int index = findTag(tag);
 		if(index != -1)  {
-			setValueAt(status, index, 2);
+			String oldStatus = (String) getValueAt(index, 2);
+			if(!oldStatus.equals(status)) {
+				setValueAt(status, index, 2);
+			}
 		}
 	}
 	

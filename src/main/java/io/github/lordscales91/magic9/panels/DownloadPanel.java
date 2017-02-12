@@ -5,6 +5,7 @@ import io.github.lordscales91.magic9.constants.MagicActions;
 import io.github.lordscales91.magic9.constants.MagicPropKeys;
 import io.github.lordscales91.magic9.core.CallbackReceiver;
 import io.github.lordscales91.magic9.core.HackingResource;
+import io.github.lordscales91.magic9.domain.FirmwareVersion;
 import io.github.lordscales91.magic9.domain.HackingStep;
 import io.github.lordscales91.magic9.widget.LinkLabel;
 import io.github.lordscales91.magic9.widget.ProgressCellRender;
@@ -126,7 +127,8 @@ public class DownloadPanel extends JPanel implements CallbackReceiver {
 		add(panel_2, gbc_panel_2);
 
 		lblLatestHackableFirmware = new JLabel(
-				"Latest hackable firmware is 11.2.0. You can check the updates ");
+				"Latest hackable firmware is "+FirmwareVersion.LATEST_HACKABLE.toShortVersion()
+				+". You can check the updates ");
 		lblLatestHackableFirmware.setFont(new Font("Arial", Font.BOLD, 12));
 		lblLatestHackableFirmware.setVisible(false);
 		panel_2.add(lblLatestHackableFirmware);
@@ -274,6 +276,9 @@ public class DownloadPanel extends JPanel implements CallbackReceiver {
 						});
 						h.restart(copy, true);
 					}
+				} else if(h.getWorker().isDone()) {
+					// Deal with race condition
+					updateProgress(h.getTag(), 100.0f);
 				}
 			}
 			try {
@@ -283,9 +288,14 @@ public class DownloadPanel extends JPanel implements CallbackReceiver {
 		}
 	}
 
-	protected void updateProgress(String tag, float progress) {
+	protected synchronized void updateProgress(String tag, float progress) {
 		UpdatableModel model = (UpdatableModel) tblDownloads.getModel();
 		model.updateProgress(tag, progress);
+	}
+	
+	protected synchronized void updateStatus(String tag, String status) {
+		UpdatableModel model = (UpdatableModel) tblDownloads.getModel();
+		model.updateStatus(tag, status);
 	}
 
 	protected void btnStartDownloads_actionPerformed(ActionEvent e) {
@@ -303,20 +313,33 @@ public class DownloadPanel extends JPanel implements CallbackReceiver {
 		int op = chooser.showOpenDialog(getParent());
 		if(op == JFileChooser.APPROVE_OPTION) {
 			File dir = chooser.getSelectedFile();
+			hackingDir = dir.getAbsolutePath();
+			HackingPath.getInstance().setHackingDir(hackingDir);
+			txtHackingDir.setText(hackingDir);
 			boolean doit = true;
 			if(dir.list().length > 0) {
 				op = JOptionPane
 						.showConfirmDialog(
 								getParent(),
-								"The directory is not empty!\n Do you want to continue anyway?",
+								"Do you want to skip the downloads?",
 								"Warning", JOptionPane.YES_NO_OPTION,
 								JOptionPane.WARNING_MESSAGE);
-				doit = op == JOptionPane.YES_OPTION;
+				if (op == JOptionPane.YES_OPTION) {
+					doit = false;
+					if(caller != null) {
+						caller.receiveData(MagicActions.DOWNLOADS_SKIPPED, MagicActions.DOWNLOADS_STATUS_CHANGED);
+					}
+				} else {
+					op = JOptionPane
+							.showConfirmDialog(
+									getParent(),
+									"The directory is not empty!\n Do you want to download the files anyway?",
+									"Warning", JOptionPane.YES_NO_OPTION,
+									JOptionPane.WARNING_MESSAGE);
+					doit = op == JOptionPane.YES_OPTION;
+				}
 			}
 			if(doit) {
-				hackingDir = dir.getAbsolutePath();
-				HackingPath.getInstance().setHackingDir(hackingDir);
-				txtHackingDir.setText(hackingDir);
 				btnPrepare.setEnabled(true);
 			}
 
@@ -351,9 +374,13 @@ public class DownloadPanel extends JPanel implements CallbackReceiver {
 				showMessage = true;
 			}
 		}
+		showMessage = showMessage || !hp.isHackable();
 		if(showMessage) {
-			lblMessage
-					.setText("Oops! It seems that you need to update your system");
+			String message = "Oops! It seems that you need to update your system";
+			if(!hp.isHackable()) {
+				message = "Sorry! It seems that your system is not hackable yet";
+			}
+			lblMessage.setText(message);
 			lblMessage.setFont(new Font("Arial", Font.BOLD, 12));
 			lblLatestHackableFirmware.setVisible(true);
 			lblUpdateLink.init();
@@ -370,16 +397,15 @@ public class DownloadPanel extends JPanel implements CallbackReceiver {
 
 	@Override
 	public void receiveData(Object data, String tag) {
-		UpdatableModel model = (UpdatableModel) tblDownloads.getModel();
 		if(data instanceof Exception) {
-			model.updateStatus(tag, "ERROR");
+			updateStatus(tag, "ERROR");
 			JOptionPane.showMessageDialog(getParent(),
 					((Exception) data).getMessage(), "Error",
 					JOptionPane.ERROR_MESSAGE);
 		} else {
 			// currently we only use this to track downloads completion
-			model.updateStatus(tag, "FINISHED");
-			model.updateProgress(tag, 100.0f);
+			updateStatus(tag, "FINISHED");
+			updateProgress(tag, 100.0f);
 			downloadsCompleted++;
 			if(totalDownloadsCount > 0
 					&& downloadsCompleted == totalDownloadsCount) {

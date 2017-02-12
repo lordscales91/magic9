@@ -37,7 +37,7 @@ public class PreparationWizard extends JFrame implements CallbackReceiver {
 	private static final String DOWNLOAD_PANEL = "DownloadPane";
 	private static final String SELECT_SD = "SelectSDPane";
 	private static final String[] PANELS = new String[]{SELECT_MODEL, SELECT_REGION,
-								SELECT_FIRMWARE, SELECT_SD, DOWNLOAD_PANEL};
+								SELECT_FIRMWARE, DOWNLOAD_PANEL, SELECT_SD};
 	
 	private JPanel contentPane;
 	private JPanel cards;
@@ -69,7 +69,7 @@ public class PreparationWizard extends JFrame implements CallbackReceiver {
 	 * Create the frame.
 	 */
 	public PreparationWizard() {
-		setTitle("Magic9 Tool - Hacking Wizard");
+		setTitle("Magic9 Tool - Preparation Phase");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
 		contentPane = new JPanel();
@@ -140,7 +140,9 @@ public class PreparationWizard extends JFrame implements CallbackReceiver {
 		if(currentPanel >= PANELS.length) {
 			currentPanel = PANELS.length - 1;
 			// TODO: Move to next wizard
-			JOptionPane.showMessageDialog(this, "Sorry! Not yet implemented");
+			// JOptionPane.showMessageDialog(this, "Sorry! Not yet implemented");
+			this.dispose();
+			HackingWizard.showFrame();
 		} else {			
 			showPanel();
 		}
@@ -208,7 +210,8 @@ public class PreparationWizard extends JFrame implements CallbackReceiver {
 				if(MagicActions.DOWNLOADS_STARTED.equals(data)) {
 					btnNext.setEnabled(false);
 					btnPrevious.setEnabled(false);
-				} else if(MagicActions.DOWNLOADS_FINISHED.equals(data)) {
+				} else if(MagicActions.DOWNLOADS_FINISHED.equals(data)
+						|| MagicActions.DOWNLOADS_SKIPPED.equals(data)) {
 					btnNext.setEnabled(true);
 				}
 			} else if(MagicActions.SD_CARD_SELECTED.equals(tag)) {

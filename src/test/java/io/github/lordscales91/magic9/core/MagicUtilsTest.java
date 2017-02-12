@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 import io.github.lordscales91.magic9.constants.MagicConstants;
+import io.github.lordscales91.magic9.domain.ConsoleModel;
 import io.github.lordscales91.magic9.domain.FirmwareVersion;
 
 import org.apache.commons.io.IOUtils;
@@ -43,7 +44,7 @@ public class MagicUtilsTest {
 	@Test
 	public void testGetOtherAppURL() {
 		FirmwareVersion fw = new FirmwareVersion("10.5.0-17E");
-		fw.setModel(MagicConstants.O3DS);
+		fw.setModel(ConsoleModel.O3DS_GENERIC);
 		String expected = MagicConstants.OTHERAPP_BASE_URL + "POST5_E_23554_9221.bin";
 		String actual = MagicUtils.getOtherAppURL(fw);
 		assertEquals(expected, actual);
@@ -52,7 +53,7 @@ public class MagicUtilsTest {
 	@Test
 	public void testGetOtherAppURL2() {
 		FirmwareVersion fw = new FirmwareVersion("11.0.0-30K");
-		fw.setModel(MagicConstants.N3DS);
+		fw.setModel(ConsoleModel.N3DS_GENERIC);
 		String expected = MagicConstants.OTHERAPP_BASE_URL + "N3DS_K_12288_kor_9221.bin";
 		String actual = MagicUtils.getOtherAppURL(fw);
 		assertEquals(expected, actual);
@@ -61,7 +62,7 @@ public class MagicUtilsTest {
 	@Test
 	public void testGetSoundhaxFilename() {
 		FirmwareVersion fw = new FirmwareVersion("10.5.0-17E");
-		fw.setModel(MagicConstants.O3DS);
+		fw.setModel(ConsoleModel.O3DS_GENERIC);
 		String expected = "soundhax-eur-o3ds.m4a";
 		String actual = MagicUtils.getSoundhaxFilename(fw);
 		assertEquals(expected, actual);
@@ -70,7 +71,7 @@ public class MagicUtilsTest {
 	@Test
 	public void testGetCTRImageName() {
 		FirmwareVersion fw = new FirmwareVersion("10.5.0-17E");
-		fw.setModel(MagicConstants.O3DS);
+		fw.setModel(ConsoleModel.O3DS_GENERIC);
 		String expected = "2.1.0-4E_ctrtransfer_o3ds.bin";
 		String actual = MagicUtils.getCTR210ImageName(fw);
 		assertEquals(expected, actual);
