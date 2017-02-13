@@ -2,6 +2,7 @@ package io.github.lordscales91.magic9.panels;
 
 import io.github.lordscales91.magic9.constants.MagicActions;
 import io.github.lordscales91.magic9.core.CallbackReceiver;
+import io.github.lordscales91.magic9.core.MagicUtils;
 import io.github.lordscales91.magic9.domain.ConsoleRegion;
 
 import javax.swing.JPanel;
@@ -94,6 +95,11 @@ public class SelectRegionPanel extends JPanel {
 			}
 		});
 		panel.add(btnKor);
+		
+		MagicUtils.setImage(btnEur, "data/images/EUR_flag.png");
+		MagicUtils.setImage(btnUsa, "data/images/USA_flag.png");
+		MagicUtils.setImage(btnJap, "data/images/JAP_flag.png");
+		MagicUtils.setImage(btnKor, "data/images/KOR_flag.png");
 		
 		panel_1 = new JPanel();
 		GridBagConstraints gbc_panel_1 = new GridBagConstraints();

@@ -40,6 +40,7 @@ import javax.swing.JTextField;
 
 import java.awt.SystemColor;
 import java.awt.Font;
+import javax.swing.JLabel;
 
 @SuppressWarnings("serial")
 public class TestFrame extends JFrame implements CallbackReceiver {
@@ -53,7 +54,7 @@ public class TestFrame extends JFrame implements CallbackReceiver {
 	private File torrent;
 	private boolean stop;
 	private Thread monitor;
-	private JTextField txtInvisibleTextField;
+	private JPanel testPanel;
 
 	/**
 	 * Launch the application.
@@ -82,9 +83,9 @@ public class TestFrame extends JFrame implements CallbackReceiver {
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{0, 0, 0};
-		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
+		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0};
 		gbl_contentPane.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
 		JButton btnTestTorrent = new JButton("Test Torrent");
@@ -145,34 +146,49 @@ public class TestFrame extends JFrame implements CallbackReceiver {
 				testTorrentResource();
 			}
 		});
+		
+		JButton btnToggleJpanelVisibility = new JButton("Toggle JPanel visibility");
+		btnToggleJpanelVisibility.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnToggleJpanelVisibility_actionPerformed(e);
+			}
+		});
+		GridBagConstraints gbc_btnToggleJpanelVisibility = new GridBagConstraints();
+		gbc_btnToggleJpanelVisibility.insets = new Insets(0, 0, 5, 5);
+		gbc_btnToggleJpanelVisibility.gridx = 0;
+		gbc_btnToggleJpanelVisibility.gridy = 3;
+		contentPane.add(btnToggleJpanelVisibility, gbc_btnToggleJpanelVisibility);
 		GridBagConstraints gbc_btnTestTorrentResource = new GridBagConstraints();
 		gbc_btnTestTorrentResource.insets = new Insets(0, 0, 5, 0);
 		gbc_btnTestTorrentResource.gridx = 1;
 		gbc_btnTestTorrentResource.gridy = 3;
 		contentPane.add(btnTestTorrentResource, gbc_btnTestTorrentResource);
 		
-		txtInvisibleTextField = new JTextField();
-		txtInvisibleTextField.setText("Invisible text field");
-		txtInvisibleTextField.setEditable(false);
-		txtInvisibleTextField.setBorder(new MatteBorder(0, 0, 0, 0, new Color(240, 240, 240)));
-		GridBagConstraints gbc_txtInvisibleTextField = new GridBagConstraints();
-		gbc_txtInvisibleTextField.insets = new Insets(0, 0, 0, 5);
-		gbc_txtInvisibleTextField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtInvisibleTextField.gridx = 0;
-		gbc_txtInvisibleTextField.gridy = 4;
-		contentPane.add(txtInvisibleTextField, gbc_txtInvisibleTextField);
-		txtInvisibleTextField.setColumns(10);
+		testPanel = new JPanel();
+		GridBagConstraints gbc_testPanel = new GridBagConstraints();
+		gbc_testPanel.gridwidth = 2;
+		gbc_testPanel.insets = new Insets(0, 0, 5, 0);
+		gbc_testPanel.fill = GridBagConstraints.BOTH;
+		gbc_testPanel.gridx = 0;
+		gbc_testPanel.gridy = 4;
+		contentPane.add(testPanel, gbc_testPanel);
 		
-		JTextArea txtrAsasasasaAsasasasas = new JTextArea();
-		txtrAsasasasaAsasasasas.setFont(new Font("Arial", Font.PLAIN, 12));
-		txtrAsasasasaAsasasasas.setText("asasasasa\r\nasasasasas\r\nInvisible Textarea. Yeah! (^_^)");
-		txtrAsasasasaAsasasasas.setBackground(SystemColor.control);
-		txtrAsasasasaAsasasasas.setEditable(false);
-		GridBagConstraints gbc_txtrAsasasasaAsasasasas = new GridBagConstraints();
-		gbc_txtrAsasasasaAsasasasas.fill = GridBagConstraints.BOTH;
-		gbc_txtrAsasasasaAsasasasas.gridx = 1;
-		gbc_txtrAsasasasaAsasasasas.gridy = 4;
-		contentPane.add(txtrAsasasasaAsasasasas, gbc_txtrAsasasasaAsasasasas);
+		JButton btnNewButton = new JButton("New button");
+		testPanel.add(btnNewButton);
+		
+		JButton btnNewButton_1 = new JButton("New button");
+		testPanel.add(btnNewButton_1);
+		
+		JButton btnNewButton_2 = new JButton("New button");
+		testPanel.add(btnNewButton_2);
+		
+		JLabel lblTextBelow = new JLabel("Text Below");
+		GridBagConstraints gbc_lblTextBelow = new GridBagConstraints();
+		gbc_lblTextBelow.gridwidth = 2;
+		gbc_lblTextBelow.insets = new Insets(0, 0, 0, 5);
+		gbc_lblTextBelow.gridx = 0;
+		gbc_lblTextBelow.gridy = 5;
+		contentPane.add(lblTextBelow, gbc_lblTextBelow);
 		// This is placed here just for test purposes.
 		// The final GUI will be different
 		btnTestTorrent.addActionListener(new ActionListener() {
@@ -494,4 +510,8 @@ public class TestFrame extends JFrame implements CallbackReceiver {
 		}
 	}
 
+	protected void btnToggleJpanelVisibility_actionPerformed(ActionEvent e) {
+		boolean visible = !testPanel.isVisible();
+		testPanel.setVisible(visible);
+	}
 }

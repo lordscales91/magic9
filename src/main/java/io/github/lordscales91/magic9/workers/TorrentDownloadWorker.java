@@ -21,8 +21,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import org.apache.commons.io.IOUtils;
-
 import com.turn.ttorrent.client.Client;
 import com.turn.ttorrent.client.SharedTorrent;
 
@@ -124,8 +122,8 @@ public class TorrentDownloadWorker extends MagicWorker implements Observer {
 				line = br.readLine();
 			}
 		} finally {
-			IOUtils.closeQuietly(br);
-			IOUtils.closeQuietly(fr);
+			MagicUtils.closeQuietly(br);
+			MagicUtils.closeQuietly(fr);
 		}
 		torr.getAnnounceList().add(trackers);
 	}

@@ -142,6 +142,7 @@ public class HackingPath {
 						// Use mset hax
 						steps.add(HackingStep.DECRYPT9_MSET);						
 					}
+					steps.add(HackingStep.NAND_BACKUP);
 					steps.add(HackingStep.CTRTRANSFER_210);
 					steps.add(HackingStep.INSTALL_ARM9LOADERHAX);
 					break;
@@ -150,6 +151,7 @@ public class HackingPath {
 					if(usablebrowser) {
 						// Proceed to launch Decrypt9 with this hax
 						steps.add(HackingStep.DECRYPT9_BROWSER);
+						steps.add(HackingStep.NAND_BACKUP);
 						steps.add(HackingStep.CTRTRANSFER_210);
 						steps.add(HackingStep.INSTALL_ARM9LOADERHAX);
 					} else {
@@ -160,6 +162,7 @@ public class HackingPath {
 				case 7:
 					steps.add(HackingStep.HOMEBREW_SOUNDHAX);
 					steps.add(HackingStep.DECRYPT9_HOMEBREW);
+					steps.add(HackingStep.NAND_BACKUP);
 					steps.add(HackingStep.CTRTRANSFER_210);
 					steps.add(HackingStep.INSTALL_ARM9LOADERHAX);
 					break;

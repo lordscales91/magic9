@@ -2,7 +2,7 @@ package io.github.lordscales91.magic9.domain;
 
 public enum HackingStep {
 	DECRYPT9_BROWSER, DECRYPT9_MSET, DECRYPT9_HOMEBREW, HOMEBREW_SOUNDHAX,
-	NFIRM_DOWNGRADE, CTRTRANSFER_210, REQUIRES_UPDATE, INSTALL_ARM9LOADERHAX;
+	NFIRM_DOWNGRADE, NAND_BACKUP, CTRTRANSFER_210, REQUIRES_UPDATE, INSTALL_ARM9LOADERHAX;
 
 	public String displayName()  {
 		String display = "Unknown";
@@ -18,6 +18,8 @@ public enum HackingStep {
 			display = "2.1.0 ctrtransfer";
 		} else if(this.equals(INSTALL_ARM9LOADERHAX)) {
 			display = "Installing arm9loaderhax";
+		} else if(this.equals(NAND_BACKUP)) {
+			display = "NAND Backup with Decrypt9";
 		}
 		return display;
 	}

@@ -14,8 +14,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import org.apache.commons.io.IOUtils;
-
 public class DownloadWorker extends MagicWorker implements ProgressListener {
 	
 	public static final String REAL_PROGRESS = "real_progress";
@@ -56,7 +54,7 @@ public class DownloadWorker extends MagicWorker implements ProgressListener {
 			// FileUtils.copyInputStreamToFile(resp.body().byteStream(), out);
 			MagicUtils.saveStreamToFile(resp.body().byteStream(), out);
 		} finally {
-			IOUtils.closeQuietly(resp);
+			MagicUtils.closeQuietly(resp);
 		}		
 		return "success";
 	}

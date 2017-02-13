@@ -17,8 +17,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import org.apache.commons.io.IOUtils;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -62,7 +60,7 @@ public class GithubDownloadWorker extends MagicWorker implements ProgressListene
 			}
 			assetUrl = getAssetUrl(resp);
 		} finally {
-			IOUtils.closeQuietly(resp); // Close the API response
+			MagicUtils.closeQuietly(resp); // Close the API response
 		}
 		
 		if(assetUrl == null) { // This shouldn't happen
@@ -91,7 +89,7 @@ public class GithubDownloadWorker extends MagicWorker implements ProgressListene
 			// FileUtils.copyInputStreamToFile(resp.body().byteStream(), out);
 			MagicUtils.saveStreamToFile(resp.body().byteStream(), out);
 		} finally {
-			IOUtils.closeQuietly(resp);
+			MagicUtils.closeQuietly(resp);
 		}
 		return "success";
 	}
