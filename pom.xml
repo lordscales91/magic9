@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.lordscales91</groupId>
 	<artifactId>magic9</artifactId>
-	<version>0.1-pre-alpha</version>
+	<version>0.1-beta</version>
 	<name>Magic9 Tool</name>
 	<description>A GUI Tool for preparing an SD card for the installation of arm9loaderhax (3DS Exploit) on each step.</description>
 

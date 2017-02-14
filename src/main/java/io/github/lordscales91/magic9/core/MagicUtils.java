@@ -558,11 +558,11 @@ public class MagicUtils {
 	 */
 	public static String extractChecksum(File shaFile, int size)
 			throws IOException {
-		StringBuilder sb = new StringBuilder();
-		byte[] mdbytes = FileUtils.readFileToByteArray(shaFile);
-		if(mdbytes.length != size) {
+		if(shaFile.length() != size) {
 			throw new IOException("Invalid SHA File");
 		}
+		StringBuilder sb = new StringBuilder();
+		byte[] mdbytes = FileUtils.readFileToByteArray(shaFile);		
 		for(int i = 0; i < mdbytes.length; i++) {
 			sb.append(Integer.toHexString(0xFF & mdbytes[i]));
 		}

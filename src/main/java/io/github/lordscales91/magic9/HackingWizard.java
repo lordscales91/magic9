@@ -264,8 +264,9 @@ public class HackingWizard extends JFrame implements CallbackReceiver {
 						}
 					}
 				});
-				pbProcess.setStringPainted(true);
 				worker.execute();
+				btnProceed.setEnabled(false);
+				pbProcess.setStringPainted(true);
 			} else {
 				JOptionPane.showMessageDialog(this, "No file choosed. Aborting", "Warning", JOptionPane.WARNING_MESSAGE);
 			}
@@ -300,7 +301,12 @@ public class HackingWizard extends JFrame implements CallbackReceiver {
 			btnConfirm.setEnabled(false);
 			worker.execute();
 		} else  {
-			int op = JOptionPane.showConfirmDialog(this, "Are you sure you have finished all "+ lblHackingStepName.getText()+" steps?");
+			String message = "Are you sure that you have finished all "+ lblHackingStepName.getText()+" steps?";
+			if(HackingStep.INSTALL_ARM9LOADERHAX.equals(HackingPath.getInstance().getCurrentStep())) {
+				message = "Does it really worked?\n"
+						+ "Wonderful! Thanks for using this tool (^_^)";
+			}
+			int op = JOptionPane.showConfirmDialog(this, message);
 			if(op == JOptionPane.YES_OPTION) {
 				updateButtonsState();
 				btnConfirm.setEnabled(false);
