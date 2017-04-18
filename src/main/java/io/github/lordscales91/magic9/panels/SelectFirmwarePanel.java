@@ -165,7 +165,7 @@ public class SelectFirmwarePanel extends JPanel {
 			for(int i=1;i<=11;i++) {
 				cbMajor.addItem(i);
 			}
-			for(int i=0;i<=36;i++) {
+			for(int i=0;i<=39;i++) {
 				cbMinor.addItem(i);
 				cbPatch.addItem(i);
 				cbBrowser.addItem(i);

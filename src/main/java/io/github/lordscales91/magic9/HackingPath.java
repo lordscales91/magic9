@@ -49,7 +49,7 @@ public class HackingPath {
 		},
 		new FirmwareVersion[]{
 			// Homebrew Launcher(Soundhax)
-			new FirmwareVersion(9, 0, 0), new FirmwareVersion(11, 2, 0)
+			new FirmwareVersion(9, 0, 0), new FirmwareVersion(11, 3, 0)
 		}
 	};
 	private static final FirmwareVersion[][] N3DS_RANGES = new FirmwareVersion[][]{
@@ -59,7 +59,7 @@ public class HackingPath {
 		},
 		new FirmwareVersion[]{
 			// Homebrew Launcher(Soundhax)
-			new FirmwareVersion(9, 0, 0), new FirmwareVersion(11, 2, 0)
+			new FirmwareVersion(9, 0, 0), new FirmwareVersion(11, 3, 0)
 		}
 	};
 	
@@ -160,11 +160,16 @@ public class HackingPath {
 					}
 					break;
 				case 7:
-					steps.add(HackingStep.HOMEBREW_SOUNDHAX);
-					steps.add(HackingStep.DECRYPT9_HOMEBREW);
-					steps.add(HackingStep.NAND_BACKUP);
-					steps.add(HackingStep.CTRTRANSFER_210);
-					steps.add(HackingStep.INSTALL_ARM9LOADERHAX);
+					if(ConsoleRegion.KOR.equals(fwver.getRegion()) && fwver.lt("9.6.0")) {
+						// Soundhax on Korean consoles only works or version 9.6.0 or higher
+						steps.add(HackingStep.REQUIRES_UPDATE);
+					} else {
+						steps.add(HackingStep.HOMEBREW_SOUNDHAX);
+						steps.add(HackingStep.DECRYPT9_HOMEBREW);
+						steps.add(HackingStep.NAND_BACKUP);
+						steps.add(HackingStep.CTRTRANSFER_210);
+						steps.add(HackingStep.INSTALL_ARM9LOADERHAX);
+					}
 					break;
 				default:
 					// TODO: handle versions out of any range. Are they possible in first place?

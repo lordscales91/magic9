@@ -115,6 +115,8 @@ public class MagicUtils {
 					sb.append("12288_kor");
 				} else if(ver.getMinor() == 1 || ver.getMinor() == 2) {
 					sb.append("13312_kor");
+				} else if(ver.getMinor() == 3) {
+					sb.append("14336_kor");
 				}
 			}
 		} else {
@@ -184,11 +186,17 @@ public class MagicUtils {
 					} else {
 						sb.append("24576");
 					}
-				} else {
+				} else if (ver.getMinor() == 1 || ver.getMinor() == 2){
 					if(ConsoleRegion.USA.equals(ver.getRegion())) {
 						sb.append("26624_usa");
 					} else {
 						sb.append("25600");
+					}
+				} else {
+					if(ConsoleRegion.USA.equals(ver.getRegion())) {
+						sb.append("27648_usa");
+					} else {
+						sb.append("26624");
 					}
 				}
 			}

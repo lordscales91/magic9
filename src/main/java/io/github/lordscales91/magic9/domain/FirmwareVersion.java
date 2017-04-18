@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
  */
 public class FirmwareVersion {
 	
-	public static final FirmwareVersion LATEST_HACKABLE = new FirmwareVersion(11, 2, 0);
+	public static final FirmwareVersion LATEST_HACKABLE = new FirmwareVersion(11, 3, 0);
 	
 	private static final String VERSION_PATT = "([0-9]+)\\.([0-9]+)\\.([0-9]+)-([0-9]+)([a-zA-Z])";
 	private static final String SHORT_PATT = "([0-9]+)\\.([0-9]+)\\.([0-9]+)";
