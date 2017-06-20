@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.regex.Pattern;
 
 import okhttp3.Call;
 import okhttp3.Interceptor;
@@ -33,6 +34,7 @@ public class GithubDownloadWorker extends MagicWorker implements ProgressListene
 	private File out;
 	private Call assetCall;
 	private Call dlproc;
+    private String nameRegex;
 	
 	
 
@@ -42,6 +44,12 @@ public class GithubDownloadWorker extends MagicWorker implements ProgressListene
 		this.releaseUrl = releaseUrl;
 		this.assetExtension = assetExtension;
 		this.out = out;
+	}
+	
+	public GithubDownloadWorker(String releaseUrl, String assetExtension,
+			String nameRegex, File out, String tag, CallbackReceiver receiver) {
+	   this(releaseUrl, assetExtension, out, tag, receiver);
+	   this.nameRegex = nameRegex;
 	}
 
 	@Override
@@ -104,9 +112,18 @@ public class GithubDownloadWorker extends MagicWorker implements ProgressListene
 		JsonNode targetAsset = null;
 		for(int i=0;i<assets.size();i++) {
 			JsonNode asset = assets.get(i);
-			if(asset.get("name").asText().endsWith(assetExtension)) {
-				targetAsset = asset;
-				i = assets.size(); // break loop
+			String name = asset.get("name").asText();
+			// System.out.println("Asset " + name + " found.");
+			if(nameRegex != null) {
+			    if(Pattern.compile(nameRegex).matcher(name).find()) {
+			        targetAsset = asset;
+				    i = assets.size(); // break loop
+			    }
+			} else if(assetExtension != null) {
+			    if(name.endsWith(assetExtension)) {
+				    targetAsset = asset;
+				    i = assets.size(); // break loop
+				}
 			}
 		}
 		if(targetAsset == null) {

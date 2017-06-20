@@ -139,8 +139,6 @@ public class PreparationWizard extends JFrame implements CallbackReceiver {
 		currentPanel++;
 		if(currentPanel >= PANELS.length) {
 			currentPanel = PANELS.length - 1;
-			// TODO: Move to next wizard
-			// JOptionPane.showMessageDialog(this, "Sorry! Not yet implemented");
 			this.dispose();
 			HackingWizard.showFrame();
 		} else {			

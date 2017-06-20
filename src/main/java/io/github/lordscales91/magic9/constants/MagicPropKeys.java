@@ -25,6 +25,8 @@ public class MagicPropKeys {
 	public static final String $3DS_GUIDE = "TDS_GUIDE";
 	public static final String TDS_UPDATES_USA = "TDS_VERSION_HISTORY_USA";
 	public static final String NAND_BACKUP_GUIDE = "NAND_Backup_Guide";
+	public static final String SAFEB9S_INSTALLER = "SafeB9SInstaller";
+	public static final String BOOT9STRAP = "Boot9Strap";
 
 	private MagicPropKeys(){}
 	

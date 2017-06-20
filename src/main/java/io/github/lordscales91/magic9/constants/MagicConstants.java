@@ -58,5 +58,10 @@ public class MagicConstants {
 	public static final String DECRYPT9_NDS = "Decrypt9.nds";
 	// Storage devices always have a little less capacity than the specified
 	public static final long SD_MIN_SIZE = FileUtils.ONE_GB * 4 - FileUtils.ONE_MB * 400;
+	public static final String BOOT9S_STANDARD_REGEX = "-[0-9]+\\.[0-9]+\\.zip";
+	public static final String BOOT9STRAP_ZIP = "boot9strap.zip";
+	public static final String BOOT9STRAP_FOLDER = "boot9strap";
+	public static final String SAFEB9S_INSTALLER_ZIP = "SafeB9SInstaller.zip";
+    public static final String SAFEB9S_INSTALLER_FOLDER = "SafeB9SInstaller";
 	private MagicConstants() {}
 }

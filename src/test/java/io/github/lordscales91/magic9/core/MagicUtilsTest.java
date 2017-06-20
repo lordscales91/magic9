@@ -12,6 +12,7 @@ import io.github.lordscales91.magic9.domain.ConsoleModel;
 import io.github.lordscales91.magic9.domain.FirmwareVersion;
 
 import org.apache.commons.io.IOUtils;
+import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -79,6 +80,7 @@ public class MagicUtilsTest {
 	
 	@Test
 	public void testExtract7Zip() {
+	    Assume.assumeTrue("testExtract7Zip() Ignored. SD Card dir not specified", sdcarddir != null);
 		File hackingDir = new File(config.getProperty("hackingdir"));
 		File a7zip = new File(hackingDir, MagicConstants.SAFE9HLINSTALLER_7Z);
 		File output = new File(sdcarddir.getParentFile(), "extract-test");

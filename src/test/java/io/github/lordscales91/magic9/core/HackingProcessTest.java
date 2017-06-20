@@ -12,6 +12,7 @@ import java.util.Properties;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
+import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -59,7 +60,7 @@ public class HackingProcessTest {
 //	}
 	
 	
-	@Test
+	// @Test Deprecated
 	public void testDecrypt9BrowserProcess() {
 		String hackingDir = config.getProperty("hackingdir");
 		HackingProcess d9proc = HackingProcess.getInstance(HackingStep.DECRYPT9_BROWSER, 
@@ -77,6 +78,7 @@ public class HackingProcessTest {
 	
 	@Test
 	public void testHomebrewProcess() {
+	    Assume.assumeTrue("testHomebrewProcess() Ignored. SD Card dir not specified", sdcarddir != null);
 		// First we need to initialize the hacking path
 		FirmwareVersion ver = new FirmwareVersion("11.1.0-26E");
 		HackingPath.resolve(ver, false);
@@ -93,7 +95,7 @@ public class HackingProcessTest {
 		}
 	}
 	
-	@Test
+	// @Test Deprecated
 	public void testInstallARM9() {
 		// First we need to initialize the hacking path
 		FirmwareVersion ver = new FirmwareVersion("11.1.0-26E");
@@ -109,7 +111,7 @@ public class HackingProcessTest {
 		}
 	}
 	
-	@Test
+	// @Test Deprecated
 	public void testRequiredResourcesDecrypt9() {
 		// First we need to initialize the hacking path
 		FirmwareVersion ver = new FirmwareVersion("11.1.0-26E");

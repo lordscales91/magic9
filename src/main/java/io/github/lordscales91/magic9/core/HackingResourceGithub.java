@@ -8,10 +8,16 @@ import java.io.File;
 public class HackingResourceGithub extends HackingResource {
 
 	private String assetExtension;
+    private String nameRegex;
 
 	public HackingResourceGithub(String url, File out, String tag, String assetExtension) {
 		super(url, out, tag);
 		this.assetExtension = assetExtension;
+	}
+	
+	public HackingResourceGithub(String url, File out, String tag, String assetExtension, String nameRegex) {
+		this(url, out, tag, assetExtension);
+		this.nameRegex = nameRegex;
 	}
 
 	@Override
@@ -21,6 +27,6 @@ public class HackingResourceGithub extends HackingResource {
 	
 	@Override
 	public MagicWorker getWorker(CallbackReceiver receiver) {
-		return new GithubDownloadWorker(getUrl(), assetExtension, getOut(), getTag(), receiver);
+		return new GithubDownloadWorker(getUrl(), assetExtension, nameRegex, getOut(), getTag(), receiver);
 	}
 }

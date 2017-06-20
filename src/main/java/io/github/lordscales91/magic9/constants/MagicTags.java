@@ -29,6 +29,8 @@ public class MagicTags {
 	public static final String AESKEY_TAG = "aeskeydb.bin";
 	public static final String DSPDUMP_TAG = "DSP Dump";
 	public static final String FBI_INJECTABLE_TAG = "fbi_injectable";
+	public static final String BOOT9STRAP_TAG = "Boot9strap";
+	public static final String SAFEB9S_TAG = "SafeB9SInstaller";
 	
 	private MagicTags(){}
 }

@@ -34,6 +34,8 @@ public abstract class HackingProcess {
 			return new CTRTranfer210Process(hackingDir, sdCardDir);
 		} else if(HackingStep.INSTALL_ARM9LOADERHAX.equals(step)) {
 			return new InstallARM9Process(hackingDir, sdCardDir);
+		} else if(HackingStep.BOOT9STRAP_BROWSER.equals(step)) {
+		    return new Boot9BrowserProcess(hackingDir, sdCardDir);
 		}
 		return null;
 	}

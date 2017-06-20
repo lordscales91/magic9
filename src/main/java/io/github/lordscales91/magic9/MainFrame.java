@@ -1,5 +1,6 @@
 package io.github.lordscales91.magic9;
 
+import io.github.lordscales91.magic9.cli.Main;
 import io.github.lordscales91.magic9.constants.MagicPropKeys;
 import io.github.lordscales91.magic9.domain.FirmwareVersion;
 import io.github.lordscales91.magic9.widget.LinkLabel;
@@ -21,6 +22,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.FlowLayout;
+import java.util.Arrays;
 
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame {
@@ -33,17 +35,23 @@ public class MainFrame extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainFrame frame = new MainFrame();
-					frame.pack();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+	    if(Arrays.asList(args).indexOf("-nogui") != -1) {
+	       // Run in CLI mode
+	       Main.main(args);
+	    } else {
+	        // Run GUI
+	        EventQueue.invokeLater(new Runnable() {
+    			public void run() {
+    				try {
+    					MainFrame frame = new MainFrame();
+    					frame.pack();
+    					frame.setVisible(true);
+    				} catch (Exception e) {
+    					e.printStackTrace();
+    				}
+    			}
+    		});
+	    }
 	}
 
 	/**
