@@ -12,7 +12,6 @@ import io.github.lordscales91.magic9.workers.MagicWorker;
 import io.github.lordscales91.magic9.workers.MagicWorkerHandler;
 import io.github.lordscales91.magic9.workers.TorrentDownloadWorker;
 
-import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -30,17 +29,13 @@ import java.util.Locale;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
-import java.awt.SystemColor;
-import java.awt.Font;
-import javax.swing.JLabel;
+import com.teamunify.i18n.I;
 
 @SuppressWarnings("serial")
 public class TestFrame extends JFrame implements CallbackReceiver {
@@ -76,6 +71,10 @@ public class TestFrame extends JFrame implements CallbackReceiver {
 	 * Create the frame.
 	 */
 	public TestFrame() {
+		I.setLanguage("pt");
+		// Translators: This is just for testing. No need to translate
+		String message = I.trf("Welcome to {0}", "Magic9 Tool");
+		System.out.println(message);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();

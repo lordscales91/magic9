@@ -19,6 +19,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.teamunify.i18n.I;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.FlowLayout;
@@ -77,7 +79,7 @@ public class MainFrame extends JFrame {
 		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
-		JLabel lblWelcomeToThis = new JLabel("Welcome to this Useful Tool! (^_^)");
+		JLabel lblWelcomeToThis = new JLabel(I.tr("Welcome to this Useful Tool! (^_^)"));
 		lblWelcomeToThis.setFont(new Font("Arial", Font.BOLD, 18));
 		GridBagConstraints gbc_lblWelcomeToThis = new GridBagConstraints();
 		gbc_lblWelcomeToThis.insets = new Insets(0, 0, 5, 0);
@@ -94,14 +96,14 @@ public class MainFrame extends JFrame {
 		contentPane.add(panel, gbc_panel);
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
 		
-		JLabel lblBeforeStarting = new JLabel("Before starting this journey to the 3DS Scene you should read about the risks ");
+		JLabel lblBeforeStarting = new JLabel(I.tr("Before starting this journey to the 3DS Scene you should read about the risks "));
 		panel.add(lblBeforeStarting);
 		lblBeforeStarting.setFont(new Font("Arial", Font.BOLD, 14));
-		lbl3DSLink = new LinkLabel(HackingPath.URLS.getProperty(MagicPropKeys.$3DS_GUIDE), "here");
+		lbl3DSLink = new LinkLabel(HackingPath.URLS.getProperty(MagicPropKeys.$3DS_GUIDE), I.tr("here"));
 		panel.add(lbl3DSLink);
 		lbl3DSLink.setFont(new Font("Arial", Font.BOLD, 14));
 		
-		JLabel lblImNotLiable = new JLabel("I'm not liable for any damage caused to your device. Use this tool at your own risk");
+		JLabel lblImNotLiable = new JLabel(I.tr("I'm not liable for any damage caused to your device. Use this tool at your own risk"));
 		lblImNotLiable.setFont(new Font("Arial", Font.BOLD, 14));
 		GridBagConstraints gbc_lblImNotLiable = new GridBagConstraints();
 		gbc_lblImNotLiable.insets = new Insets(0, 0, 5, 0);
@@ -109,7 +111,7 @@ public class MainFrame extends JFrame {
 		gbc_lblImNotLiable.gridy = 2;
 		contentPane.add(lblImNotLiable, gbc_lblImNotLiable);
 		
-		JLabel lblFirstOfAll = new JLabel("First of all let me introduce you the awesome people that made possible this tool");
+		JLabel lblFirstOfAll = new JLabel(I.tr("First of all let me introduce you the awesome people that made possible this tool"));
 		lblFirstOfAll.setFont(new Font("Arial", Font.BOLD, 14));
 		GridBagConstraints gbc_lblFirstOfAll = new GridBagConstraints();
 		gbc_lblFirstOfAll.insets = new Insets(0, 0, 5, 0);
@@ -117,7 +119,7 @@ public class MainFrame extends JFrame {
 		gbc_lblFirstOfAll.gridy = 3;
 		contentPane.add(lblFirstOfAll, gbc_lblFirstOfAll);
 		
-		JLabel lblSpecialThanks = new JLabel("Credits:");
+		JLabel lblSpecialThanks = new JLabel(I.tr("Credits:"));
 		lblSpecialThanks.setFont(new Font("Arial", Font.BOLD, 14));
 		GridBagConstraints gbc_lblSpecialThanks = new GridBagConstraints();
 		gbc_lblSpecialThanks.insets = new Insets(0, 0, 5, 0);
@@ -125,7 +127,7 @@ public class MainFrame extends JFrame {
 		gbc_lblSpecialThanks.gridy = 4;
 		contentPane.add(lblSpecialThanks, gbc_lblSpecialThanks);
 		
-		LinkLabel lblPlailect = new LinkLabel("https://github.com/Plailect","Plailect (3ds.guide's author)");
+		LinkLabel lblPlailect = new LinkLabel("https://github.com/Plailect", I.tr("Plailect (3ds.guide's author)"));
 		lblPlailect.setFont(new Font("Arial", Font.BOLD, 12));
 		lblPlailect.init();
 		GridBagConstraints gbc_lblPlailect = new GridBagConstraints();
@@ -135,11 +137,11 @@ public class MainFrame extends JFrame {
 		contentPane.add(lblPlailect, gbc_lblPlailect);
 		
 		LinkLabel lblNdsscenebetacom = new LinkLabel("http://nds.scenebeta.com/", 
-				"nds.scenebeta.com (Spanish DS/3DS Scene community)");
+				I.tr("nds.scenebeta.com (Spanish DS/3DS Scene community)"));
 		lblNdsscenebetacom.setFont(new Font("Arial", Font.BOLD, 12));
 		lblNdsscenebetacom.init();
 		
-		LinkLabel lblEveryoneElseInvolved = new LinkLabel("https://3ds.guide/credits","Everyone else involved");
+		LinkLabel lblEveryoneElseInvolved = new LinkLabel("https://3ds.guide/credits", I.tr("Everyone else involved"));
 		lblEveryoneElseInvolved.init();
 		lblEveryoneElseInvolved.setFont(new Font("Arial", Font.BOLD, 12));
 		GridBagConstraints gbc_lblEveryoneElseInvolved = new GridBagConstraints();
@@ -162,7 +164,7 @@ public class MainFrame extends JFrame {
 		contentPane.add(lblNdsscenebetacom, gbc_lblNdsscenebetacom);
 		
 		LinkLabel lblDarkalex = new LinkLabel("http://nds.scenebeta.com/user/3268041",
-				"darkalex004 (Scenebeta Staff)");
+				I.tr("darkalex004 (Scenebeta Staff)"));
 		lblDarkalex.setFont(new Font("Arial", Font.BOLD, 12));
 		lblDarkalex.init();
 		GridBagConstraints gbc_lblDarkalex = new GridBagConstraints();
@@ -171,7 +173,7 @@ public class MainFrame extends JFrame {
 		gbc_lblDarkalex.gridy = 9;
 		contentPane.add(lblDarkalex, gbc_lblDarkalex);
 		
-		JLabel lblLatestHackableFirmware = new JLabel("Latest Hackable Firmware: "+FirmwareVersion.LATEST_HACKABLE.toShortVersion());
+		JLabel lblLatestHackableFirmware = new JLabel(I.trf("Latest Hackable Firmware: {0}", FirmwareVersion.LATEST_HACKABLE.toShortVersion()));
 		lblLatestHackableFirmware.setFont(new Font("Arial", Font.BOLD, 14));
 		GridBagConstraints gbc_lblLatestHackableFirmware = new GridBagConstraints();
 		gbc_lblLatestHackableFirmware.insets = new Insets(0, 0, 5, 0);
@@ -180,7 +182,7 @@ public class MainFrame extends JFrame {
 		contentPane.add(lblLatestHackableFirmware, gbc_lblLatestHackableFirmware);
 		
 		LinkLabel lblFirmwareUpdateHistory = new LinkLabel(HackingPath.URLS.getProperty(MagicPropKeys.TDS_UPDATES_USA),
-				"Firmware Update History");
+				I.tr("Firmware Update History"));
 		lblFirmwareUpdateHistory.init();
 		lblFirmwareUpdateHistory.setFont(new Font("Arial", Font.BOLD, 14));
 		GridBagConstraints gbc_lblFirmwareUpdateHistory = new GridBagConstraints();
@@ -189,15 +191,15 @@ public class MainFrame extends JFrame {
 		gbc_lblFirmwareUpdateHistory.gridy = 11;
 		contentPane.add(lblFirmwareUpdateHistory, gbc_lblFirmwareUpdateHistory);
 		
-		JLabel lblOnceYouFeel = new JLabel("Once you feel ready press the button below");
+		JLabel lblOnceYouFeel = new JLabel(I.tr("Once you feel ready press the button below"));
 		lblOnceYouFeel.setFont(new Font("Arial", Font.BOLD, 14));
 		GridBagConstraints gbc_lblOnceYouFeel = new GridBagConstraints();
 		gbc_lblOnceYouFeel.insets = new Insets(0, 0, 5, 0);
 		gbc_lblOnceYouFeel.gridx = 0;
 		gbc_lblOnceYouFeel.gridy = 12;
 		contentPane.add(lblOnceYouFeel, gbc_lblOnceYouFeel);
-		
-		btnStart = new JButton("Start");
+		// Translators: This is the text of the start button in the first window of the application
+		btnStart = new JButton(I.tr("Start"));
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				btnStart_actionPerformed(e);

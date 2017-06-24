@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- This build file demonstrates how one could use Ant to extract the i18n 
+	message from their source base, integrate that into template files, merge 
+	with existing languages, and generate the desired runtime bundles for doing 
+	translation. This file should work on UNIX/Linux/OSX. It will fail on Windows 
+	without a GNU find. -->
+<project basedir="." default="build-classes" name="i18nMessages">
+	<loadproperties srcFile="data/local_translation.properties" />
+	<fail
+		message="binpath is missing. Make sure to generate local_translation.properties and add binpath = path_to_gettext"
+		unless="binpath" />
+	<fail
+		message="Location of message files is missing. Please set msgs in local_translation.properties"
+		unless="msgs" />
+	<fail
+		message="Supported languages is unset. Please set supported.languages in local_translation.properties (no need to include your default)"
+		unless="supported.languages" />
+	<fail
+		message="Output directory compiled.output should be set in local_translation.properties"
+		unless="compiled.output" />
+	<property name="find.executable" value="find" />
+	<property name="tmp.dir" value="/tmp" />
+	<property name="xgettext" value="${binpath}/xgettext" />
+	<property name="msgmerge" value="${binpath}/msgmerge" />
+	<property name="msgfmt" value="${binpath}/msgfmt" />
+	<property name="msginit" value="${binpath}/msginit" />
+	<property name="pot.file" value="messages.pot" />
+	<property name="java.src" value="src/main/java" />
+	<property name="i18n.package" value="com.teamunify.i18n" />
+	<property name="i18n.path" value="com/teamunify/i18n" />
+	<property name="staging.dir" value="target/gettext" />
+	<tempfile destdir="${tmp.dir}" deleteonexit="true" property="text.file.list" />
+	<target name="prepare">
+		<mkdir dir="${compiled.output}" />
+		<mkdir dir="${staging.dir}" />
+	</target>
+	<target name="prepare-msgs">
+		<mkdir dir="${msgs}" />
+	</target>
+	<!-- Finds all of the jsp/java files that could contain translation calls -->
+	<target name="build-filelist" depends="prepare-msgs">
+		<exec dir="." executable="${find.executable}" output="${text.file.list}"
+			logError="true">
+			<!-- All your source locations -->
+			<arg value="${java.src}" />
+			<!-- <arg value="src/main/webapp" /> -->
+			<!-- All file suffixes that contain Java Code -->
+			<arg value="-name" />
+			<arg value="*.java" />
+			<!-- -o is find's OR operator <arg value="-o" /> <arg value="-name" /> 
+				<arg value="*.jsp" /> -->
+		</exec>
+	</target>
+	<!-- Extracts all strings from java and jsp files -->
+	<target name="build-pot" depends="build-filelist">
+		<exec dir="." executable="${xgettext}">
+			<arg value="-L" />
+			<arg value="Java" />
+			<arg value="-i" />
+			<arg value="--no-wrap" />
+			<arg value="--from-code" />
+			<arg value="utf-8" />
+			<arg value="-F" />
+			<arg value="-f" />
+			<arg value="${text.file.list}" />
+			<arg value="--add-comments=Translators" />
+			<arg value="-ktrc:1c,2" />
+			<arg value="-ktrcw:1c,2" />
+			<arg value="-ktrcf:1c,2" />
+			<arg value="-ktrcfw:1c,2" />
+			<arg value="-ktr" />
+			<arg value="-ktrj" />
+			<arg value="-ktrfj" />
+			<arg value="-ktrw" />
+			<arg value="-ktrf" />
+			<arg value="-ktrfw" />
+			<arg value="--force-po" />
+			<arg value="--omit-header" />
+			<arg value="-o" />
+			<arg value="${msgs}/${pot.file}" />
+		</exec>
+	</target>
+	<target name="do-po">
+		<available file="${msgs}/${lang}.po" property="lang.exists" />
+		<if>
+			<istrue value="${lang.exists}" />
+			<then>
+				<antcall target="merge-po" />
+			</then>
+			<else>
+				<antcall target="create-po" />
+			</else>
+		</if>
+	</target>
+	<target name="create-po">
+		<available file="${msgs}/${lang}.po" property="lang.exists" />
+		<exec executable="${msginit}">
+			<arg value="--no-wrap" />
+			<arg value="-o" />
+			<arg value="${msgs}/${lang}.po" />
+			<arg value="-i" />
+			<arg value="${msgs}/${pot.file}" />
+		</exec>
+	</target>
+	<target name="merge-po">
+		<exec dir="." executable="${msgmerge}">
+			<arg value="-i" />
+			<arg value="-F" />
+			<arg value="--no-wrap" />
+			<arg value="-o" />
+			<arg value="${msgs}/${lang}.po" />
+			<arg value="${msgs}/${lang}.po" />
+			<arg value="${msgs}/${pot.file}" />
+		</exec>
+	</target>
+	<target name="build-class" depends="prepare">
+		<exec dir="." executable="${msgfmt}">
+			<arg value="--verbose" />
+			<arg value="-f" />
+			<arg value="-r" />
+			<arg value="${i18n.package}.messages" />
+			<arg value="--java2" />
+			<arg value="--source" />
+			<arg value="-d" />
+			<arg value="${staging.dir}" />
+			<arg value="-l" />
+			<arg value="${lang}" />
+			<arg value="${msgs}/${lang}.po" />
+		</exec>
+		<!-- This will give us the source code, now we need to compile it -->
+		<exec dir="." executable="${javac}">
+			<arg value="-d" />
+			<arg value="${compiled.output}" />
+			<arg value="${staging.dir}/${i18n.path}/messages_${lang}.java" />
+		</exec>
+		<!-- 
+			msgfmt will attempt to create a directory per each file and 
+			will fail with existing directories 
+		 -->
+		<delete dir="${staging.dir}"/>
+	</target>
+	<!-- Push any new messages from the POT file to the various PO files. -->
+	<target name="build-merged-po" depends="build-pot">
+		<foreach list="${supported.languages}" param="lang" target="do-po" />
+	</target>
+	<target name="build-classes" depends="build-merged-po">
+		<foreach list="${supported.languages}" param="lang" target="build-class" />
+	</target>
+</project>

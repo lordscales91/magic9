@@ -1,0 +1,74 @@
+msgid   ""
+msgstr  "Project-Id-Version: PACKAGE VERSION\n"
+        "PO-Revision-Date: 2017-02-19 18:17+0100\n"
+        "Last-Translator: <EMAIL@ADDRESS>\n"
+        "Language-Team: Spanish\n"
+        "Language: es_ES@modern\n"
+        "MIME-Version: 1.0\n"
+        "Content-Type: text/plain; charset=UTF-8\n"
+        "Content-Transfer-Encoding: 8bit\n"
+        "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/main/java/io/github/lordscales91/magic9/MainFrame.java:82
+msgid   "Welcome to this Useful Tool! (^_^)"
+msgstr  "¡Bienvenidos a ésta Útil Herramienta! (^_^)"
+
+#: src/main/java/io/github/lordscales91/magic9/MainFrame.java:99
+msgid   "Before starting this journey to the 3DS Scene you should read about the risks "
+msgstr  "Antes de empezar esta aventura en la Scene de 3DS deberías leer sobre los riesgos "
+
+#: src/main/java/io/github/lordscales91/magic9/MainFrame.java:102
+msgid   "here"
+msgstr  "aquí"
+
+#: src/main/java/io/github/lordscales91/magic9/MainFrame.java:106
+msgid   "I'm not liable for any damage caused to your device. Use this tool at your own risk"
+msgstr  "No me hago responsable ante cualquier daño causado a tu dispositivo. Usa ésta herramienta bajo tu propio riesgo"
+
+#: src/main/java/io/github/lordscales91/magic9/MainFrame.java:114
+msgid   "First of all let me introduce you the awesome people that made possible this tool"
+msgstr  "Antes de nada permiteme presentarte a la maravillosa gente que hizo posible ésta herramienta"
+
+#: src/main/java/io/github/lordscales91/magic9/MainFrame.java:122
+msgid   "Credits:"
+msgstr  "Creditos:"
+
+#: src/main/java/io/github/lordscales91/magic9/MainFrame.java:130
+msgid   "Plailect (3ds.guide's author)"
+msgstr  "Plailect (Autor de 3ds.guide)"
+
+#: src/main/java/io/github/lordscales91/magic9/MainFrame.java:140
+msgid   "nds.scenebeta.com (Spanish DS/3DS Scene community)"
+msgstr  "nds.scenebeta.com (Comunidad Española de la Scene de DS/3DS)"
+
+#: src/main/java/io/github/lordscales91/magic9/MainFrame.java:144
+msgid   "Everyone else involved"
+msgstr  "Todos los demás involucrados"
+
+#: src/main/java/io/github/lordscales91/magic9/MainFrame.java:167
+msgid   "darkalex004 (Scenebeta Staff)"
+msgstr  "darkalex004 (Equipo de Scenebeta)"
+
+#: src/main/java/io/github/lordscales91/magic9/MainFrame.java:176
+#, java-format
+msgid   "Latest Hackable Firmware: {0}"
+msgstr  "Último Firmware Hackeable: {0}"
+
+#: src/main/java/io/github/lordscales91/magic9/MainFrame.java:185
+msgid   "Firmware Update History"
+msgstr  "Historial de Actualizaciones de Firmware"
+
+#: src/main/java/io/github/lordscales91/magic9/MainFrame.java:194
+msgid   "Once you feel ready press the button below"
+msgstr  "Cuando te sientas preparado pulsa el botón de abajo"
+
+#. Translators: This is the text of the start button in the first window of the application
+#: src/main/java/io/github/lordscales91/magic9/MainFrame.java:202
+msgid   "Start"
+msgstr  "Empezar"
+
+#. Translators: This is just for testing. No need to translate
+#: src/main/java/io/github/lordscales91/magic9/TestFrame.java:76
+#, java-format
+msgid   "Welcome to {0}"
+msgstr  "Bienvenido a {0}"

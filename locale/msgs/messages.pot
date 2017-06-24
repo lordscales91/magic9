@@ -1,0 +1,63 @@
+#: src/main/java/io/github/lordscales91/magic9/MainFrame.java:82
+msgid   "Welcome to this Useful Tool! (^_^)"
+msgstr  ""
+
+#: src/main/java/io/github/lordscales91/magic9/MainFrame.java:99
+msgid   "Before starting this journey to the 3DS Scene you should read about the risks "
+msgstr  ""
+
+#: src/main/java/io/github/lordscales91/magic9/MainFrame.java:102
+msgid   "here"
+msgstr  ""
+
+#: src/main/java/io/github/lordscales91/magic9/MainFrame.java:106
+msgid   "I'm not liable for any damage caused to your device. Use this tool at your own risk"
+msgstr  ""
+
+#: src/main/java/io/github/lordscales91/magic9/MainFrame.java:114
+msgid   "First of all let me introduce you the awesome people that made possible this tool"
+msgstr  ""
+
+#: src/main/java/io/github/lordscales91/magic9/MainFrame.java:122
+msgid   "Credits:"
+msgstr  ""
+
+#: src/main/java/io/github/lordscales91/magic9/MainFrame.java:130
+msgid   "Plailect (3ds.guide's author)"
+msgstr  ""
+
+#: src/main/java/io/github/lordscales91/magic9/MainFrame.java:140
+msgid   "nds.scenebeta.com (Spanish DS/3DS Scene community)"
+msgstr  ""
+
+#: src/main/java/io/github/lordscales91/magic9/MainFrame.java:144
+msgid   "Everyone else involved"
+msgstr  ""
+
+#: src/main/java/io/github/lordscales91/magic9/MainFrame.java:167
+msgid   "darkalex004 (Scenebeta Staff)"
+msgstr  ""
+
+#: src/main/java/io/github/lordscales91/magic9/MainFrame.java:176
+#, java-format
+msgid   "Latest Hackable Firmware: {0}"
+msgstr  ""
+
+#: src/main/java/io/github/lordscales91/magic9/MainFrame.java:185
+msgid   "Firmware Update History"
+msgstr  ""
+
+#: src/main/java/io/github/lordscales91/magic9/MainFrame.java:194
+msgid   "Once you feel ready press the button below"
+msgstr  ""
+
+#. Translators: This is the text of the start button in the first window of the application
+#: src/main/java/io/github/lordscales91/magic9/MainFrame.java:202
+msgid   "Start"
+msgstr  ""
+
+#. Translators: This is just for testing. No need to translate
+#: src/main/java/io/github/lordscales91/magic9/TestFrame.java:76
+#, java-format
+msgid   "Welcome to {0}"
+msgstr  ""

@@ -1,0 +1,18 @@
+# Location to xgettext binaries
+binpath=C:/Program Files\ (x86)/gettext-iconv
+# The location of your i18n POT and PO files
+msgs = locale/msgs
+supported.languages = es
+# Where to write the output classes
+compiled.output = target/classes
+# Where to look for source code
+java.src = src/main/java
+# Remember to set LanguageSetting.translationPackage to match this, if you change it from default
+# i18n.package = com.teamunify.i18n
+# You need to set the package as a path too
+# i18n.path = com/teamunify/i18n
+# Necessary for Windows in order to specify the location of a GNU find
+find.executable = C:/msys64/usr/bin/find.exe
+tmp.dir = C:/Users/<username>/AppData/Local/Temp
+# Define the path to the javac executable
+javac = C:/Program Files\ (x86)/Java/jdk1.7.0_75/bin/javac.exe
