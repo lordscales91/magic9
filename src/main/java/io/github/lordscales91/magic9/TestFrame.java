@@ -37,7 +37,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.teamunify.i18n.I;
 
-@SuppressWarnings("serial")
+@SuppressWarnings({"serial", "deprecation"})
 public class TestFrame extends JFrame implements CallbackReceiver {
 
 	private static final String TEST_TORRENT = "test_torrent";

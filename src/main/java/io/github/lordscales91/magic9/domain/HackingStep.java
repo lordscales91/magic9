@@ -3,7 +3,9 @@ package io.github.lordscales91.magic9.domain;
 public enum HackingStep {
 	DECRYPT9_BROWSER, DECRYPT9_MSET, DECRYPT9_HOMEBREW, HOMEBREW_SOUNDHAX,
 	NFIRM_DOWNGRADE, NAND_BACKUP, CTRTRANSFER_210, REQUIRES_UPDATE, INSTALL_ARM9LOADERHAX, 
-	BOOT9STRAP_BROWSER;
+	NO_OPTION,
+	BOOT9STRAP_BROWSER, BOOT9STRAP_MSET, BOOT9STRAP_2XRSA, BOOT9STRAP_HOMEBREW, 
+	BOOT9STRAP_FINAL_SETUP;
 
 	public String displayName()  {
 		String display = "Unknown";
@@ -21,6 +23,16 @@ public enum HackingStep {
 			display = "Installing arm9loaderhax";
 		} else if(this.equals(NAND_BACKUP)) {
 			display = "NAND Backup with Decrypt9";
+		} else if(this.equals(BOOT9STRAP_2XRSA)) {
+			display = "Boot9strap (2xrsa)";
+		} else if(this.equals(BOOT9STRAP_BROWSER)) {
+			display = "Boot9strap (Browser)";
+		} else if(this.equals(BOOT9STRAP_MSET)) {
+			display = "Boot9strap (MSET)";
+		} else if(this.equals(BOOT9STRAP_HOMEBREW)) {
+			display = "Boot9strap (Homebrew)";
+		} else if(this.equals(BOOT9STRAP_FINAL_SETUP)) {
+			display = "Finalizing Setup";
 		}
 		return display;
 	}
@@ -43,6 +55,16 @@ public enum HackingStep {
 			result = "/2.1.0-ctrtransfer";
 		} else if(this.equals(INSTALL_ARM9LOADERHAX)) {
 			result = "/installing-arm9loaderhax";
+		} else if(this.equals(BOOT9STRAP_2XRSA)) {
+			result = "/installing-boot9strap-(2xrsa)";
+		} else if(this.equals(BOOT9STRAP_MSET)) {
+			result = "/installing-boot9strap-(mset)";
+		} else if(this.equals(BOOT9STRAP_BROWSER)) {
+			result = "/installing-boot9strap-(browser)";
+		} else if(this.equals(BOOT9STRAP_HOMEBREW)) {
+			result = "/installing-boot9strap-(homebrew-launcher)";
+		} else if(this.equals(BOOT9STRAP_FINAL_SETUP)) {
+			result = "/finalizing-setup";
 		}
 		return result;
 	};

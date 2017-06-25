@@ -20,46 +20,54 @@ public class HackingPath {
 		// From, To
 		new FirmwareVersion[]{
 			// No Browser | Browser
-			// Update
+			// No option available shown on 3ds.guide
 			new FirmwareVersion(1, 0, 0), new FirmwareVersion(1, 1, 0)
 		},
 		new FirmwareVersion[]{
-			// Update | install arm9loaderhax
+			// - | Install boot9strap (2xrsa)
 			new FirmwareVersion(2, 1, 0), new FirmwareVersion(2, 1, 0)
 		},
 		new FirmwareVersion[]{
-			// Update
+			// No option available shown on 3ds.guide
 			new FirmwareVersion(2, 2, 0), new FirmwareVersion(3, 1, 0)
 		},
 		new FirmwareVersion[]{
-			// Decrypt9(MSET) | Decrypt9(Browser)
+			// Install boot9strap (MSET) | Install boot9strap (Browser)
 			new FirmwareVersion(4, 0, 0), new FirmwareVersion(4, 5, 0)
 		},
 		new FirmwareVersion[]{
-			// Update | Decrypt9(Browser)
+			// - | Install boot9strap (Browser)
 			new FirmwareVersion(5, 0, 0), new FirmwareVersion(5, 1, 0)
 		},
 		new FirmwareVersion[]{
-			// Decrypt9(MSET) | Decrypt9(Browser)
+			// Install boot9strap (MSET) | Install boot9strap (Browser)
 			new FirmwareVersion(6, 0, 0), new FirmwareVersion(6, 3, 0)
 		},
 		new FirmwareVersion[]{
-			// Update | Decrypt9(Browser)
+			// - | Install boot9strap (Browser)
 			new FirmwareVersion(7, 0, 0), new FirmwareVersion(8, 1, 0)
 		},
 		new FirmwareVersion[]{
 			// Homebrew Launcher(Soundhax)
 			new FirmwareVersion(9, 0, 0), new FirmwareVersion(11, 3, 0)
+		},
+		new FirmwareVersion[]{
+			// Install boot9strap (DSiWare)
+			new FirmwareVersion(11, 4, 0), new FirmwareVersion(11, 4, 0)
 		}
 	};
 	private static final FirmwareVersion[][] N3DS_RANGES = new FirmwareVersion[][]{
 		new FirmwareVersion[]{
-			// NTR and Cubic Ninja (JPN Only). Otherwise an update is required.
+			// NTR and Cubic Ninja (JPN Only).
 			new FirmwareVersion(8, 1, 0), new FirmwareVersion(8, 1, 0)
 		},
 		new FirmwareVersion[]{
 			// Homebrew Launcher(Soundhax)
 			new FirmwareVersion(9, 0, 0), new FirmwareVersion(11, 3, 0)
+		},
+		new FirmwareVersion[]{
+			// Install boot9strap (DSiWare)
+			new FirmwareVersion(11, 4, 0), new FirmwareVersion(11, 4, 0)
 		}
 	};
 	
@@ -123,53 +131,50 @@ public class HackingPath {
 			switch(range) {
 				case 0:
 				case 2:
-					steps.add(HackingStep.REQUIRES_UPDATE);
+					steps.add(HackingStep.NO_OPTION);
 					break;
 				case 1:
 					if(usablebrowser) {
-						// Proceed directly to install arm9loaderhax
-						steps.add(HackingStep.INSTALL_ARM9LOADERHAX);
+						// Proceed directly to install boot9strap
+						steps.add(HackingStep.BOOT9STRAP_2XRSA);
 					} else {
-						steps.add(HackingStep.REQUIRES_UPDATE);
+						steps.add(HackingStep.NO_OPTION);
 					}
 					break;
 				case 3:
 				case 5:
 					if(usablebrowser) {
-						// Proceed to launch Decrypt9 with this hax
-						steps.add(HackingStep.DECRYPT9_BROWSER);
+						// Proceed to install boot9strap this way
+						steps.add(HackingStep.BOOT9STRAP_BROWSER);
 					} else {
 						// Use mset hax
-						steps.add(HackingStep.DECRYPT9_MSET);						
+						steps.add(HackingStep.BOOT9STRAP_MSET);						
 					}
-					steps.add(HackingStep.NAND_BACKUP);
-					steps.add(HackingStep.CTRTRANSFER_210);
-					steps.add(HackingStep.INSTALL_ARM9LOADERHAX);
+					steps.add(HackingStep.BOOT9STRAP_FINAL_SETUP);
 					break;
 				case 4:
 				case 6:
 					if(usablebrowser) {
-						// Proceed to launch Decrypt9 with this hax
-						steps.add(HackingStep.DECRYPT9_BROWSER);
-						steps.add(HackingStep.NAND_BACKUP);
-						steps.add(HackingStep.CTRTRANSFER_210);
-						steps.add(HackingStep.INSTALL_ARM9LOADERHAX);
+						// Proceed to install boot9strap this way
+						steps.add(HackingStep.BOOT9STRAP_BROWSER);
+						steps.add(HackingStep.BOOT9STRAP_FINAL_SETUP);
 					} else {
 						// Require an update
-						steps.add(HackingStep.REQUIRES_UPDATE);						
+						steps.add(HackingStep.NO_OPTION);						
 					}
 					break;
 				case 7:
 					if(ConsoleRegion.KOR.equals(fwver.getRegion()) && fwver.lt("9.6.0")) {
-						// Soundhax on Korean consoles only works or version 9.6.0 or higher
+						// Soundhax on Korean consoles only works on version 9.6.0 or higher
 						steps.add(HackingStep.REQUIRES_UPDATE);
 					} else {
 						steps.add(HackingStep.HOMEBREW_SOUNDHAX);
-						steps.add(HackingStep.DECRYPT9_HOMEBREW);
-						steps.add(HackingStep.NAND_BACKUP);
-						steps.add(HackingStep.CTRTRANSFER_210);
-						steps.add(HackingStep.INSTALL_ARM9LOADERHAX);
+						steps.add(HackingStep.BOOT9STRAP_HOMEBREW);
+						steps.add(HackingStep.BOOT9STRAP_FINAL_SETUP);
 					}
+					break;
+				case 8:
+					// TODO: Consider to implement DSiWare route
 					break;
 				default:
 					// TODO: handle versions out of any range. Are they possible in first place?
@@ -190,9 +195,8 @@ public class HackingPath {
 				steps.add(HackingStep.REQUIRES_UPDATE);
 			} else if(range == 1) {
 				steps.add(HackingStep.HOMEBREW_SOUNDHAX);
-				steps.add(HackingStep.DECRYPT9_HOMEBREW);
-				steps.add(HackingStep.CTRTRANSFER_210);
-				steps.add(HackingStep.INSTALL_ARM9LOADERHAX);
+				steps.add(HackingStep.BOOT9STRAP_HOMEBREW);
+				steps.add(HackingStep.BOOT9STRAP_FINAL_SETUP);
 			} else if(range < 0) {
 				// TODO: handle versions out of any range. Are they possible in first place?
 			} else {

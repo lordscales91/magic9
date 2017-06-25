@@ -2,7 +2,7 @@ package io.github.lordscales91.magic9.domain;
 
 public enum ConsoleModel {
 	O3DS_GENERIC, N3DS_GENERIC, // Added for compatibility
-	O2DS, O3DS, O3DSXL, N3DS, N3DSXL;
+	O2DS, O3DS, O3DSXL, N3DS, N3DSXL, N2DSXL;
 	
 	public static ConsoleModel fromModelType(String model) {
 		for(ConsoleModel cm:ConsoleModel.values()) {
@@ -36,6 +36,8 @@ public enum ConsoleModel {
 			return "OLD";
 		} else if(N3DS_GENERIC.equals(this)) {
 			return "NEW";
+		} else if(N2DSXL.equals(this)) {
+			return "New 2DS XL";
 		}
 		return "UKN";
 	}
