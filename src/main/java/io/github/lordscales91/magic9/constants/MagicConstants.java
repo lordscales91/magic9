@@ -63,5 +63,6 @@ public class MagicConstants {
 	public static final String BOOT9STRAP_FOLDER = "boot9strap";
 	public static final String SAFEB9S_INSTALLER_ZIP = "SafeB9SInstaller.zip";
     public static final String SAFEB9S_INSTALLER_FOLDER = "SafeB9SInstaller";
+    public static final String HAXES_DIR = "3dshaxes";
 	private MagicConstants() {}
 }

@@ -31,6 +31,7 @@ public class MagicTags {
 	public static final String FBI_INJECTABLE_TAG = "fbi_injectable";
 	public static final String BOOT9STRAP_TAG = "Boot9strap";
 	public static final String SAFEB9S_TAG = "SafeB9SInstaller";
+	public static final String UDSPLOIT_TAG = "udsploit";
 	
 	private MagicTags(){}
 }

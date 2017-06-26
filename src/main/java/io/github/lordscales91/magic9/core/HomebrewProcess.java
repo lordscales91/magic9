@@ -24,7 +24,7 @@ public class HomebrewProcess extends HackingProcess {
 		HackingPath hp = HackingPath.getInstance();
 		// Prepare the SD
 		// Copy the contents of the starter kit to the SD root
-		MagicUtils.copyDirectory(new File(starterkit, MagicConstants.STARTER_KIT_SUB_FOLDER), new File(sdCardDir));
+		MagicUtils.copyDirectory(starterkit, new File(sdCardDir));
 		// Copy Soundhax to the root
 		File soundhax = new File(hackingDir, MagicUtils.getSoundhaxFilename(hp.getFwver()));
 		MagicUtils.copyFile(soundhax, new File(sdCardDir, soundhax.getName()));

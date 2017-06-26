@@ -36,6 +36,8 @@ public abstract class HackingProcess {
 			return new InstallARM9Process(hackingDir, sdCardDir);
 		} else if(HackingStep.BOOT9STRAP_BROWSER.equals(step)) {
 		    return new Boot9BrowserProcess(hackingDir, sdCardDir);
+		} else if(HackingStep.BOOT9STRAP_HOMEBREW.equals(step)) {
+		    return new Boot9HomebrewProcess(hackingDir, sdCardDir)
 		}
 		return null;
 	}

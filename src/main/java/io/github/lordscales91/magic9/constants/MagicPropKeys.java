@@ -27,6 +27,7 @@ public class MagicPropKeys {
 	public static final String NAND_BACKUP_GUIDE = "NAND_Backup_Guide";
 	public static final String SAFEB9S_INSTALLER = "SafeB9SInstaller";
 	public static final String BOOT9STRAP = "Boot9Strap";
+	public static final String UDSPLOIT_KEY = "udsploit";
 
 	private MagicPropKeys(){}
 	
